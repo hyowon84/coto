@@ -1,0 +1,689 @@
+/* 기간버튼에 따른 날짜 셋팅 함수  */
+function setDate(v) {
+	var sdate, edate;
+	edate = new Date();
+
+
+	switch(v.text) {
+		case '오늘':
+			sdate = new Date();
+			break;
+		case '일주일':
+			sdate = Ext.Date.add(new Date(), Ext.Date.DAY, -7);
+			break;
+		case '한달':
+			sdate = Ext.Date.add(new Date(), Ext.Date.MONTH, -1);
+			break;
+		case '3개월':
+			sdate = Ext.Date.add(new Date(), Ext.Date.MONTH, -3);
+			break;
+		default:
+			sdate = new Date();
+			break;
+	}
+
+	df_sdate.setValue(sdate);
+	df_edate.setValue(edate);
+}
+
+
+
+var pg_CellEdit = Ext.create('Ext.grid.plugin.CellEditing',{clicksToEdit: 2});
+var pg_RowEdit = Ext.create('Ext.grid.plugin.RowEditing', {
+	clicksToMoveEditor: 1,
+	autoCancel: false
+});
+
+var selModel = {
+	type: 'spreadsheet'
+	,columnSelect: true	// replaces click-to-sort on header
+};
+
+
+var df_sdate = Ext.create('Ext.dateField.common');		var df_edate = Ext.create('Ext.dateField.common');
+df_sdate.id = 'sdate';	df_sdate.name = 'sdate';	df_sdate.fieldLabel = '시작일';
+df_edate.id = 'edate';	df_edate.name = 'edate';	df_edate.fieldLabel = '종료일';
+
+
+
+/************* ----------------  그리드 START -------------- ******************/
+
+/* 좌측 회원 */
+var grid_mblist = Ext.create('Ext.grid.Panel',{
+	id : 'grid_mblist',
+	plugins	: Ext.create('Ext.grid.plugin.CellEditing',{clicksToEdit: 1}),
+	selModel: Ext.create('Ext.selection.CheckboxModel'),
+	remoteSort: true,
+	autoLoad : false,
+	//autoWidth : true,
+	//autoHeight : true,
+	width : '100%',
+	height : 1000,
+	store : store_mblist,
+	viewConfig: {
+		stripeRows: true,
+		getRowClass: function(record, index) {
+
+		}
+	},
+	tbar: [
+					df_sdate,
+					df_edate,
+					{
+						xtype: 'button',
+						text: '오늘',
+						listeners : [{
+							click : setDate
+						}]
+					},
+					{
+						xtype: 'button',
+						text: '일주일',
+						listeners : [{
+							click : setDate
+						}]
+					},
+					{
+						xtype: 'button',
+						text: '한달',
+						listeners : [{
+							click : setDate
+						}]
+					},
+					{
+						xtype: 'button',
+						text: '3개월',
+						listeners : [{
+							click : setDate
+						}]
+					},			
+					{	xtype: 'label',	text: '검색어 : ',		autoWidth:true,	style : 'font-weight:bold;'},
+					{
+						xtype: 'textfield',
+						id : 'keyword',
+						name: 'keyword',
+						style: 'padding:0px;',
+						enableKeyEvents: true,
+						listeners:{
+							keydown:function(t,e){
+							if(e.keyCode == 13){
+								
+								var params = {	
+									keyword : this.getValue(),
+									sdate : df_sdate.rawValue,
+									edate : df_edate.rawValue
+								}
+								
+								grid_mblist.store.loadData([],false);
+								Ext.apply(grid_mblist.store.getProxy().extraParams, params);
+								Ext.getCmp('ptb_mblist').moveFirst();
+								
+							}
+						}}
+					}
+	],
+	columns : [
+		{	text : '닉네임',				width : 140,		dataIndex : 'mb_nick'		},
+		{	text : '이름',					width : 70,			dataIndex : 'mb_name'		},
+		{ text : '연락처',				width : 120,		dataIndex : 'hphone'		},
+		{ text : '퀵주문',				width : 90,			dataIndex : 'QCK_SUM_QTY',		style:'text-align:center',	align:'right',	renderer: Ext.util.Format.numberRenderer('0,000') },
+		{ text : '퀵주문총액',		width : 120,		dataIndex : 'QCK_SUM_TOTAL',	style:'text-align:center',	align:'right',	renderer: Ext.util.Format.numberRenderer('0,000') },
+		{ text : '발송예정',			width : 90,			dataIndex : 'S40_SUM_QTY',		style:'text-align:center',	align:'right',	renderer: Ext.util.Format.numberRenderer('0,000') },
+		{ text : '발송예정총액',	width : 120,		dataIndex : 'S40_SUM_TOTAL',	style:'text-align:center',	align:'right',	renderer: Ext.util.Format.numberRenderer('0,000') },
+		{ text : '발송불가',			width : 90,			dataIndex : 'NS40_SUM_QTY',	style:'text-align:center',	align:'right',	renderer: Ext.util.Format.numberRenderer('0,000') },
+		{ text : '발송불가총액',	width : 120,		dataIndex : 'NS40_SUM_TOTAL',	style:'text-align:center',	align:'right',	renderer: Ext.util.Format.numberRenderer('0,000') },
+		{ text : '전체주문수량',	width : 90,			dataIndex : 'SUM_QTY',			style:'text-align:center',	align:'right',	renderer: Ext.util.Format.numberRenderer('0,000') },
+		{ text : '전체주문총액',	width : 120,		dataIndex : 'SUM_TOTAL',		style:'text-align:center',	align:'right',	renderer: Ext.util.Format.numberRenderer('0,000') }
+		
+	],
+	bbar : {
+		plugins: new Ext.ux.SlidingPager(),
+		xtype : 'pagingtoolbar',
+		id : 'ptb_mblist',
+		store : store_mblist,
+		displayInfo : true,
+		displayMsg : '{0}/{1} Total - {2}',
+		emptyMsg : 'No Data'
+	},
+	listeners : {
+		selectionchange: function(view, records) {
+			
+			store_orderlist.loadData([],false);
+			store_shiped_list.loadData([],false);
+			
+			/* 회원목록의 선택된 레코드 */
+			var sm = grid_mblist.getSelectionModel().getSelection()[0];
+			
+			if(sm) {
+				Ext.getCmp('grid_orderlist').setTitle('> "'+sm.get('mb_nick')+'"님의 배송예정 목록');
+				Ext.getCmp('grid_shiped_list').setTitle('> "'+sm.get('mb_nick')+'"님의 배송완료 목록');
+				Ext.getCmp('hf_hphone').setValue(sm.get('hphone'));
+				
+				/* >>주문내역 리프레시 */
+				Ext.apply(store_shiped_list.getProxy().extraParams, sm.data);
+				Ext.apply(store_orderlist.getProxy().extraParams, sm.data);
+				
+				store_orderlist.load();
+				store_shiped_list.load();				
+			}
+			
+	 	}
+	}
+	
+});
+
+
+
+/* 우측 상단 주문신청내역 */
+var grid_orderlist = Ext.create('Ext.grid.Panel',{
+	id : 'grid_orderlist',
+	headerPosition: 'left',
+	title : '배송예정 목록',
+	multiColumnSort: true,
+	plugins: ['clipboard',pg_CellEdit],
+	requires: [
+		'Ext.grid.plugin.Clipboard'
+	],
+	selModel: Ext.create('Ext.selection.CheckboxModel', {}),
+	width : '100%',
+	height	: 680,
+	store : store_orderlist,
+	columns : [
+		{ text : 'projectId',		dataIndex : 'projectId',			hidden:true	},
+		{ text : 'taskId',			dataIndex : 'taskId',					hidden:true	},
+		{ text : 'project',			dataIndex : 'project',				hidden:true,	 sortable: true },
+		{ text : '주문자',				dataIndex : 'buyer',					width:120	},
+		{ text : '주문일시',			dataIndex : 'od_date',				sortable: true	},
+		{ text : '공구코드',			dataIndex : 'gpcode',					hidden:true	},		
+		{ text : '공구명',				dataIndex : 'gpcode_name',		style:'text-align:center',	width:220	},
+		{ text : '상태코드',			dataIndex : 'IV_STATS',				width:70,	hidden:true	},
+		{ text : '입고상태',			dataIndex : 'IV_STATS_NAME',	width:120	},
+		{ text : '주문ID',				dataIndex : 'od_id',					width:140	},
+		{ text : '주문상태',			dataIndex : 'stats_name',			width:100	},
+		{ text : 'img',					dataIndex : 'gp_img',					width:60,			renderer: function(value){	return '<img src="' + value + '" width=40 height=40 />';}			},
+		{ text : '상품코드',			dataIndex : 'it_id',					width:160	},
+		{ text : '품목명',				dataIndex : 'it_name',				width:450	},
+		{ text : '주문가',				dataIndex : 'it_org_price',		sortable: true,		style:'text-align:center',	align:'right',	renderer: Ext.util.Format.numberRenderer('0,000') },
+		{ text : '주문수량',			dataIndex : 'it_qty',					sortable: true,		style:'text-align:center',	align:'right',	renderer: Ext.util.Format.numberRenderer('0,000') },
+		{ text : '주문총액',			dataIndex : 'total_price',		sortable: true,		style:'text-align:center',	align:'right',	renderer: Ext.util.Format.numberRenderer('0,000') },
+		{ text : '관리자메모',		dataIndex : 'admin_memo',			width:120,	hidden:true	},
+		{ text : '구매자메모',		dataIndex : 'memo',						width:120,	hidden:true	},		
+		{ text : '통관수량',			dataIndex : 'CR_CNT',					width:120,	hidden:true	},
+		{ text : '입고수량',			dataIndex : 'IP_CNT',					width:120,	hidden:true	},
+		{ text : '예상재고',			dataIndex : 'real_jaego',			width:120	}
+	],
+	viewConfig: {
+		getRowClass: function(record, index) {
+			var iv_stats = record.get('IV_STATS');
+			var gpcode = record.get('gpcode');
+			
+			
+			/* 국내도착 이상일경우에만 배송가능 */
+			if (iv_stats >= 40 || gpcode == 'QUICK') {
+				return 'cell_font_blue';
+			}
+		}
+	},
+	tbar : [
+			{	
+				id : 'output_order',
+				text	: '추출',
+				iconCls	: 'icon-table_print_add',
+				handler : function() {
+					
+					if( grid_mblist.getSelectionModel().getSelection() == '' ) {
+						Ext.Msg.alert('알림','좌측 회원목록에서 회원을 선택하세요');
+						return false;
+					}
+					
+					var sm = grid_orderlist.getSelection();
+					if( sm == '' ) {
+						Ext.Msg.alert('알림','상품들을 선택해주세요');
+						return false;
+					}
+
+					var mblist_sm = grid_mblist.getSelectionModel().getSelection()[0];
+					winInvoice.setTitle(mblist_sm.get('mb_nick')+'('+mblist_sm.get('mb_name')+')님의 배송예정 목록');
+					
+					
+					store_window_baesong.loadData([],false);
+					for(var i = 0; i < sm.length; i++) {
+						var rec = Ext.create('Task', {
+										'taskId'				:	sm[i].data.taskId,
+										'projectId'			:	sm[i].data.projectId,
+										'project'				:	sm[i].data.project,
+										'buyer'					: sm[i].data.buyer,
+										'number'				:	sm[i].data.number,
+										'gpcode'				:	sm[i].data.gpcode,
+										'gpcode_name'		:	sm[i].data.gpcode_name,
+										'gpstats'				:	sm[i].data.gpstats,
+										'gpstats_name'	:	sm[i].data.gpstats_name,
+										'od_id'					:	sm[i].data.od_id,
+										'clay_id'				:	sm[i].data.clay_id,
+										'stats'					:	sm[i].data.stats,
+										'stats_name'		:	sm[i].data.stats_name,
+										'gp_img'				:	sm[i].data.gp_img,
+										'it_id'					:	sm[i].data.it_id,
+										'it_name'				:	sm[i].data.it_name,
+										'it_org_price'	:	sm[i].data.it_org_price,
+										'it_qty'				:	sm[i].data.it_qty,
+										'total_price'		:	sm[i].data.total_price,
+										'od_date'				:	sm[i].data.od_date
+						});
+						store_window_baesong.add(rec);
+					}
+					
+					
+					var button = Ext.get('output_order');
+					button.dom.disabled = true;
+					//this.container.dom.style.visibility=true
+					
+					if (winInvoice.isVisible()) {
+						winInvoice.hide(this, function() {
+							button.dom.disabled = false;
+						});
+					} else {
+						winInvoice.show(this, function() {
+							button.dom.disabled = false;
+						});
+					}
+					
+					grid_window_baesong.reconfigure(store_window_baesong);
+					
+				}
+			},
+			{	xtype: 'label',		fieldLabel: 'alert',		style : 'margin-left:20px; font-weight:bold; font-size:1.5em; color:red;',
+				text: '묶음대기중인것은 미리 포장하지 마시오, 배송나갈때 한번에 포장하시오!!!'
+			}
+	],
+	bbar : {
+		plugins: new Ext.ux.SlidingPager(),
+		xtype : 'pagingtoolbar',
+		store : store_orderlist,
+		displayInfo : true,
+		displayMsg : '{0}/{1} Total - {2}',
+		emptyMsg : 'No Data'
+	},
+	listeners : {
+		selectionchange: function(view, records) {
+			var sm = grid_orderlist.getSelectionModel();
+
+			//grid_orderlist.down('#delJaego').setDisabled(!view.store.getCount());
+			
+			//store_orderlist
+			//sm.select(0);
+	 	},
+		edit: function (editor, e, eOpts) {
+			if(globalData.temp == null) {
+				globalData.temp = [];
+			}
+			globalData.temp.push([editor.context.rowIdx, editor.context.field, editor.context.originalValue]);
+		},
+		afterrender: function(obj, opt) 
+		{
+		new Ext.util.KeyMap({
+			target: document,
+			binding: [
+					{
+						key: "z",
+						ctrl:true,
+						fn: function(){
+							if(globalData.temp != null && globalData.temp.length > 0) {
+							var store = obj.getStore();
+							var temp = globalData.temp;
+							var length = temp.length-1;
+							
+							//rowIdx, field, value 순으로 temp의 값을 store에 입력
+							store.getData().getAt(temp[length][0]).set(temp[length][1],temp[length][2]);
+							globalData.temp.pop(length);
+							} else {
+								return;
+							}
+						}
+					}
+				],
+				scope: this
+			}); 
+		}
+	}
+});
+
+
+/* 우측 하단 배송완료목록 */
+var grid_shiped_list = Ext.create('Ext.grid.Panel',{
+	id : 'grid_shiped_list',
+	headerPosition: 'left',
+	title : '배송완료 목록',
+	multiColumnSort: true,
+	plugins: ['clipboard',pg_CellEdit],
+	height: 355,
+	requires: [
+		'Ext.grid.plugin.Clipboard'	//,'Ext.grid.selection.SpreadsheetModel'
+	],
+	columns : [
+		{ text : 'projectId',				dataIndex : 'projectId',				hidden:true	},
+		{ text : 'taskId',					dataIndex : 'taskId',						hidden:true	},
+		{ text : 'project',					dataIndex : 'project',					hidden:true,	 	sortable: true },
+		{ text : '주문일시',					dataIndex : 'od_date',					sortable: true	},
+		{ text : '공구코드',					dataIndex : 'gpcode',						hidden:true	},
+		{ text : '주문자',						dataIndex : 'buyer',						width:120	},
+		{ text : '공구명',						dataIndex : 'gpcode_name',			style:'text-align:center',	width:220	},
+		{ text : '주문ID',						dataIndex : 'od_id',						width:120	},
+		{ text : '주문상태',					dataIndex : 'stats_name',				width:100	},
+		{ text : '품목별 송장번호',	dataIndex : 'delivery_invoice',	width:130	},
+		{ text : '최근 송장번호',		dataIndex : 'delivery_invoice2',width:130	},
+		{ text : 'img',							dataIndex : 'gp_img',						width:60,			renderer: function(value){	return '<img src="' + value + '" width=40 height=40 />';}			},
+		{ text : '상품코드',					dataIndex : 'it_id',						width:160	},
+		{ text : '품목명',						dataIndex : 'it_name',					width:450	},
+		{ text : '주문가',						dataIndex : 'it_org_price',			sortable: true,		style:'text-align:center',	align:'right',	renderer: Ext.util.Format.numberRenderer('0,000') },
+		{ text : '주문수량',					dataIndex : 'it_qty',						sortable: true,		style:'text-align:center',	align:'right',	renderer: Ext.util.Format.numberRenderer('0,000') },
+		{ text : '주문총액',					dataIndex : 'total_price',			sortable: true,		style:'text-align:center',	align:'right',	renderer: Ext.util.Format.numberRenderer('0,000') }
+	],
+	store : store_shiped_list,
+	selModel: Ext.create('Ext.selection.CheckboxModel', {
+	}),
+	viewConfig: {
+		getRowClass: function(record, index) {
+			var c = record.get('gpstats');
+
+			/* 국내도착 이상일경우에만 배송가능 */
+			if (c >= 40) {
+				return 'cell_font_blue';
+			}
+		}
+	},
+	tbar : [
+		{
+			id : 'output_shiped',
+			text	: '추출',
+			iconCls	: 'icon-table_print_add',
+			handler : function() {
+
+				if( grid_mblist.getSelectionModel().getSelection() == '' ) {
+					Ext.Msg.alert('알림','좌측 회원목록에서 회원을 선택하세요');
+					return false;
+				}
+
+				var sm = grid_shiped_list.getSelection();
+				if( sm == '' ) {
+					Ext.Msg.alert('알림','상품들을 선택해주세요');
+					return false;
+				}
+
+				var mblist_sm = grid_mblist.getSelectionModel().getSelection()[0];
+				winInvoice.setTitle(mblist_sm.get('mb_nick')+'('+mblist_sm.get('mb_name')+')님의 배송완료 목록');
+
+
+				store_window_baesong.loadData([],false);
+				for(var i = 0; i < sm.length; i++) {
+					var rec = Ext.create('Task', {
+						'taskId'			:	sm[i].data.taskId,
+						'projectId'		:	sm[i].data.projectId,
+						'project'			:	sm[i].data.project,
+						'buyer'				: sm[i].data.buyer,
+						'number'			:	sm[i].data.number,
+						'gpcode'			:	sm[i].data.gpcode,
+						'gpcode_name'	:	sm[i].data.gpcode_name,
+						'gpstats'			:	sm[i].data.gpstats,
+						'gpstats_name':	sm[i].data.gpstats_name,
+						'od_id'				:	sm[i].data.od_id,
+						'stats_name'	:	sm[i].data.stats_name,
+						'gp_img'			:	sm[i].data.gp_img,
+						'it_id'				:	sm[i].data.it_id,
+						'it_name'			:	sm[i].data.it_name,
+						'it_org_price':	sm[i].data.it_org_price,
+						'it_qty'			:	sm[i].data.it_qty,
+						'total_price'	:	sm[i].data.total_price,
+						'od_date'			:	sm[i].data.od_date
+					});
+					store_window_baesong.add(rec);
+				}
+
+
+				var button = Ext.get('output_shiped');
+				button.dom.disabled = true;
+				//this.container.dom.style.visibility=true
+
+				if (winInvoice.isVisible()) {
+					winInvoice.hide(this, function() {
+						button.dom.disabled = false;
+					});
+				} else {
+					winInvoice.show(this, function() {
+						button.dom.disabled = false;
+					});
+				}
+
+				grid_window_baesong.reconfigure(store_window_baesong);
+
+			}
+		}
+	],
+	bbar : {
+		plugins: new Ext.ux.SlidingPager(),
+		xtype : 'pagingtoolbar',
+		store : store_shiped_list,
+		displayInfo : true,
+		displayMsg : '{0}/{1} Total - {2}',
+		emptyMsg : 'No Data'
+	},
+	listeners : {
+		selectionchange: function(view, records) {
+			var sm = grid_shiped_list.getSelectionModel();
+
+			//grid_shiped_list.down('#delJaego').setDisabled(!view.store.getCount());
+
+			//store_orderlist
+			//sm.select(0);
+		},
+		edit: function (editor, e, eOpts) {
+			if(globalData.temp == null) {
+				globalData.temp = [];
+			}
+			globalData.temp.push([editor.context.rowIdx, editor.context.field, editor.context.originalValue]);
+		},
+		afterrender: function(obj, opt)
+		{
+			new Ext.util.KeyMap({
+				target: document,
+				binding: [
+					{
+						key: "z",
+						ctrl:true,
+						fn: function(){
+							if(globalData.temp != null && globalData.temp.length > 0) {
+								var store = obj.getStore();
+								var temp = globalData.temp;
+								var length = temp.length-1;
+
+								//rowIdx, field, value 순으로 temp의 값을 store에 입력
+								store.getData().getAt(temp[length][0]).set(temp[length][1],temp[length][2]);
+								globalData.temp.pop(length);
+							} else {
+								return;
+							}
+						}
+					}
+				],
+				scope: this
+			});
+		}
+	}
+});
+
+
+
+
+
+
+/* 팝업윈도우 > 발주입력폼에 쓰이는 에디터그리드 */
+var grid_window_baesong = Ext.create('Ext.grid.Panel',{
+	id : 'grid_window_baesong',
+	autoScroll : true,
+	store : store_window_baesong,
+	plugins: [pg_CellEdit],
+	dockedItems: [
+				{
+					dock: 'top',
+					xtype: 'toolbar',
+					items: [{
+								tooltip: 'Toggle the visibility of the summary row',
+								text: '주석 숨김/활성',
+								enableToggle: true,
+								pressed: true,
+								handler: function() {
+									grid_window_baesong.getView().getFeature('group').toggleSummaryRow();
+								}
+							},
+							{	xtype: 'label',		fieldLabel: 'alert',	autoWidth:true,		style : 'margin-left:20px; font-weight:bold; font-size:1.5em; color:red;',
+								text: '묶음대기중인것은 미리 포장하지 마시오, 배송나갈때 한번에 포장하시오!!!'
+							}
+					]
+				}				
+	],
+	features: [{
+		id: 'group',
+		ftype: 'groupingsummary',
+		groupHeaderTpl: '{name}',
+		hideGroupedHeader: true,
+		enableGroupingMenu: false
+	}],
+	tbar : [
+			{
+				text	: '인쇄',
+				iconCls	: 'icon-table_print',
+				handler: function() {
+					var smt = grid_mblist.getSelectionModel().getSelection()[0];
+					Ext.ux.grid.Printer.mainTitle = smt.get('mb_nick')+'('+smt.get('mb_name')+')님의 발송목록';
+					
+					var sm = grid_orderlist.getSelection();
+					var tag_list = new Array();
+					var text = '';
+					
+					for(var i = 0; i < sm.length; i++) {
+						var memo = '';
+
+						if(sm[i].data.memo) {
+							memo += ' [*구매자메모: ' + sm[i].data.memo + ']';
+						}
+						if(sm[i].data.admin_memo) {
+							memo += ' [*관리자메모: ' + sm[i].data.admin_memo+']';
+						}
+						
+						tag_list[sm[i].data.od_id] = (sm[i].data.od_id + memo + '<br>');
+					}
+					
+					for( var i in tag_list) {
+						text += tag_list[i];
+					}
+					
+					Ext.ux.grid.Printer.tag = text;
+					Ext.ux.grid.Printer.print(grid_window_baesong);
+				}
+			},
+	],
+	columns : [
+		{ text : '주문자',			dataIndex : 'buyer',			width:120	},
+		{	header : 'IMG',			dataIndex : 'gp_img',			width:60,			renderer: function(value){	return '<img src="' + value + '" width=40 height=40 />';}			},		
+		{
+			text: '품목',
+			flex: 1,
+			tdCls: 'task',
+			sortable: true,
+			dataIndex: 'it_name',
+			hideable: false,
+			summaryType: 'count',
+			summaryRenderer: function(value, summaryData, dataIndex) {
+				return ( (value == 1 || !value ) ? '(1개의 품목)' : '(' + value + '개의 품목들)');
+			}
+		},
+		{	header : 'Project',		dataIndex : 'project',		width:180,		sortable: true	},
+		{	header : '주문상태',	dataIndex : 'stats_name',	style:'text-align:center',	align:'center',	sortable: true	},
+		{	
+			header : '주문가',
+			sortable: true,
+			style:'text-align:center',
+			align:'right',
+			renderer: Ext.util.Format.numberRenderer('0,000'),
+			summaryRenderer: Ext.util.Format.numberRenderer('0,000'),
+			dataIndex : 'it_org_price'
+		},
+		{	
+			header : '주문수량',
+			sortable: true,
+			style:'text-align:center',
+			align:'right',
+			renderer: Ext.util.Format.numberRenderer('0,000'),
+			dataIndex : 'it_qty',
+			summaryType : 'sum',
+			summaryRenderer: Ext.util.Format.numberRenderer('0,000'),
+			field: {
+				xtype: 'numberfield'
+			}
+		},
+		{
+			header : '주문총액',
+			sortable: false,
+			groupable: false,
+			dataIndex : 'total_price',
+			style:'text-align:center',
+			align:'right',
+			renderer: Ext.util.Format.numberRenderer('0,000'),
+			summaryType: function(records, values) {
+				var i = 0,
+					length = records.length,
+					total = 0,
+					record;
+
+				for (; i < length; ++i) {
+					record = records[i];
+					total += record.get('it_org_price') * record.get('it_qty');
+				}
+				return total;
+			},
+			summaryRenderer: Ext.util.Format.numberRenderer('0,000')
+		}
+	],
+	listeners : {
+		selectionchange: function(view, records) {
+			var sm = grid_window_baesong.getSelectionModel();
+			//grid_window_baesong.down('#delJaego').setDisabled(!view.store.getCount());
+			//store_save_dtl
+			//sm.select(0);
+	 	},
+		edit: function (editor, e, eOpts) {
+			if(globalData.temp == null) {
+				globalData.temp = [];
+			}
+			globalData.temp.push([editor.context.rowIdx, editor.context.field, editor.context.originalValue]);
+		},
+		afterrender: function(obj, opt) 
+		{
+		new Ext.util.KeyMap({
+			target: document,
+			binding: [
+					{
+						key: "z",
+						ctrl:true,
+						fn: function(){
+							if(globalData.temp != null && globalData.temp.length > 0) {
+							var store = obj.getStore();
+							var temp = globalData.temp;
+							var length = temp.length-1;
+							
+							//rowIdx, field, value 순으로 temp의 값을 store에 입력
+							store.getData().getAt(temp[length][0]).set(temp[length][1],temp[length][2]);
+							globalData.temp.pop(length);
+							} else {
+								return;
+							}
+						}
+					}
+				],
+				scope: this
+			});
+		}
+	}
+});
+
+/************* ----------------  그리드 END -------------- ******************/

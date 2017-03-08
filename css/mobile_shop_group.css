@@ -1,0 +1,5 @@
+/* 공동구매 신청 레이어팝업*/
+.mw_layer_gp{ display:none; position:absolute; top:0; left:0; z-index:999; width:100%;height:100%}
+.mw_layer_gp.open_gp{ display:block }
+.mw_layer_gp .bg_gp{ position:fixed; top:0; left:0; width:100%; height:100%; background:#000; opacity:.8; filter:alpha(opacity=90)}
+#layer_gp{ position:absolute; width:100%; height:auto; top:0px; left:0%; margin:0px 0 0 0px; padding:10px 10px 0 10px;  background:#fff; font-size:12px; font-family:Tahoma, Geneva, sans-serif; color:#767676; line-height:normal; white-space:normal}

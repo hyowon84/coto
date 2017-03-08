@@ -1,0 +1,87 @@
+<?php
+$sub_menu = '400200';
+$sub_sub_menu = '2';
+
+/*베스트님이 아닐경우 관리자권한 체크*/
+include_once('./_common.php');
+
+
+if($member['mb_id'] != 'facebook77@naver.com') {
+	auth_check($auth[$sub_menu], "r");
+}
+
+
+$g5['title'] = '귀금속시세/환전환율';
+include_once (G5_ADMIN_PATH.'/extjs.head.php');
+?>
+
+<link href="/js/extjs/packages/ext-theme-crisp/build/resources/ext-theme-crisp-all.css" rel="stylesheet">
+<link href="/css/extjs.css" rel="stylesheet">
+<script type="text/javascript" src="/js/extjs/build/ext-all.js"></script>
+<script type="text/javascript" src="/js/extjs/ext-common.js"></script>
+<script type="text/javascript" src="/js/extjs/plugin/ProgressBarPager.js"></script>
+<script type="text/javascript" src="/js/extjs/plugin/SlidingPager.js"></script>
+
+<script>
+Ext.Loader.setConfig({enabled: true});
+Ext.Loader.setPath('Ext.ux', '/js/extjs/ux/');
+Ext.require([
+	'Ext.data.*',
+	'Ext.grid.*',
+	'Ext.util.*',
+	'Ext.toolbar.*',
+	'Ext.form.field.Number',
+	'Ext.form.field.Date',
+	'Ext.tip.QuickTipManager',
+	'Ext.ux.ToolbarDroppable',
+	'Ext.ux.BoxReorderer',
+	'Ext.ux.grid.Printer',
+	'Ext.ux.RowExpander'
+]);
+
+Ext.define('globalData', {
+	sigleton: true,
+	temp:	null
+});
+
+<?
+$flow_sql = "	SELECT	*
+							FROM		flow_price
+							ORDER BY reg_date DESC
+							LIMIT 1
+";
+$flow = mysql_fetch_array(sql_query($flow_sql));
+?>
+
+var v_GL = '<?=$flow[GL]?>';
+var v_SL = '<?=$flow[SL]?>';
+var v_USD = '<?=$flow[USD]?>';
+
+</script>
+
+<!-- 모델 데이터 -->
+<script type="text/javascript" src="model/flowprice.model.js"></script>
+
+<!-- 스토어 데이터 -->
+<script type="text/javascript" src="store/flowprice.store.js"></script>
+
+<!-- 공통 콤보박스 정의 -->
+<script type="text/javascript" src="view/combo/flowprice.common.js"></script>
+
+
+<!-- 그리드 -->
+<script type="text/javascript" src="view/grid/flowprice.grid.js"></script>
+
+<!-- 패널 -->
+<script type="text/javascript" src="view/panel/flowprice.panel.js"></script>
+
+<!-- 윈도우팝업 -->
+<script type="text/javascript" src="view/window/flowprice.window.js"></script>
+
+<!-- 패널 -->
+<script type="text/javascript" src="view/flowprice.js"></script>
+
+
+<div class='extjsHead'><?=$g5['title']?></div>
+<div id='extjsBody'></div>
+<? include_once (G5_ADMIN_PATH.'/admin.tail.php'); ?>
