@@ -1,0 +1,443 @@
+@charset "utf-8";
+/* SIR 지운아빠 */
+
+/* ### 기본 스타일 커스터마이징 시작 ### */
+
+/* 버튼 --------------------------------------------------------*/
+.mbskin a.btn01 {
+    float: right;
+    width: 47%;
+    border: 1px solid #000;
+    padding: 11px 0;
+    text-align: center;
+    font-size: 1.083em;
+    background-color: #fff;
+}
+.mbskin a.btn01:focus, .mbskin a.btn01:hover {}
+.mbskin a.btn02 {
+    width: 47%;
+    padding: 11px 0;
+    text-align: center;
+    font-size: 1.083em;
+}
+/*==============================================================*/
+
+.mbskin a.btn02:focus, .mbskin .btn02:hover {}
+.mbskin .btn_confirm { font-size: 1.3em;font-weight: bold} /* 서식단계 진행 */
+.mbskin .btn_submit {}
+.mbskin .btn_cancel {}
+.mbskin .btn_frmline {} /* 우편번호검색버튼 등 */
+.mbskin .win_btn {} /* 새창용 */
+.mbskin .win_btn a {}
+.mbskin .win_btn button {}
+.mbskin .win_btn input {}
+/* 게시판용 버튼 */
+.mbskin a.btn_b01 {}
+.mbskin a.btn_b01:focus, .mbskin .btn_b01:hover {}
+.mbskin a.btn_b02 {}
+.mbskin a.btn_b02:focus, .mbskin .btn_b02:hover {}
+.mbskin a.btn_admin {} /* 관리자 전용 버튼 */
+.mbskin a.btn_admin:focus, .mbskin a.btn_admin:hover {}
+
+/* 기본테이블 */
+.mbskin .tbl_head01 {}
+.mbskin .tbl_head01 caption {}
+.mbskin .tbl_head01 thead th {}
+.mbskin .tbl_head01 thead a {}
+.mbskin .tbl_head01 thead th input {} /* middle 로 하면 게시판 읽기에서 목록 사용시 체크박스 라인 깨짐 */
+.mbskin .tbl_head01 tfoot th {}
+.mbskin .tbl_head01 tfoot td {}
+.mbskin .tbl_head01 tbody th {}
+.mbskin .tbl_head01 td {}
+.mbskin .tbl_head01 a {}
+.mbskin td.empty_table {}
+
+/* 폼 테이블 */
+.mb_skin table {}
+.mb_skin caption {}
+.mb_skin .frm_info {}
+.mb_skin .frm_file {}
+
+.mbskin .tbl_frm01 {margin: 0}
+.mbskin .tbl_frm01 caption {}
+.mbskin .tbl_frm01 tbody{}
+.mbskin .tbl_frm01 tr{}
+.mbskin .tbl_frm01 th {}
+.mbskin .tbl_frm01 td {}
+
+.mbskin .tbl_frm01 textarea, .mbskin .frm_input {}
+.mbskin .tbl_frm01 textarea {}
+/*
+.mbskin .tbl_frm01 #captcha {}
+.mbskin .tbl_frm01 #captcha input {}
+*/
+.mbskin .tbl_frm01 a {background-color: #4b535e;}
+
+.mbskin .required, .mbskin textarea.required {} /* 필수입력 */
+
+/* 테이블 항목별 정의 */
+.mbskin .td_board {}
+.mbskin .td_chk {}
+.mbskin .td_date {}
+.mbskin .td_datetime {}
+.mbskin .td_group {}
+.mbskin .td_mb_id {}
+.mbskin .td_mng {}
+.mbskin .td_name {}
+.mbskin .td_nick {}
+.mbskin .td_num {}
+.mbskin .td_numbig {}
+
+/* ### 기본 스타일 커스터마이징 끝 ### */
+
+/* 회원가입 약관 */
+#fregister {
+    background-color:#f5f6f7;
+}
+
+#fregister section {
+    border-bottom:1px solid #e2e3e4;
+    background:#fff;
+}
+
+#fregister_term {
+    margin-bottom: 10px;
+}
+
+#fregister_private {
+
+}
+
+#fregister h1 {
+    padding-top:40px;
+    margin:0 0 15px;
+    text-align:center;
+    font-size:1.500em;
+}
+
+#fregister h2 {
+    padding-top:20px;
+    margin:0 0 10px;
+    margin-left:4.166666666666667%;
+    text-align:left;
+    font-size:1em;
+    font-weight: bold;
+}
+#fregister textarea {
+    display:block;
+    padding:10px 5px;
+    margin-bottom:10px;
+    margin-left:4.166666666666667%;
+    margin-right:4.166666666666667%;
+    width:91.66666666666667%;
+    height:150px;
+    border:1px solid #dcdcdc;
+    border-left:0;
+    border-right:0;
+    /*background:#f7f7f7;*/
+    color:#757575;
+    font-size:0.833em;
+}
+.fregister_agree {
+    padding:3px 0 14px;
+    margin-left:4.166666666666667%;
+    text-align:left;
+}
+.fregister_agree label {
+    display:inline-block;
+    margin-right:5px;
+    font-size:1.083em;
+}
+#fregister p {
+    color:#777777;
+    text-align:center;
+    font-size:1em;
+    font-weight: bold;
+    margin-bottom:17px;
+
+}
+#fregister .btn_confirm {
+    padding:25px 0;
+}
+
+#fregister .btn_submit {
+    padding: 11px 15.55555555555556%;
+    border: 0;
+    background: #4b535e;
+    color: #fff;
+    font-size:1.083em;
+    font-weight: bold;
+    letter-spacing:0;
+    margin-bottom:67px;
+}
+
+/* 회원가입 입력 */
+#fregisterform{background-color:#f5f6f7;color: #656565;}
+/*#fregisterform #reg_mb_email, #fregisterform .frm_address {width:100%}*/
+
+#fregisterform h1{
+    padding-top:40px;
+    margin:0 0 15px;
+    color: #000000;
+    text-align:center;
+    font-size:1.500em;
+}
+#fregisterform h2{
+    margin:30px 0 17px;
+    text-align: center
+}
+#fregisterform input{
+    display: block;
+    width: 91.66666666666667%;
+    padding: 20px 0 10px 0;
+    margin-left: 4.166666666666667%;
+    margin-right: 4.166666666666667%;
+    margin-bottom: 10px;
+    border: none;
+    border-bottom: 1px solid #aaa;
+
+}
+
+/*#fregisterform #reg_mb_nick{margin-bottom: 90px}*/
+
+#fregisterform div{background-color: #ffffff;padding-top: 10px;padding-bottom: 27px}
+#fregisterform button#win_hp_cert{position: absolute;top: 415px;right: 0%;background-color: #4b535e;}
+
+#fregisterform textarea {width:100%;height:50px}
+#fregisterform p.nickname_info{
+    padding: 10px 0;
+    margin-left:4.1%;
+}
+#fregisterform p span.frm_info{
+    line-height: 1.5em;
+    color: #AAAAAA;
+    font-size: 0.833em;
+}
+#fregisterform #reg_mb_email{
+    border: none;
+    background: #ffffff;
+}
+#fregisterform input#reg_mb_email{padding-top: 52px;border-bottom: 1px solid #aaa;}
+#fregisterform p.add_search{position: absolute;right: 4.166666666666667%;margin-top: -47.5px;}
+#fregisterform div.add_input{margin: 0 4.166666666666667%;padding-top: 0}
+#fregisterform .add_input input{width: 100%;margin: 0;}
+#fregisterform .add_input input#reg_mb_zip1, #fregisterform .add_input input#reg_mb_zip2{display: none}
+
+
+#fregisterform #msg_certify {margin:5px 0 0;padding:5px;border:1px solid #dbecff;background:#eaf4ff;text-align:center}
+
+/*#fregisterform .frm_address {margin:5px 0 0}*/
+#fregisterform #mb_addr3 {display:block;margin:5px 0 0}
+#fregisterform #mb_addr_jibeon {display:block;margin:5px 0 0}
+
+#fregisterform .per_set{background-color: #f5f6f7}
+#fregisterform .per_set h2{margin-bottom: 32px}
+#fregisterform .per_set label{margin-left: 2.976190476190476%;color: #000;font-weight: bold;}
+#fregisterform .per_set input{
+    display: inline;
+    width: 1em;
+    padding: 0;
+    margin: 0 0 0 4.166666666666667%;
+    border: none;
+}
+#fregisterform .per_set input.frm_input {
+    width: inherit;
+    margin: 5px 4.166666666666667%;
+}
+#fregisterform .per_set .set_position{padding: 10px 0;background-color: #F5F6F7}
+#fregisterform .per_set .set_position p{
+    display: inline;
+    margin-left: 2.083333333333334%;
+    vertical-align: middle;
+    font-size: 0.88em;
+}
+#fregisterform .per_set .set_position span{margin-left: 15%;font-size: 0.833em;}
+#fregisterform .per_set h3{margin: 10px 4.166666666666667%;font-size: 1em;color: #000;}
+#fregisterform .reg_prevent{margin: 0 4.166666666666667%}
+#fregisterform .btn_confirm{padding: 0 4.166666666666667%;background-color: #f5f6f7; height: 70px;}
+#fregisterform a.btn_cancel {float: left;width: 45%;background-color: #fff;font-size: 1.083em;font-weight: bold;border: 1px solid #000}
+#fregisterform .btn_confirm input{
+    float: right;
+    padding: 8px 7px;
+    margin: 0;
+    width: 45%;
+    background-color: #4b535e;
+    font-size: 1.083em;font-weight: bold
+}
+/* 회원가입 완료 */
+#reg_result {padding:40px 10px 0}
+#reg_result #result_logo {margin-bottom:50px;text-align:center}
+#reg_result #result_email {padding:10px 50px;border-top:1px solid #eee;border-bottom:1px solid #eee;background:#fff;line-height:2em}
+#reg_result #result_email span {display:inline-block;width:150px}
+#reg_result #result_email strong {color:#e8180c;font-size:1.2em}
+#reg_result .btn_confirm {margin:50px 0}
+
+/* 아이디/비밀번호 찾기 */
+#find_info #info_fs {margin:0 20px 10px}
+#find_info #info_fs p {padding:0 0 10px}
+#find_info #info_fs #mb_email {width:100%}
+#find_info #captcha {margin:0 20px;padding:0 0 10px}
+#find_info #captcha input {margin-left:5px}
+
+/* 로그인 */
+#mb_login {font-weight: bold}
+#mb_login h1 {margin:0 0 15px;margin-left: 4.166666666666667%;  padding: 20px 10px 0 5px;font-size:1.5em}
+#mb_login h2 {margin:0}
+#mb_login p {padding:10px 0;line-height:1.5em;color: #AAAAAA;font-size: 0.833em;}
+#mb_login p strong{color: #000}
+#mb_login #login_frm {position:relative;padding:10px 0;font-size:1em}
+
+#mb_login #login_frm div {
+    width:91.66666666666667%;
+    margin-left: 4.166666666666667%;
+    margin-right: 4.166666666666667%;
+    padding:20px 0;
+    color: #AAAAAA;
+}
+#mb_login .frm_input {
+    display:block;
+    margin-bottom:5px;
+    padding:0;
+    width:81%;
+    height:1.8em;
+    line-height:1.8em;
+}
+
+#login_frm .btn_submit{
+    position: absolute;
+    top: 125px;
+    right: 4.166666666666667%;
+    width: 25%;
+    padding: 11px 0;
+    background: #4b535e;
+    color: #fff;
+    font-size: 1.083em;
+    font-weight: bold;
+    letter-spacing: 0;
+}
+#login_frm, #order_num{background-color: #ffffff}
+#order_num{padding-top: 10px;padding-bottom: 50px}
+#login_frm #login_id, #login_frm #login_pw, #mb_login section, #order_id, #order_pw{
+    display:block;
+    width:91.66666666666667%;
+    padding: 20px 0 10px 0;
+    margin-left: 4.166666666666667%;
+    margin-right: 4.166666666666667%;
+    margin-bottom: 10px;
+    border: none;
+    border-bottom: 1px solid #aaa;
+}
+
+
+#mb_login section{border: none}
+
+#order_num .order_submit{
+    float: right;
+    width: 25%;
+    margin-right: 4.166666666666667%;
+    padding: 11px 0;
+    border: 0;
+    background: #4b535e;
+    color: #fff;
+    font-size: 1.083em;
+    font-weight: bold;
+    letter-spacing: 0;
+}
+
+
+
+/*#mb_login section {margin:30px 0;padding:15px 10px;border:1px solid #cfded8;background:#f7f7f7}*/
+/*#mb_login section div {text-align:right}*/
+
+#mb_login_notmb {margin:30px 0;padding:15px 10px;border:1px solid #cfded8;background:#f7f7f7}
+#mb_login_notmb #guest_privacy {margin:0 0 10px;padding:10px;height:150px;border:1px solid #e9e9e9;background:#fff;overflow:auto}
+#mb_login_notmb .btn_confirm {margin:20px 0 0;text-align:right}
+
+#mb_login_od {position:relative;margin:20px 5px;border-bottom:0;background:#fff}
+#mb_login_od legend {position:absolute;font-size:0;line-height:0;overflow:hidden}
+#mb_login_od .od_id {position:absolute;top:26px;left:95px}
+#mb_login_od .od_pwd {position:absolute;top:52px;left:95px}
+#mb_login_od .frm_input {display:block;margin-bottom:5px;padding:0;width:80%;height:1.8em;line-height:1.8em}
+#mb_login_od .btn_submit {position:absolute;top:0;right:0;padding:0 !important;width:18%;height:4em !important;text-align:center}
+#mb_login_odinfo {margin:0 0 30px;padding:20px;border:1px solid #cfded8;background:#f7f7f7}
+#mb_login_odinfo div {text-align:right}
+
+
+.btn_confirmbtn_confirm
+
+
+/* 쪽지 */
+#memo_view section {padding:10px}
+#memo_view section h2 {width:0;height:0;font-size:0;line-height:0;overflow:hidden}
+#memo_view_ul {margin:0;padding:0 0 10px;border-bottom:1px solid #eee;list-style:none}
+.memo_view_li {position:relative;padding:5px 0}
+.memo_view_subj {display:inline-block;width:65px}
+#memo_view_ul a {}
+#memo_view section p {min-height:150px;height:auto !important;height:150px}
+
+#memo_write #me_recv_mb_id {width:98%}
+#memo_write textarea {width:99%;height:100px}
+
+/* 스크랩 */
+#scrap td:nth-of-type(1) {width:150px}
+#scrap td:nth-last-of-type(1) {width:50px;text-align:center}
+
+#scrap_do table {margin:0 0 10px;width:100%}
+#scrap_do textarea {width:99%;height:100px}
+
+/* 회원 비밀번호 확인 */
+#mb_confirm {margin:30px 0}
+#mb_confirm h1 {margin:0 0 15px;padding:0 10px;font-size:1.3em}
+#mb_confirm p {padding:15px 10px;border-bottom:1px solid #cfded8;border-bottom:0;background:#fff}
+#mb_confirm p strong {display:block}
+#mb_confirm fieldset {position:relative;margin:0 0 5px;padding:20px 10px;border-bottom:1px solid #cfded8;background:#f7f7f7}
+#mb_confirm_pw {display:block;margin-top:10px;padding:0;width:88%;line-height:1.8em !important}
+#mb_confirm .btn_submit {position:absolute;bottom:20px;right:10px;width:10%;height:1.9em !important;line-height:1.9em}
+
+/* 비밀글 비밀번호 확인 */
+#pw_confirm {margin:30px 0}
+#pw_confirm h1 {margin:0 0 15px;padding:0 10px;font-size:1.3em}
+#pw_confirm p {padding:15px 10px;border-bottom:1px solid #cfded8;border-bottom:0;background:#fff}
+#pw_confirm p strong {display:block}
+#pw_confirm fieldset {position:relative;margin:0 0 5px;padding:5px 5px 10px;border-bottom:1px solid #cfded8;background:#f7f7f7}
+#pw_wr_password {display:block;margin-top:10px;padding:0;width:88%;line-height:1.8em !important}
+#pw_confirm .btn_submit {position:absolute;bottom:10px;right:5px;width:10%;height:1.9em !important;line-height:1.9em}
+
+/* 폼메일 */
+#formmail #subject {width:98%}
+#formmail textarea {width:99%;height:100px}
+
+/* 자기소개 */
+#profile table {margin-bottom:0}
+#profile section {padding:10px 20px}
+#profile h2 {margin:0}
+#profile .sv_wrap a {margin:0 0 5px;padding:0;font-weight:bold;line-height:10px}
+
+/* 우편번호 검색 */
+#post_code #code_sel {margin:0 20px 20px}
+#post_code #code_sel label {display:inline-block;margin:0 15px 0 0}
+#post_code p {margin:0 0 10px}
+#post_code #zip_search_frm {margin:0 20px}
+#post_code #code_sch #sch_q {position:relative;margin:5px 0 0}
+#post_code #code_sch .frm_input {height:22px}
+#post_code #code_sch .btn_submit {padding:0 8px;height:24px}
+#post_code #result_b4 {display:block;padding:30px 0;border-bottom:1px solid #dde4e9;text-align:center}
+#post_code #result .result_msg {padding:15px 0}
+#post_code #result .result_fail {border:1px solid #dde4e9;background:#f0f5fc;color:#ff3061;text-align:center}
+#post_code #result ul {margin:0;padding:0;border-bottom:1px solid #dde4e9;background:#f0f5fc;list-style:none}
+#post_code #result li {padding:10px;border:1px solid #dde4e9;border-bottom:0}
+#post_code #result li div {margin:4px 0 0;color:#738D94}
+#post_code #result li div {color:#738D94}
+
+#post_code #result li div:before {content:"▶ "}
+#post_code #zip_direct_frm {display:none;margin:0 20px}
+#post_code #zip_direct_frm .frm_input {margin:0 0 5px}
+#post_code #zip_direct_frm .frm_addr {width:99%}
+#post_code #zip_direct_frm #sch_dq {padding:10px 0 20px;text-align:center}
+
+#fregisterform button.btn_frmline {
+	position:absolute;
+	margin-top: 18px;
+	right:15px;
+	background-color: #4b535e;
+}
