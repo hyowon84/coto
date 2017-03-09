@@ -87,4 +87,4 @@ var v_USD = '<?=$flow[USD]?>';
 
 <div class='extjsHead'><?=$g5['title']?></div>
 <div id='extjsBody'></div>
-<? include_once (G5_ADMIN_PATH.'/admin.tail.php'); ?>
+<? //include_once (G5_ADMIN_PATH.'/admin.tail.php'); ?>

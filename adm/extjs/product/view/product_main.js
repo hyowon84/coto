@@ -25,13 +25,19 @@ Ext.onReady(function(){
 		id : 'main_panel',
 		xtype: 'framed-tabs',
 		controllers: 'tab-view',
-		width: '100%',
-		height: 780,
+		width : '100%',
+		height: 850,
 		items : [{
 			title : '상품가격',
+			autoScroll: false,
+			autoWidth: true,
+			autoHeight: true,
 			items : [panel_prdprice]
 		},{
 			title : '경매',
+			autoWidth: true,
+			autoHeight: true,
+			autoScroll: true,
 			items : [panel_prdauction]
 		}
 		],
@@ -43,5 +49,6 @@ Ext.onReady(function(){
 		}
 		,renderTo: 'extjsBody'
 	});//panel_body
-
+	
+	panelResize(main_panel);
 });

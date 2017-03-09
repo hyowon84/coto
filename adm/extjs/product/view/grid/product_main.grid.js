@@ -34,7 +34,7 @@ var grid_gplist = Ext.create('Ext.grid.Panel',{
 	remoteSort: true,
 	//remoteFilter: true,
 	autoLoad : true,
-	height	: 700,
+	height	: 770,
 	columns : [
 		{ text: '공구명', 		width: 210,	dataIndex : 'gpcode_name',	sortable: false		},
 		{ text: '공구코드',	width: 120,	dataIndex : 'gpcode',		hidden:true	},
@@ -125,7 +125,7 @@ combo_spottype.id = 'combo_spottype';	combo_spottype.setValue('');	combo_spottyp
 var grid_itemlist = Ext.create('Ext.grid.Panel',{
 	plugins: [Ext.create('Ext.grid.plugin.CellEditing',{clicksToEdit: 1}) ],//pg_CellEdit  pg_RowEdit
 	selModel: Ext.create('Ext.selection.CheckboxModel'),
-	height	: 700,
+	height	: 770,
 	store : store_itemlist,
 	viewConfig: {
 		stripeRows: true,
@@ -298,15 +298,32 @@ var grid_itemlist = Ext.create('Ext.grid.Panel',{
 					}
 				},
 				{
-					text	: '경매페이지이동',
+					text	: '상품수정PAGE',
 					handler: function() {
 						var sm = grid_itemlist.getSelectionModel().getSelection();
 						if( sm == '' ) {
-							Ext.Msg.alert('알림','품목들을 선택해주세요');
+							Ext.Msg.alert('알림','품목을 선택해주세요');
 							return false;
 						}
-		
-						openPopup('/shop/auction.php?gp_id='+sm[0].get('gp_id'));
+
+						for(var i=0; i < sm.length; i++) {
+							openPopup('/adm/shop_admin/grouppurchaseform.php?w=u&gp_id'+sm[i].get('gp_id'));
+						}
+					}
+				},
+				{
+					text	: '경매상품PAGE',
+					handler: function() {
+						var sm = grid_itemlist.getSelectionModel().getSelection();
+						if( sm == '' ) {
+							Ext.Msg.alert('알림','품목을 선택해주세요');
+							return false;
+						}
+
+
+						for(var i=0; i < sm.length; i++) {
+							openPopup('/shop/auction.php?gp_id='+sm[i].get('gp_id'));
+						}
 					}
 				}
 	],
@@ -362,7 +379,7 @@ var grid_itemlist = Ext.create('Ext.grid.Panel',{
 var grid_aucPrdList = Ext.create('Ext.grid.Panel',{
 	plugins: [Ext.create('Ext.grid.plugin.CellEditing',{clicksToEdit: 1}) ],//pg_CellEdit  pg_RowEdit
 	selModel: Ext.create('Ext.selection.CheckboxModel'),
-	height	: 700,
+	height	: 770,
 	store : store_aucPrdList,
 	viewConfig: {
 		stripeRows: true,
@@ -501,7 +518,7 @@ var grid_aucPrdList = Ext.create('Ext.grid.Panel',{
 
 var grid_aucBidList = Ext.create('Ext.grid.Panel',{
 	id : 'grid_aucBidList',
-	height	: 700,
+	height	: 770,
 	store : store_aucBidList,
 	viewConfig: {
 		stripeRows: true,

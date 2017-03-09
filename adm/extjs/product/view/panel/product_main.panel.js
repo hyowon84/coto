@@ -7,7 +7,7 @@ var panel_prdprice = Ext.create('Ext.Panel', {
 	requires: ['Ext.layout.container.Border'],
 	layout: 'border',
 	width: '100%',
-	height : 737,
+	height : 810,
 	bodyBorder: false,
 	defaults: {
 		collapsible: true,

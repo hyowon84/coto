@@ -321,8 +321,8 @@ function delSelectedGrid1Row(grid) {
 /* 창 리사이징할때 패널도 자동리사이징 */
 function panelResize(main_panel) {
 	Ext.EventManager.onWindowResize(function () {
-		var width = Ext.getBody().getViewSize().width;
-		var height = Ext.getBody().getViewSize().height;
+		var width = Ext.getBody().getViewSize().width - 17;
+		var height = Ext.getBody().getViewSize().height - 50;
 		main_panel.setSize(width, height);
 	});
 }
