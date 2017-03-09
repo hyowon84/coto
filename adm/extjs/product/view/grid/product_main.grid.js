@@ -307,7 +307,7 @@ var grid_itemlist = Ext.create('Ext.grid.Panel',{
 						}
 
 						for(var i=0; i < sm.length; i++) {
-							openPopup('/adm/shop_admin/grouppurchaseform.php?w=u&gp_id'+sm[i].get('gp_id'));
+							openPopup('/adm/shop_admin/grouppurchaseform.php?w=u&gp_id='+sm[i].get('gp_id'));
 						}
 					}
 				},
