@@ -77,7 +77,7 @@ $(document).ready(function(){
 			<dt>입찰수</dt>
 			<dd><?=$입찰수?>회 <a href="javascript:openPopup('auction.log.php?gp_id=<?=$gp_id?>','width=524,height=489,directories=no,toolbar=no');" style="text-decoration: underline;">경매기록</a></dd>
 			<dt>남은시간</dt>
-			<dd><div id="itemlefttime" style="height:30px;"></div></dd>
+			<dd><div id="itemlefttime" style="float:left; height:30px;"></div> <div style="margin-left:10px; float:left;">[연장없음]</div></dd>
 
 			<dt>종료날짜</dt>
 			<dd><span style="letter-spacing:-1px;"><?=$종료일?> </span></dd>

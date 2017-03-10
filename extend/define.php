@@ -395,7 +395,7 @@ $sql_auction_item = " SELECT
 																										MAX(bid_price) AS MAX_BID_PRICE,
 																										MAX(bid_last_price) AS MAX_BID_LAST_PRICE																										
 																						FROM		auction_log
-																						WHERE		bid_stats <= 60
+																						WHERE		bid_stats <= 90
 																						GROUP BY ac_code, it_id
 																) BID ON (BID.ac_code = T.ac_code AND BID.it_id = T.gp_id)
 																
@@ -405,7 +405,7 @@ $sql_auction_item = " SELECT
 																										mb_id,
 																										bid_price																																																				
 																						FROM		auction_log
-																						WHERE		bid_stats <= 60
+																						WHERE		bid_stats <= 90
 																) MAX_MB ON (MAX_MB.ac_code = T.ac_code AND MAX_MB.it_id = T.gp_id AND MAX_MB.bid_price = BID.MAX_BID_PRICE)
 																
 												WHERE		1=1
