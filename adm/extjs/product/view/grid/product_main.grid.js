@@ -383,7 +383,13 @@ var grid_aucPrdList = Ext.create('Ext.grid.Panel',{
 	store : store_aucPrdList,
 	viewConfig: {
 		stripeRows: true,
-		enableTextSelection: true
+		enableTextSelection: true,
+		getRowClass: function(record, index) {
+			var c = record.get('bid_stats');
+			if (c == '10') {
+				return 'cell_bg_skyblue';
+			}
+		}
 	},
 	columns : [
 		{
@@ -442,15 +448,32 @@ var grid_aucPrdList = Ext.create('Ext.grid.Panel',{
 			}
 		},
 		{
-			text	: '경매페이지이동',
+			text	: '상품수정PAGE',
 			handler: function() {
 				var sm = grid_aucPrdList.getSelectionModel().getSelection();
 				if( sm == '' ) {
-					Ext.Msg.alert('알림','품목들을 선택해주세요');
+					Ext.Msg.alert('알림','품목을 선택해주세요');
 					return false;
 				}
 
-				openPopup('/shop/auction.php?gp_id='+sm[0].get('gp_id'));
+				for(var i=0; i < sm.length; i++) {
+					openPopup('/adm/shop_admin/grouppurchaseform.php?w=u&gp_id='+sm[i].get('gp_id'));
+				}
+			}
+		},
+		{
+			text	: '경매상품PAGE',
+			handler: function() {
+				var sm = grid_aucPrdList.getSelectionModel().getSelection();
+				if( sm == '' ) {
+					Ext.Msg.alert('알림','품목을 선택해주세요');
+					return false;
+				}
+
+
+				for(var i=0; i < sm.length; i++) {
+					openPopup('/shop/auction.php?gp_id='+sm[i].get('gp_id'));
+				}
 			}
 		}
 	],

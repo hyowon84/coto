@@ -49,7 +49,8 @@ if($mode == 'auclist') {
 													GP.ac_startprice,
 													GP.ac_buyprice,
 													BID.MAX_BID_LAST_PRICE,	/*현재입찰가*/
-													BID.MAX_BID_PRICE				/*최고입찰가*/
+													BID.MAX_BID_PRICE,				/*최고입찰가*/
+													IF(SB.CNT > 0,'10','00') AS bid_stats
 									FROM		auction_log AL
 													LEFT JOIN g5_shop_group_purchase GP ON (GP.gp_id = AL.it_id)
 													LEFT JOIN (	SELECT	ac_code,
@@ -59,7 +60,13 @@ if($mode == 'auclist') {
 																			FROM		auction_log
 																			GROUP BY ac_code, it_id
 													) BID ON (BID.ac_code = AL.ac_code AND BID.it_id = AL.it_id)
-													
+													LEFT JOIN (	SELECT	ac_code,
+																							it_id,
+																							COUNT(*) AS CNT
+																			FROM		auction_log
+																			WHERE		bid_stats = 10
+																			GROUP BY ac_code, it_id
+													) SB ON (SB.ac_code = AL.ac_code AND SB.it_id = AL.it_id)
 									WHERE		1=1
 									$AND_SQL
 	";
