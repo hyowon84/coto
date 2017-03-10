@@ -107,8 +107,8 @@ $timestamp = date("Y-m-d H:i:s.",$t[0]).$t[1];
 								FROM		auction_log AL
 								WHERE		AL.ac_code = '$it[ac_code]'
 								AND			AL.it_id = '$it[gp_id]'
-								AND			AL.bid_stats <= 10
-								ORDER BY AL.bid_date DESC
+								AND			AL.bid_stats <= 90
+								ORDER BY AL.bid_last_price DESC, AL.bid_date DESC
 	";
 	$bid_result = sql_query($bid_sql);
 	?>
