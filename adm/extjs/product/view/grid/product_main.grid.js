@@ -547,10 +547,10 @@ var grid_aucBidList = Ext.create('Ext.grid.Panel',{
 		stripeRows: true,
 		enableTextSelection: true,
 		getRowClass: function(record, index) {
-//			var c = record.get('NEED_IV_QTY');
-//			if (c == 0) {
-//				return 'cell_bg_skyblue';
-//			}
+			var c = record.get('bid_stats');
+			if (c == '10') {
+				return 'cell_bg_skyblue';
+			}
 		}
 	},
 	columns : [
