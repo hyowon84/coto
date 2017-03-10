@@ -22,10 +22,13 @@
 .cell_font_red { color:red; }
 .cell_bg_red { background-color:red; }
 .cell_bg_red:hover {	background-color:white; }
+.x-grid-item-selected .cell_bg_red { background-color:white; !important }
 .cell_bg_pink { background-color:pink; }
 .cell_bg_pink:hover {	background-color:white; }
+.x-grid-item-selected .cell_bg_pink { background-color:white; !important }
 .cell_bg_skyblue { background-color:#dbf4ff; }
 .cell_bg_skyblue:hover {	background-color:white; }
+.x-grid-item-selected .cell_bg_skyblue { background-color:white; !important }
 
 .cell_height70 { height:70 }
 .x-grid-td {vertical-align:middle; !important}
