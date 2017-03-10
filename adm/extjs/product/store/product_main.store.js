@@ -291,7 +291,7 @@ var store_aucBidList = Ext.create('Ext.data.Store',{
 	],
 	sorters:[
 		{
-			property:'bid_date',
+			property:'bid_last_price',
 			direction:'DESC'
 		}
 	],
