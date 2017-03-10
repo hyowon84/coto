@@ -213,7 +213,7 @@ else if($mode == 'orderlist' || $mode == 'shipedlist') {
 									AND			CL.stats IN ($상태조건)
 									$AND_SQL
 	";
-	echo $SELECT_SQL;
+//	echo $SELECT_SQL;
 	
 }
 
