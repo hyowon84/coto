@@ -65,23 +65,23 @@ if($mode == 'auc_bid') {
 		alert("이전에 입찰한 가격(".number_format($mybid[bid_price])."원)보다 높은 금액을 입력하셔야합니다");
 	}
 	
-	//입찰시도금액이 나의 이전 최고입찰가보다 높고, 현재의 최고입찰가보다 높은경우 상향조정
-	else if($입찰시도금액 > $mybid [bid_price] && $입찰시도금액 > $최고입찰가) {
-
-		$t = explode('.',_microtime());	$timestamp = date("Y-m-d H:i:s.",$t[0]).$t[1];
-		$UPD_SQL = "	UPDATE	auction_log	SET
-														bid_price				= '$입찰시도금액',			/*입찰가격*/
-														bid_from				=	'$접속기기',
-														bid_stats				= '01'
-									WHERE		mb_id						= '$member[mb_id]'	/*입찰회원계정*/
-									AND			ac_code					= '$ac_code'				/*경매진행코드*/
-									AND			it_id						= '$it[gp_id]'			/*경매상품코드*/
-		";
-		sql_query($UPD_SQL);
-
-		alert_close("입찰금액이 상향조정 되었습니다");
-		exit;
-	}
+//	//입찰시도금액이 나의 이전 최고입찰가보다 높고, 현재의 최고입찰가보다 높은경우 상향조정
+//	else if($입찰시도금액 > $mybid [bid_price] && $입찰시도금액 > $최고입찰가) {
+//
+//		$t = explode('.',_microtime());	$timestamp = date("Y-m-d H:i:s.",$t[0]).$t[1];
+//		$UPD_SQL = "	UPDATE	auction_log	SET
+//														bid_price				= '$입찰시도금액',			/*입찰가격*/
+//														bid_from				=	'$접속기기',
+//														bid_stats				= '01'
+//									WHERE		mb_id						= '$member[mb_id]'	/*입찰회원계정*/
+//									AND			ac_code					= '$ac_code'				/*경매진행코드*/
+//									AND			it_id						= '$it[gp_id]'			/*경매상품코드*/
+//		";
+//		sql_query($UPD_SQL);
+//
+//		alert_close("입찰금액이 상향조정 되었습니다");
+//		exit;
+//	}
 
 	/* step2. 입찰시도자는 다른사람의 최고입찰금액보다 커야 입찰이 가능함,
 						다른사람의 최고입찰금액의 입찰정보는 현재 입찰시도금액 기준으로 새로 입력해줘야함	*/
