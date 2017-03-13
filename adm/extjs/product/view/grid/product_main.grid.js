@@ -312,6 +312,21 @@ var grid_itemlist = Ext.create('Ext.grid.Panel',{
 					}
 				},
 				{
+					text	: '상품PAGE',
+					handler: function() {
+						var sm = grid_itemlist.getSelectionModel().getSelection();
+						if( sm == '' ) {
+							Ext.Msg.alert('알림','품목을 선택해주세요');
+							return false;
+						}
+		
+						var gp = grid_gplist.getSelectionModel().getSelection();
+						for(var i=0; i < sm.length; i++) {
+							openPopup('/shop/grouppurchase.php?gpcode='+gp[0].get('gpcode')+'&gp_id='+sm[i].get('gp_id'));
+						}
+					}
+				},
+				{
 					text	: '경매상품PAGE',
 					handler: function() {
 						var sm = grid_itemlist.getSelectionModel().getSelection();

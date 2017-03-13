@@ -919,7 +919,7 @@ function makeHtmlAucPrdList() {
 	$margin = (G5_IS_MOBILE) ? '0px' : '15px';
 
 	//경매상품 정보
-	$sql_auction_item = str_replace('#상품기본조건#', " AND ac_yn = 'Y' AND	ac_enddate > DATE_ADD(NOW(), INTERVAL -1 DAY)  ", $sql_auction_item);
+	$sql_auction_item = str_replace('#상품기본조건#', " AND ac_yn = 'Y' AND	ac_enddate > DATE_ADD(NOW(), INTERVAL -18 HOUR)  ", $sql_auction_item);
 	
 	$sql_auction_item.=" ORDER BY T.ac_enddate ASC";
 	$it_result = sql_query($sql_auction_item);
@@ -959,7 +959,7 @@ function makeHtmlAucPrdList() {
 		$남은시간 = getLeftTime($it[ac_enddate]);
 		
 		//나의입찰액이 최고가인 경우 나의 입찰금액 노출
-		$나의입찰금액 = ($it[MAX_BID_PRICE] == $it[MY_BID_PRICE]) ? "<dl><dt>나의입찰액 ".number_format($it[MY_BID_PRICE])."원</dt></dl>" : "";
+		$나의입찰금액 = ($it[MAX_BID_PRICE] == $it[MY_BID_PRICE]) ? "<dl><font color='blue' style='font-size:1.1em; font-weight:bold;'>나의입찰액 ".number_format($it[MY_BID_PRICE])."원</font></dl>" : "";
 		
 		echo "<div class='prdlist_item'>
 						<a href='/shop/auction.php?gp_id=$it[gp_id]'>
