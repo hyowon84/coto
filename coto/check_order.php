@@ -60,7 +60,7 @@ if( ($chk[name] && $chk[hphone] && $chk[od_id]) || $member[mb_id]) {
 												CI.od_date,
 												IT.ca_id,
 												IT.gp_id AS it_id,
-												IT.gp_name AS it_name,
+												CL.it_name,
 												IT.gp_price AS it_price,
 												IT.gp_img,
 												GI.gpcode,							/*공구코드*/
