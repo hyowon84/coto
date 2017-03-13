@@ -542,8 +542,8 @@ $sql_cartproduct = "	(	SELECT	CT.number,
 												AND			(	CASE
 																		WHEN	CT.gpcode = 'QUICK'	THEN
 																			1
-																		ELSE
-																			IF(GI.stats = '00',1,0)
+																		ELSE	/* 접수기간내, 주문접수 상태값일때만 목록 보여지게 */
+																			IF( NOW() < GI.end_date && GI.stats = '00',1,0)
 																		END
 																	)
 												ORDER BY 	CT.reg_date DESC
