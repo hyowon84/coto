@@ -73,7 +73,6 @@ function process($data) {
 														gp_spotprice = '$gp_spotprice',
 														gp_spotprice_type = '$gp_spotprice_type',
 														gp_order = '$gp_order',
-														
 														ac_yn = '$ac_yn',										/*경매진행여부*/
 														ac_code = '$ac_code',								/*경매진행코드*/
 														ac_qty = '$ac_qty',									/*경매진행수량*/
@@ -81,8 +80,6 @@ function process($data) {
 														ac_startprice = '$ac_startprice',		/*경매 시작가*/
 														ac_buyprice = '$ac_buyprice',				/*경매 즉시구매가*/
 														gp_update_time = now()
-														
-														
 									WHERE		gp_id = '$gp_id'
 	";
 	sql_query($common_sql);

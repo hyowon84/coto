@@ -50,11 +50,13 @@ if($mode == 'auc_bid') {
 									WHERE		AL.mb_id = '$member[mb_id]'
 									AND			AL.ac_code = '$it[ac_code]'
 									AND			AL.it_id = '$it[gp_id]'
-									ORDER BY	AL.bid_price DESC
+									ORDER BY	AL.bid_price DESC, AL.bid_last_price DESC
 									LIMIT 1
 	";
 	$mybid = sql_fetch($mybid_sql);
 
+	$최고입찰자당사자여부 = ($mybid[bid_price] >= $최고입찰가) ? true : false; 
+		
 	/* step1. 현재 입찰가보다 커야 입찰금액을 입력할수 있음*/
 	if($입찰시도금액 <= $최고현재가) {
 		alert("현재 입찰중인 가격(".number_format($최고현재가)."원)보다 높은 금액을 입력하셔야합니다");
@@ -65,26 +67,6 @@ if($mode == 'auc_bid') {
 		alert("이전에 입찰한 가격(".number_format($mybid[bid_price])."원)보다 높은 금액을 입력하셔야합니다");
 	}
 	
-// 현재 입찰이 0회인것에 대해 입찰시 오류...로 인해 해제	
-	
-//	//입찰시도금액이 나의 이전 최고입찰가보다 높고, 현재의 최고입찰가보다 높은경우 상향조정
-//	else if($입찰시도금액 > $mybid [bid_price] && $입찰시도금액 > $최고입찰가) {
-//
-//		$t = explode('.',_microtime());	$timestamp = date("Y-m-d H:i:s.",$t[0]).$t[1];
-//		$UPD_SQL = "	UPDATE	auction_log	SET
-//														bid_price				= '$입찰시도금액',			/*입찰가격*/
-//														bid_from				=	'$접속기기',
-//														bid_stats				= '01'
-//									WHERE		mb_id						= '$member[mb_id]'	/*입찰회원계정*/
-//									AND			ac_code					= '$ac_code'				/*경매진행코드*/
-//									AND			it_id						= '$it[gp_id]'			/*경매상품코드*/
-//		";
-//		sql_query($UPD_SQL);
-//
-//		alert_close("입찰금액이 상향조정 되었습니다");
-//		exit;
-//	}
-
 	/* step2. 입찰시도자는 다른사람의 최고입찰금액보다 커야 입찰이 가능함,
 						다른사람의 최고입찰금액의 입찰정보는 현재 입찰시도금액 기준으로 새로 입력해줘야함	*/
 	else if($입찰시도금액 < $최고입찰가) {
@@ -129,10 +111,33 @@ if($mode == 'auc_bid') {
 		
 		delayAuctionEnddate($it[gp_id]);
 		
-		alert("현재 입찰중인 가격(".number_format($bid_last_price)."원)보다 입력하신 금액(".number_format($입찰시도금액)."원)이 낮아 입찰에 실패하였습니다 좀더 높은 금액을 입력해주세요");
+		alert("현재 입찰중인 가격(".number_format($bid_last_price)."원)보다 입력하신 금액(".number_format($입찰시도금액)."원)이 낮아 현재입찰가 갱신에 실패하였습니다 다시 금액을 입력해주세요");
 	}
 	/* 5000원이 맥스 입찰가고  현재가 4000원이면  내가 6000원을 입력하면 5000원 자동입찰 기록을 해두고 나의 입찰가를 구해야함 */
 	else if($입찰시도금액 >= $최고입찰가 && $최고입찰가 > 1000) {
+
+
+		//현재 입찰이 0회인것에 대해 입찰시 오류...로 인해 해제
+
+		//입찰시도금액이 나의 이전 최고입찰가보다 높고, 현재의 최고입찰가보다 높은경우 상향조정
+		if($입찰시도금액 > $mybid[bid_price] && $mybid[bid_price] > $시작가 && $입찰시도금액 > $최고입찰가 && $최고입찰자당사자여부) {
+
+			$t = explode('.',_microtime());	$timestamp = date("Y-m-d H:i:s.",$t[0]).$t[1];
+			$UPD_SQL = "	UPDATE	auction_log	SET
+															bid_price				= '$입찰시도금액',			/*입찰가격*/
+															bid_from				=	'$접속기기',
+															bid_stats				= '01'
+										WHERE		mb_id		= '$member[mb_id]'	/*입찰회원계정*/
+										AND			ac_code	= '$ac_code'				/*경매진행코드*/
+										AND			it_id		= '$it[gp_id]'			/*경매상품코드*/
+										AND			no			= '$mybid[no]'
+			";
+			sql_query($UPD_SQL);
+	
+//		alert("$입찰시도금액 > $mybid[bid_price] && $mybid[bid_price] > $시작가 && $입찰시도금액 > $최고입찰가 && $최고입찰자당사자여부");
+			alert_close("입찰금액이 상향조정 되었습니다");
+			exit;
+		}
 
 		if( ($입찰시도금액 > $최고입찰가 && $최고입찰가 > $최고현재가) || ($입찰시도금액 == $최고입찰가 && $최고입찰가 > 1000) ) {
 			//# 입찰금액이랑 최고입찰가가 같으면 오토비딩후 종료,

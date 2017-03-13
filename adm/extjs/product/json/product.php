@@ -128,13 +128,51 @@ else if($mode == 'itemlist') {
 	}
 	/* 경매상품은 */
 	else if($gpcode == 'AUCTION') {
-
-		$sql_product = makeProductSql($gpcode);
 		
-		$sql_auction_item = str_replace('#상품기본조건#', " AND ac_yn = 'Y' ", $sql_auction_item);
-		
+//		$sql_product = makeProductSql($gpcode);
+//		$sql_auction_item = str_replace('#상품기본조건#', " AND ac_yn = 'Y' ", $sql_auction_item);
+//		
+//		/* 카테고리 CT */
+//		$SELECT_SQL = "	$sql_auction_item
+//										$AND_SQL
+//		";
 		/* 카테고리 CT */
-		$SELECT_SQL = "	$sql_auction_item
+		$SELECT_SQL = "	SELECT	
+														T.gp_id,
+														T.ca_id,
+														T.location,
+														T.gp_img,
+														T.gp_name,
+														
+														T.gp_update_time,
+														T.gp_price_type,
+														T.gp_metal_type,
+														T.gp_metal_don,
+														T.gp_spotprice_type,
+														T.gp_spotprice,
+														T.gp_order,
+														T.gp_use,
+														
+														T.gp_price,
+														T.gp_usdprice,
+														T.gp_realprice,
+														T.gp_price_org,
+														
+														/*최초재고값 + 발주수량 - 실주문량*/
+														T.real_jaego,												/*실재고*/
+														T.jaego,														/*재고보정값*/
+														IFNULL(T.CO_SUM,0) AS CO_SUM,				/*누적주문량*/
+														T.IV_SUM,														/*누적발주량*/
+														
+														T.ac_yn,								/*경매진행여부*/
+														T.ac_code,							/*경매진행코드*/
+														T.ac_qty,								/*경매진행수량*/
+														T.ac_enddate,						/*경매종료일자*/
+														T.ac_startprice,				/*경매 시작가*/
+														T.ac_buyprice						/*경매 즉시구매가*/
+										FROM		$sql_admin_product
+										WHERE		1=1
+										AND			ac_yn = 'Y'
 										$AND_SQL
 		";
 //		echo $SELECT_SQL;
