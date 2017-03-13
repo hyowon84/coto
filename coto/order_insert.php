@@ -230,6 +230,8 @@ if($it_id) {
 			$주문금액 += ($신청당시상품가격 * $신청수량);
 
 			$hphone = "$hp1-$hp2-$hp3";
+			$it_name = str_replace('\"', "", $it_name);
+			
 			/* 볼륨가적용일땐 주문신청(00), 볼륨가적용안함일땐 주문금액문자 전송되니 입금요청 상태로 변경*/
 			$기본주문상태 = ($공구정보[volprice_yn] == 'N') ? '10' : '00';
 			$ins_sql = "	INSERT	INTO 	clay_order		SET
@@ -373,7 +375,7 @@ sql_query($ins_sql);
 
 echo "
 <script>
-	alert('$comment');
+	alert(\"$comment\");
 	location.href = '/';
 </script>";
 
