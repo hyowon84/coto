@@ -236,7 +236,7 @@ if($it_id) {
 																gpcode = '$gpcode',
 																od_id = '$od_id',
 																it_id = '$it_id',
-																it_name = '$it_name',
+																it_name = \"$it_name\",
 																it_qty	=	'$신청수량',
 																it_org_price = '$신청당시상품가격',
 																stats = '$기본주문상태',
