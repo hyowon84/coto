@@ -385,7 +385,8 @@ $sql_auction_item = " SELECT
 																IFNULL(BID.MAX_BID_PRICE,0) AS MAX_BID_PRICE,
 																IFNULL(BID.MAX_BID_LAST_PRICE,0) AS MAX_BID_LAST_PRICE,
 																
-																MAX_MB.mb_id AS MB_ID																
+																MAX_MB.mb_id AS MB_ID,
+																MYBID.MY_BID_PRICE
 												FROM		$sql_aucPrd
 																LEFT JOIN g5_shop_category CA ON (CA.ca_id = T.ca_id)
 																
@@ -408,6 +409,14 @@ $sql_auction_item = " SELECT
 																						WHERE		bid_stats <= 90
 																) MAX_MB ON (MAX_MB.ac_code = T.ac_code AND MAX_MB.it_id = T.gp_id AND MAX_MB.bid_price = BID.MAX_BID_PRICE)
 																
+																LEFT JOIN (	SELECT	AL.mb_id,
+																										AL.ac_code,
+																										AL.it_id,
+																										MAX(AL.bid_price) AS MY_BID_PRICE
+																						FROM		auction_log AL
+																						WHERE		AL.mb_id = '$member[mb_id]'
+																						GROUP BY AL.mb_id, AL.ac_code, AL.it_id																
+																) MYBID ON (MYBID.ac_code = T.ac_code AND MYBID.it_id = T.gp_id)
 												WHERE		1=1
 ";
 

@@ -913,13 +913,14 @@ function getLeftTime($enddate) {
 
 /* 경매상품 목록 HTML 생성 */
 function makeHtmlAucPrdList() {
-	global $sql_auction_item, $상품노출개수;
+	global $sql_auction_item, $상품노출개수, $member;
 
 	$height = (G5_IS_MOBILE) ? '140px' : '230px';
 	$margin = (G5_IS_MOBILE) ? '0px' : '15px';
 
 	//경매상품 정보
 	$sql_auction_item = str_replace('#상품기본조건#', " AND ac_yn = 'Y' AND	ac_enddate > DATE_ADD(NOW(), INTERVAL -1 DAY)  ", $sql_auction_item);
+	
 	$sql_auction_item.=" ORDER BY T.ac_enddate ASC";
 	$it_result = sql_query($sql_auction_item);
 
@@ -932,7 +933,7 @@ function makeHtmlAucPrdList() {
 	
 	//<a href='/shop/auclist.php?gpcode=AUCTION'>오늘의 경매	<font color=red>&nbsp;&nbsp;&nbsp;☜ 전체보기</font><br></a>
 	echo "<div class='prdlist_title cut_text1line'>
-					오늘의 경매
+					<font color='red'>오늘의 경매</font>
 				</div>";
 
 
@@ -957,6 +958,9 @@ function makeHtmlAucPrdList() {
 		$종료일 = date("n/j H:i",strtotime($it[ac_enddate]));
 		$남은시간 = getLeftTime($it[ac_enddate]);
 		
+		//나의입찰액이 최고가인 경우 나의 입찰금액 노출
+		$나의입찰금액 = ($it[MAX_BID_PRICE] == $it[MY_BID_PRICE]) ? "<dl><dt>나의입찰액 ".number_format($it[MY_BID_PRICE])."원</dt></dl>" : "";
+		
 		echo "<div class='prdlist_item'>
 						<a href='/shop/auction.php?gp_id=$it[gp_id]'>
 						<span class='sct_icon' style='position:absolute;'>".item_icon1($it)."</span>
@@ -969,6 +973,7 @@ function makeHtmlAucPrdList() {
 						</div>
 						<div class='prdlist_bottom'>
 							<dl> <dt>현재가 ".number_format($현재가)."원</dt></dt>
+							$나의입찰금액
 							<dl>즉구가 ".number_format($즉시구매가)."원</dt>
 							<dl>종료일 $종료일</dl>
 							<dl>남은시간 $남은시간</dl>
