@@ -72,7 +72,7 @@ else if($mode == 'banklinklist') {
 }
 
 //20170222.임시조건
-$조건문SQL.= " AND CL.od_date >= '2016-07-01 00:00:00' ";
+//$조건문SQL.= " AND CL.od_date >= '2016-07-01 00:00:00' ";
 
 
 
