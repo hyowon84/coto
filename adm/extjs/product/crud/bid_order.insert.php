@@ -114,7 +114,7 @@ function process($data) {
 	$upd_sql = "UPDATE 	auction_log		SET
 												bid_stats = '10'
 							WHERE		no = '$data[no]'
-							AND			bid_stats IN ('00','05');
+							AND			bid_stats IN ('00','01','05');
 	";
 	sql_query($upd_sql);		
 	

@@ -51,7 +51,7 @@ df_edate.id = 'edate';	df_edate.name = 'edate';	df_edate.fieldLabel = '종료일
 /* 좌측 회원 */
 var grid_mblist = Ext.create('Ext.grid.Panel',{
 	id : 'grid_mblist',
-	plugins	: Ext.create('Ext.grid.plugin.CellEditing',{clicksToEdit: 1}),
+	plugins	: ['clipboard'],
 	selModel: Ext.create('Ext.selection.CheckboxModel'),
 	remoteSort: true,
 	autoLoad : false,
@@ -180,7 +180,7 @@ var grid_orderlist = Ext.create('Ext.grid.Panel',{
 	headerPosition: 'left',
 	title : '배송예정 목록',
 	multiColumnSort: true,
-	plugins: ['clipboard',pg_CellEdit],
+	plugins: ['clipboard'],
 	requires: [
 		'Ext.grid.plugin.Clipboard'
 	],
@@ -306,46 +306,7 @@ var grid_orderlist = Ext.create('Ext.grid.Panel',{
 		emptyMsg : 'No Data'
 	},
 	listeners : {
-		selectionchange: function(view, records) {
-			var sm = grid_orderlist.getSelectionModel();
-
-			//grid_orderlist.down('#delJaego').setDisabled(!view.store.getCount());
-			
-			//store_orderlist
-			//sm.select(0);
-	 	},
-		edit: function (editor, e, eOpts) {
-			if(globalData.temp == null) {
-				globalData.temp = [];
-			}
-			globalData.temp.push([editor.context.rowIdx, editor.context.field, editor.context.originalValue]);
-		},
-		afterrender: function(obj, opt) 
-		{
-		new Ext.util.KeyMap({
-			target: document,
-			binding: [
-					{
-						key: "z",
-						ctrl:true,
-						fn: function(){
-							if(globalData.temp != null && globalData.temp.length > 0) {
-							var store = obj.getStore();
-							var temp = globalData.temp;
-							var length = temp.length-1;
-							
-							//rowIdx, field, value 순으로 temp의 값을 store에 입력
-							store.getData().getAt(temp[length][0]).set(temp[length][1],temp[length][2]);
-							globalData.temp.pop(length);
-							} else {
-								return;
-							}
-						}
-					}
-				],
-				scope: this
-			}); 
-		}
+		
 	}
 });
 
@@ -356,7 +317,7 @@ var grid_shiped_list = Ext.create('Ext.grid.Panel',{
 	headerPosition: 'left',
 	title : '배송완료 목록',
 	multiColumnSort: true,
-	plugins: ['clipboard',pg_CellEdit],
+	plugins: ['clipboard'],
 	height: 355,
 	requires: [
 		'Ext.grid.plugin.Clipboard'	//,'Ext.grid.selection.SpreadsheetModel'
@@ -471,46 +432,6 @@ var grid_shiped_list = Ext.create('Ext.grid.Panel',{
 		emptyMsg : 'No Data'
 	},
 	listeners : {
-		selectionchange: function(view, records) {
-			var sm = grid_shiped_list.getSelectionModel();
-
-			//grid_shiped_list.down('#delJaego').setDisabled(!view.store.getCount());
-
-			//store_orderlist
-			//sm.select(0);
-		},
-		edit: function (editor, e, eOpts) {
-			if(globalData.temp == null) {
-				globalData.temp = [];
-			}
-			globalData.temp.push([editor.context.rowIdx, editor.context.field, editor.context.originalValue]);
-		},
-		afterrender: function(obj, opt)
-		{
-			new Ext.util.KeyMap({
-				target: document,
-				binding: [
-					{
-						key: "z",
-						ctrl:true,
-						fn: function(){
-							if(globalData.temp != null && globalData.temp.length > 0) {
-								var store = obj.getStore();
-								var temp = globalData.temp;
-								var length = temp.length-1;
-
-								//rowIdx, field, value 순으로 temp의 값을 store에 입력
-								store.getData().getAt(temp[length][0]).set(temp[length][1],temp[length][2]);
-								globalData.temp.pop(length);
-							} else {
-								return;
-							}
-						}
-					}
-				],
-				scope: this
-			});
-		}
 	}
 });
 
