@@ -175,6 +175,7 @@ if($mode == 'input')
 
 
 			############################/* 전체신청상품 주문서 작성 */################################
+			
 			for($i = 0; $i < count($주문정보); $i++) {
 
 				$it_id = $주문정보[$i][it_id];
@@ -254,7 +255,7 @@ if($mode == 'input')
 					/* 볼륨가적용일땐 주문신청(00), 볼륨가적용안함일땐 주문금액문자 전송되니 입금요청 상태로 변경*/
 					$기본주문상태 = '00';
 
-					$it_name = str_replace("'", "", $it_name);
+					$it_name = str_replace('\"', "", $it_name);
 					$ins_sql = "	INSERT	INTO 	clay_order		SET
 																		gpcode = '$gpcode',
 																		od_id = '$od_id',
@@ -263,16 +264,15 @@ if($mode == 'input')
 																		name = '$name',
 																		hphone = '$hphone',
 																		it_id = '$it_id',
-																		it_name = '$it_name',
+																		it_name = \"$it_name\",
 																		it_qty	=	'$신청수량',
 																		it_org_price = '$신청당시상품가격',
 																		stats = '$기본주문상태',
 																		od_date = now()
 					";
 					$result = sql_query($ins_sql);
-
+					$sql_txt .= $ins_sql."\r\n";
 				}
-
 
 				if($result) {
 					$succ_cnt++;
@@ -353,6 +353,9 @@ if($mode == 'input')
 		} // foreach end
 
 	} //if end
+
+	$sql_txt = print_r($주문정보)."\r\n".$sql_txt;
+	db_log($sql_txt,'clay_order','대리주문입력');
 
 }
 

@@ -62,8 +62,8 @@ var grid_mblist = Ext.create('Ext.grid.Panel',{
 	store : store_mblist,
 	viewConfig: {
 		stripeRows: true,
+		enableTextSelection: true,
 		getRowClass: function(record, index) {
-
 		}
 	},
 	tbar: [
@@ -184,6 +184,19 @@ var grid_orderlist = Ext.create('Ext.grid.Panel',{
 	requires: [
 		'Ext.grid.plugin.Clipboard'
 	],
+	viewConfig: {
+		stripeRows: true,
+		enableTextSelection: true,
+		getRowClass: function(record, index) {
+			var iv_stats = record.get('IV_STATS');
+			var gpcode = record.get('gpcode');
+
+			/* 국내도착 이상일경우에만 배송가능 */
+			if (iv_stats >= 40 || gpcode == 'QUICK') {
+				return 'cell_font_blue';
+			}
+		}
+	},
 	selModel: Ext.create('Ext.selection.CheckboxModel', {}),
 	width : '100%',
 	height	: 680,
@@ -212,18 +225,6 @@ var grid_orderlist = Ext.create('Ext.grid.Panel',{
 		{ text : '입고수량',			dataIndex : 'IP_CNT',					width:120,	hidden:true	},
 		{ text : '예상재고',			dataIndex : 'real_jaego',			width:120	}
 	],
-	viewConfig: {
-		getRowClass: function(record, index) {
-			var iv_stats = record.get('IV_STATS');
-			var gpcode = record.get('gpcode');
-			
-			
-			/* 국내도착 이상일경우에만 배송가능 */
-			if (iv_stats >= 40 || gpcode == 'QUICK') {
-				return 'cell_font_blue';
-			}
-		}
-	},
 	tbar : [
 			{	
 				id : 'output_order',
@@ -360,6 +361,18 @@ var grid_shiped_list = Ext.create('Ext.grid.Panel',{
 	requires: [
 		'Ext.grid.plugin.Clipboard'	//,'Ext.grid.selection.SpreadsheetModel'
 	],
+	viewConfig: {
+		stripeRows: true,
+		enableTextSelection: true,
+		getRowClass: function(record, index) {
+			var c = record.get('gpstats');
+
+			/* 국내도착 이상일경우에만 배송가능 */
+			if (c >= 40) {
+				return 'cell_font_blue';
+			}
+		}
+	},
 	columns : [
 		{ text : 'projectId',				dataIndex : 'projectId',				hidden:true	},
 		{ text : 'taskId',					dataIndex : 'taskId',						hidden:true	},
@@ -382,16 +395,6 @@ var grid_shiped_list = Ext.create('Ext.grid.Panel',{
 	store : store_shiped_list,
 	selModel: Ext.create('Ext.selection.CheckboxModel', {
 	}),
-	viewConfig: {
-		getRowClass: function(record, index) {
-			var c = record.get('gpstats');
-
-			/* 국내도착 이상일경우에만 배송가능 */
-			if (c >= 40) {
-				return 'cell_font_blue';
-			}
-		}
-	},
 	tbar : [
 		{
 			id : 'output_shiped',

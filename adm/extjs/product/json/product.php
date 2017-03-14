@@ -124,7 +124,7 @@ else if($mode == 'itemlist') {
 										WHERE		1=1
 										$AND_SQL
 		";
-
+//		echo $SELECT_SQL;
 	}
 	/* 경매상품은 */
 	else if($gpcode == 'AUCTION') {
@@ -232,6 +232,7 @@ else if($mode == 'itemlist') {
 										WHERE		1=1
 										$AND_SQL
 		";
+//		echo $SELECT_SQL;
 	}
 
 }

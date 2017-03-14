@@ -155,6 +155,7 @@ $sql_admin_product = "	(	SELECT	GP.*,
 
 //상품쿼리 재활용
 function makeProductSql($gpcode) {
+	global $member;
 	
 	/* 빠른배송공구코드가 아닌 공구코드 */
 	$목록공구코드 = ($gpcode) ? $gpcode : 'QUICK';
@@ -163,20 +164,23 @@ function makeProductSql($gpcode) {
 		//장바구니 목록, 장바구니다음의 주문목록에서 사용
 		if($it_id) $AND_SQL = "AND			VGL.links_itid = '$it_id'";
 		
+		if( $member[admin_yn] != 'Y' ) $관리자조건 = " AND			IT.gp_use = '1' ";
 		$PRODUCT_QUERY = "	SELECT	IT.*
 												FROM		v_gpinfo_links VGL
 																LEFT JOIN  g5_shop_group_purchase IT ON (IT.gp_id = VGL.links_itid)																			
 												WHERE		1=1
-												AND			IT.gp_use = '1'
+												$관리자조건
 												AND			VGL.gpcode = '$gpcode'
 												#공동구매조건#
 												$AND_SQL
 		";	
 	} else {
+		
+		if( $member[admin_yn] != 'Y' ) $관리자조건 = " AND			gp_use = '1' ";
 		$PRODUCT_QUERY = "	SELECT	*
 												FROM		g5_shop_group_purchase
 												WHERE		1=1
-												AND			gp_use = '1'
+												$관리자조건
 												#상품기본조건#
 												
 		";
