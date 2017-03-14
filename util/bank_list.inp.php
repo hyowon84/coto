@@ -11,7 +11,7 @@ include_once(G5_LIB_PATH.'/Excel/reader.php');
 
 function only_number($n)
 {
-	return preg_replace('/[^0-9]/', '', $n);
+	return preg_replace('/\-*[^0-9]/', '', $n);
 }
 
 
@@ -71,15 +71,16 @@ for($z = 1; $z <= 2; $z++) {
 			$tr_date			= addslashes($data->sheets[0]['cells'][$i][1]);//1
 			$tr_time			= addslashes($data->sheets[0]['cells'][$i][2]);//2
 			$tr_type			= addslashes($data->sheets[0]['cells'][$i][3]);//3
-			$output_price	= addslashes(only_number($data->sheets[0]['cells'][$i][4]));
-			$input_price	= addslashes(only_number($data->sheets[0]['cells'][$i][5]));
+//			$output_price	= addslashes(only_number($data->sheets[0]['cells'][$i][4]));
+//			$input_price	= addslashes(only_number($data->sheets[0]['cells'][$i][5]));
+			$output_price	= addslashes($data->sheets[0]['cells'][$i][4]);
+			$input_price	= addslashes($data->sheets[0]['cells'][$i][5]);
 			$trader_name	= addslashes($data->sheets[0]['cells'][$i][6]);
 			$remain_money	= addslashes(only_number($data->sheets[0]['cells'][$i][7]));
 			$bank		  		= addslashes($data->sheets[0]['cells'][$i][8]);
 
 
-
-			if( ($input_price < 1) && ($output_price < 1) ) {
+			if(!$tr_date || !$tr_time) {	// || ( !$input_price && !$output_price )
 				$fail_count++;
 				continue;
 			}

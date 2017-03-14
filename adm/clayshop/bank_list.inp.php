@@ -11,7 +11,7 @@ if($is_admin != 'super') exit;
 
 function only_number($n)
 {
-	return preg_replace('/[^0-9]/', '', $n);
+	return preg_replace('/\-*[^0-9]/', '', $n);
 }
 
 
@@ -87,13 +87,13 @@ if($_FILES['excelfile']['tmp_name']) {
 		$tr_date			= addslashes($data->sheets[0]['cells'][$i][1]);//1
 		$tr_time			= addslashes($data->sheets[0]['cells'][$i][2]);//2
 		$tr_type			= addslashes($data->sheets[0]['cells'][$i][3]);//3
-		$output_price	= addslashes(only_number($data->sheets[0]['cells'][$i][4]));
-		$input_price	= addslashes(only_number($data->sheets[0]['cells'][$i][5]));
+		$output_price	= addslashes($data->sheets[0]['cells'][$i][4]);
+		$input_price	= addslashes($data->sheets[0]['cells'][$i][5]);
 		$trader_name	= addslashes($data->sheets[0]['cells'][$i][6]);
 		$remain_money	= addslashes(only_number($data->sheets[0]['cells'][$i][7]));
 		$bank		  		= addslashes($data->sheets[0]['cells'][$i][8]);
 		
-		if(!$tr_date || !$tr_time || ( !$input_price && !$output_price )) {
+		if(!$tr_date || !$tr_time) {	// || ( !$input_price && !$output_price )
 			$fail_count++;
 			continue;
 		}
