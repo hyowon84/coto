@@ -164,10 +164,18 @@ function makeProductSql($gpcode) {
 		//장바구니 목록, 장바구니다음의 주문목록에서 사용
 		if($it_id) $AND_SQL = "AND			VGL.links_itid = '$it_id'";
 		
-		if( $member[admin_yn] != 'Y' ) $관리자조건 = " AND			IT.gp_use = '1' ";
+		if( $member[admin_yn] != 'Y' ) {
+			$관리자조건 = "	AND			IT.gp_use = '1'
+											AND			GI.stats = '00'
+											AND			GI.end_date >= DATE_FORMAT(NOW(),'%Y-%m-%d') 
+											AND			VGL.gpcode = 'E201612_06'
+			";
+		}
 		$PRODUCT_QUERY = "	SELECT	IT.*
 												FROM		v_gpinfo_links VGL
-																LEFT JOIN  g5_shop_group_purchase IT ON (IT.gp_id = VGL.links_itid)																			
+																LEFT JOIN		gp_info GI ON (GI.gpcode = VGL.gpcode)
+																LEFT JOIN		g5_shop_group_purchase IT ON (IT.gp_id = VGL.links_itid)
+																
 												WHERE		1=1
 												$관리자조건
 												AND			VGL.gpcode = '$gpcode'
@@ -176,7 +184,11 @@ function makeProductSql($gpcode) {
 		";	
 	} else {
 		
-		if( $member[admin_yn] != 'Y' ) $관리자조건 = " AND			gp_use = '1' ";
+		if( $member[admin_yn] != 'Y' ) {
+			$관리자조건 = "	AND			gp_use = '1'
+											AND			ca_id LIKE 'CT%'
+			";
+		}
 		$PRODUCT_QUERY = "	SELECT	*
 												FROM		g5_shop_group_purchase
 												WHERE		1=1
