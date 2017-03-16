@@ -349,7 +349,9 @@ var grid_orderlist = Ext.create('Ext.grid.Panel',{
 			var sm = grid_orderlist.getSelectionModel().getSelection()[0];
 			
 			if(sm) {
-				Ext.getCmp('navi_center').setTitle('> "'+sm.get('gpcode_name')+"("+sm.get('od_id')+")"+'"의 주문정보');
+				Ext.getCmp('order_north').setTitle('> "'+sm.get('gpcode_name')+"("+sm.get('od_id')+")"+'"의 주문정보');
+				Ext.getCmp('order_west').setTitle('> "'+sm.get('gpcode_name')+"("+sm.get('od_id')+")"+'"의 로그');
+				
 				sm.data.admin_memo = sm.data.admin_memo.replace(/<br>/gi, "\r\n");	//개행문자를 <BR>로 변경한걸 다시 원상복구
 				sm.data.memo = sm.data.memo.replace(/<br>/gi, "\r\n");
 				Ext.getCmp('frmOrderInfo').loadRecord(sm);

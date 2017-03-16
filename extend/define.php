@@ -168,7 +168,6 @@ function makeProductSql($gpcode) {
 			$관리자조건 = "	AND			IT.gp_use = '1'
 											AND			GI.stats = '00'
 											AND			GI.end_date >= DATE_FORMAT(NOW(),'%Y-%m-%d') 
-											AND			VGL.gpcode = 'E201612_06'
 			";
 		}
 		$PRODUCT_QUERY = "	SELECT	IT.*

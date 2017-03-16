@@ -797,6 +797,7 @@ function makeHtmlCatePrdList() {
 												END cash_price
 								FROM		$replaced_sql_product
 								WHERE		T.real_jaego > 0
+								AND			T.gp_use = 1
 								AND			IF( (T.gp_realprice + T.gp_fixprice + T.gp_price) > 0,TRUE,FALSE)
 								ORDER BY T.gp_update_time DESC
 								LIMIT 20
