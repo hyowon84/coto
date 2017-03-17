@@ -94,18 +94,17 @@ if($mode == 'auc_bid') {
 		$t = explode('.', _microtime());
 		$timestamp = date("Y-m-d H:i:s.", $t[0]) . $t[1];
 		$auto_sql = "	INSERT INTO		auction_log		SET
-																ac_code					= '$it[ac_code]',							/*경매진행코드*/
-																it_id						= '$it[gp_id]',									/*경매상품코드*/
-																it_name					= '$it[gp_name]',							/*경매상품명*/
-																mb_id						= '$member[mb_id]',									/*입찰회원계정*/
-																bid_qty					= '$bid_qty',									/*입찰수량*/
+																ac_code					= '$it[ac_code]',			/*경매진행코드*/
+																it_id						= '$it[gp_id]',				/*경매상품코드*/
+																it_name					= '$it[gp_name]',			/*경매상품명*/
+																mb_id						= '$member[mb_id]',		/*입찰회원계정*/
+																bid_qty					= '$bid_qty',					/*입찰수량*/
 																bid_price				= '$입찰시도금액',			/*입찰가격*/
-																bid_last_price	= '$입찰시도금액',		/*현재 입찰가 기록*/
-																bid_stats 			= '90',										/*낙찰여부*/
+																bid_last_price	= '$입찰시도금액',			/*현재 입찰가 기록*/
+																bid_stats 			= '00',								/*낙찰여부*/
 																bid_dbdate			= NOW(),							/*등록일*/
 																bid_date				= '$timestamp',
 																bid_from				=	'$접속기기'
-
 		";
 		sql_query($auto_sql);
 		
@@ -139,6 +138,7 @@ if($mode == 'auc_bid') {
 			exit;
 		}
 
+		
 		if( ($입찰시도금액 > $최고입찰가 && $최고입찰가 > $최고현재가) || ($입찰시도금액 == $최고입찰가 && $최고입찰가 > 1000) ) {
 			//# 입찰금액이랑 최고입찰가가 같으면 오토비딩후 종료,
 			//# 입찰금액이 최고입찰가보다 높으면 오토비딩도 하고 높은입찰금액도 입력
@@ -163,10 +163,31 @@ if($mode == 'auc_bid') {
 			sql_query($auto_sql);
 
 			delayAuctionEnddate($it[gp_id]);
+			
 		}
 		
 		
 		if($입찰시도금액 == $최고입찰가 && $최고입찰가 > 1000) {
+
+			//입찰시도자의 비딩히스토리 입력
+			$t = explode('.', _microtime());
+			$timestamp = date("Y-m-d H:i:s.", $t[0]) . $t[1];
+			$auto_sql = "	INSERT INTO		auction_log		SET
+																		ac_code					= '$it[ac_code]',			/*경매진행코드*/
+																		it_id						= '$it[gp_id]',				/*경매상품코드*/
+																		it_name					= '$it[gp_name]',			/*경매상품명*/
+																		mb_id						= '$member[mb_id]',		/*입찰회원계정*/
+																		bid_qty					= '$bid_qty',					/*입찰수량*/
+																		bid_price				= '$입찰시도금액',			/*입찰가격*/
+																		bid_last_price	= '$입찰시도금액',			/*현재 입찰가 기록*/
+																		bid_stats 			= '90',								/*낙찰여부*/
+																		bid_dbdate			= NOW(),							/*등록일*/
+																		bid_date				= '$timestamp',
+																		bid_from				=	'$접속기기'
+
+			";
+			sql_query($auto_sql);
+			
 			alert("현재 입찰중인 가격(".number_format($bid_last_price)."원)과 동일하여 입찰에 실패하였습니다 좀더 높은 금액을 입력해주세요");
 			//break
 		}

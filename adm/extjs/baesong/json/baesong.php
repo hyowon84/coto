@@ -150,13 +150,13 @@ else if($mode == 'orderlist' || $mode == 'shipedlist') {
 													GN.value AS gpstats_name,
 													SN.value AS stats_name,
 													CASE
-														WHEN	CL.gpcode = 'QUICK' || IV.CNT <= IV.CNT_40 || RJ.real_jaego >= GPQTY.GP_QTY	THEN
+														WHEN	CL.gpcode = 'QUICK' || CL.gpcode = 'AUCTION' || IV.CNT <= IV.CNT_40 || RJ.real_jaego >= GPQTY.GP_QTY	THEN
 															'40'
 														ELSE
 															'00'
 													END	AS IV_STATS,
 													CASE
-														WHEN	CL.gpcode = 'QUICK' || IV.CNT <= IV.CNT_40 || RJ.real_jaego >= GPQTY.GP_QTY	THEN
+														WHEN	CL.gpcode = 'QUICK' || CL.gpcode = 'AUCTION' || IV.CNT <= IV.CNT_40 || RJ.real_jaego >= GPQTY.GP_QTY	THEN
 															'입고'
 														ELSE
 															'미입고'

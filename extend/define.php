@@ -420,7 +420,7 @@ $sql_auction_item = " SELECT
 																										mb_id,
 																										bid_price																																																				
 																						FROM		auction_log
-																						WHERE		bid_stats <= 90
+																						WHERE		bid_stats <= 10
 																) MAX_MB ON (MAX_MB.ac_code = T.ac_code AND MAX_MB.it_id = T.gp_id AND MAX_MB.bid_price = BID.MAX_BID_PRICE)
 																
 																LEFT JOIN (	SELECT	AL.mb_id,

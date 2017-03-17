@@ -78,6 +78,7 @@ if($mode == 'jhw') {
 		height: 47px;
 	}
 	.maxbid { color:blue; font-weight:bold; }
+	.bid_fail td { text-decoration: line-through; }
 </style>
 <?
 $t = explode('.',_microtime());
@@ -136,9 +137,11 @@ $timestamp = date("Y-m-d H:i:s.",$t[0]).$t[1];
 		$마킹 = "class='maxbid' ";
 		while($bid = mysql_fetch_array($bid_result)) {
 			if($cnt == '1') $마킹 = '';
-			$계정 = ($bid[mb_id] == $member[mb_id]) ? "<font color='#f45100'><b>".$bid[mb_id]."<b></font>" : makeHideID($bid[mb_id])
+			$계정 = ($bid[mb_id] == $member[mb_id]) ? "<font color='#f45100'><b>".$bid[mb_id]."<b></font>" : makeHideID($bid[mb_id]);
+			$클래스 = ($bid[bid_stats] == '90') ? "class='bid_fail'" : '';
+			
 		?>
-		<tr>
+		<tr <?=$클래스?>>
 			<td <?=$마킹?>><?=$계정?></td>
 			<td><?=str_pad($bid[bid_date],24,'0')?></td>
 			<td><?=number_format($bid[bid_last_price])?> 원</td>
