@@ -124,7 +124,7 @@ var store_orderlist = Ext.create('Ext.data.Store',{
 	remoteSort: true,
 	sorters:[
 		{
-			property:'IV_STATS',		
+			property:'IV_STATS_NAME',		
 			direction:'DESC'
 		},
 		{
