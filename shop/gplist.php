@@ -15,8 +15,8 @@ if ($ca_id == 'GP') {
 	if($sort != "") $order_by .= "$sort $sortodr, ".$order_by;
 }
 else { //공구카테고리 이외 카테고리는 랜덤으로..
-	//$order_by = 'gp_order, gp_update_time DESC, gp_id DESC';
-	$order_by = 'rand()';
+	$order_by = 'T.gp_order, T.gp_update_time DESC, T.gp_id DESC';
+//	$order_by = 'rand()';
 }
 
 
