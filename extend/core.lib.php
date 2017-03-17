@@ -975,7 +975,7 @@ function makeHtmlAucPrdList() {
 						<div class='prdlist_bottom'>
 							<dl> <dt>현재가 ".number_format($현재가)."원</dt></dt>
 							$나의입찰금액
-							<dl>즉구가 ".number_format($즉시구매가)."원</dt>
+							<dl>시세정보 ".number_format($즉시구매가)."원</dt>
 							<dl>종료일 $종료일</dl>
 							<dl>남은시간 $남은시간</dl>
 						</div>

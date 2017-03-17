@@ -174,7 +174,6 @@ function makeProductSql($gpcode) {
 												FROM		v_gpinfo_links VGL
 																LEFT JOIN		gp_info GI ON (GI.gpcode = VGL.gpcode)
 																LEFT JOIN		g5_shop_group_purchase IT ON (IT.gp_id = VGL.links_itid)
-																
 												WHERE		1=1
 												$관리자조건
 												AND			VGL.gpcode = '$gpcode'

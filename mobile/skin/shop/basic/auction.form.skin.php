@@ -74,7 +74,7 @@ if($it[gp_site]) {
 			<dt>시작가</dt>
 			<dd><?=number_format($시작가)?>원</dd>
 			<?=$나의입찰금액?>
-			<dt>즉시구매가</dt>
+			<dt>시세정보</dt>
 			<dd><?=number_format($즉시구매가)?>원</dd>
 			<!--dt>진행수량</dt>
 		<dd><?=number_format($진행수량)?>ea</dd-->
