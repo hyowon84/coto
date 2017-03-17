@@ -73,6 +73,7 @@ if($it[gp_site]) {
 			<dd><font color="red" style="font-weight:bold; font-size:1.2em;"><?=number_format($현재가)?>원</font></dd>
 			<dt>시작가</dt>
 			<dd><?=number_format($시작가)?>원</dd>
+			<?=$나의입찰금액?>
 			<dt>즉시구매가</dt>
 			<dd><?=number_format($즉시구매가)?>원</dd>
 			<!--dt>진행수량</dt>
@@ -102,7 +103,9 @@ if($it[gp_site]) {
 			?>
 			<div class="ac_btns">
 				<input type="button" class="ac_btn1" value="입찰하기" onclick="openPopup('auction.bid.php?gp_id=<?=$gp_id?>','')" />
-				<a href="/coto/orderpay.php?it_id=<?=$gp_id?>&it_qty=1&gpcode=QUICK"><input type="button" class="ac_btn2" value="구매하기" /></a>
+				<? if($it[real_jaego] > 0) { ?>
+				<a href="/coto/orderpay.php?it_id=<?=$gp_id?>&it_qty=1&gpcode=QUICK"><input type="button" class="ac_btn2" value="즉시구매하기" /></a>
+				<? } ?>
 				<!-- input type="button" class="ac_btn3" value="관심상품등록" /-->
 			</div>
 			<?

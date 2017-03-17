@@ -18,7 +18,7 @@ $진행수량 = $it[ac_qty];
 $종료일 = $it[ac_enddate];
 $입찰수 = $it[BID_CNT];
 $경매진행여부 = ( date("Y-m-d H:i:s") < $종료일 && $it[ac_yn] == 'Y') ? 'Y' : 'N';
-
+$나의입찰금액 = ($it[MAX_BID_PRICE] == $it[MY_BID_PRICE]) ? "<font color='blue' style='font-weight:bold;'><dt>나의입찰액</dt><dd>".number_format($it[MY_BID_PRICE])."원</dd></font>" : "";
 
 if (G5_IS_MOBILE) {
     include_once(G5_MSHOP_PATH.'/auction.php');
