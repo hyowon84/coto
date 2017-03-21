@@ -50,6 +50,7 @@ if($mode == 'auc_bid') {
 									WHERE		AL.mb_id = '$member[mb_id]'
 									AND			AL.ac_code = '$it[ac_code]'
 									AND			AL.it_id = '$it[gp_id]'
+									AND			AL.bid_stats NOT IN ('90')
 									ORDER BY	AL.bid_price DESC, AL.bid_last_price DESC
 									LIMIT 1
 	";
