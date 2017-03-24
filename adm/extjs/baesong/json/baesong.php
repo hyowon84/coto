@@ -32,12 +32,12 @@ if($mode == 'mblist') {
 	if($keyword) $AND_SQL .= "AND (T.mb_name LIKE '%$keyword%' OR T.hphone LIKE '%$keyword%' OR T.mb_nick LIKE '%$keyword%' )";
 	/* 주문금액 큰 순서대로 회원목록 추출 */
 	$SELECT_SQL = "	SELECT	T.*
-													,IFNULL(Q1.SUM_QTY,0) AS QCK_SUM_QTY
+													,IFNULL(Q1.SUM_QTY,0) AS QCK_SUM_QTY				/*퀵주문건수*/
 													,IFNULL(Q1.SUM_TOTAL,0) AS QCK_SUM_TOTAL
-													,IFNULL(S1.SUM_QTY,0) AS S40_SUM_QTY
+													,IFNULL(S1.SUM_QTY,0) AS S40_SUM_QTY				/*발송예정건수*/
 													,IFNULL(S1.SUM_TOTAL,0) AS S40_SUM_TOTAL
-													,IFNULL(S2.SUM_QTY,0) AS NS40_SUM_QTY
-													,IFNULL(S2.SUM_TOTAL,0) AS NS40_SUM_TOTAL
+													,IFNULL(S2.SUM_QTY,0) AS NS40_SUM_QTY				/*발송불가건수*/
+													,IFNULL(S2.SUM_TOTAL,0) AS NS40_SUM_TOTAL		
 									FROM		(
 														SELECT	CL.clay_id AS mb_nick,
 																		CL.name AS mb_name,
@@ -56,8 +56,8 @@ if($mode == 'mblist') {
 																							SUM(CL.it_qty) AS SUM_QTY,
 																							SUM(CL.it_qty * CL.it_org_price) AS SUM_TOTAL
 																			FROM		clay_order CL
-																			WHERE		CL.stats IN (20,22,25)
-																			AND			CL.gpcode = 'QUICK'
+																			WHERE		CL.stats IN (15,20,22,25)
+																			AND			CL.gpcode IN ('QUICK','AUCTION')
 																			GROUP BY CL.hphone, CL.clay_id
 													) Q1 ON (Q1.hphone = T.hphone AND Q1.mb_nick = T.mb_nick) /* 퀵주문 건수, 총액 */
 													LEFT JOIN (
@@ -81,21 +81,21 @@ if($mode == 'mblist') {
 																			GROUP BY CL.hphone, CL.clay_id
 													) S1 ON (S1.hphone = T.hphone AND S1.mb_nick = T.mb_nick) /* 발송가능 건수, 총액 */
 													LEFT JOIN (	SELECT	DISTINCT
-																										CL.clay_id,
-																										CL.hphone,
-																										SUM(CL.it_qty) AS SUM_QTY,
-																										SUM(CL.it_qty * CL.it_org_price) AS SUM_TOTAL
-																						FROM		clay_order CL
-																										LEFT JOIN (	SELECT	II.gpcode,
-																																				II.iv_it_id,
-																																				COUNT(*) AS CNT	/* 도착안된 총 발주건수*/
-																																FROM		invoice_item II
-																																WHERE		II.iv_stats IN ('00')
-																																GROUP BY II.gpcode, II.iv_it_id
-																										)	IV ON (IV.gpcode = CL.gpcode AND IV.iv_it_id = CL.it_id)
-																						WHERE		CL.stats IN (20,22,25)
-																						AND			IV.CNT > 0		#해외배송이 시작안된 주문신청건들중 결제완료, 배송대기중인것들
-																						GROUP BY CL.hphone, CL.clay_id
+																							CL.clay_id,
+																							CL.hphone,
+																							SUM(CL.it_qty) AS SUM_QTY,
+																							SUM(CL.it_qty * CL.it_org_price) AS SUM_TOTAL
+																			FROM		clay_order CL
+																							LEFT JOIN (	SELECT	II.gpcode,
+																																	II.iv_it_id,
+																																	COUNT(*) AS CNT	/* 도착안된 총 발주건수*/
+																													FROM		invoice_item II
+																													WHERE		II.iv_stats IN ('00')
+																													GROUP BY II.gpcode, II.iv_it_id
+																							)	IV ON (IV.gpcode = CL.gpcode AND IV.iv_it_id = CL.it_id)
+																			WHERE		CL.stats IN (20,22,25)
+																			AND			IV.CNT > 0		#해외배송이 시작안된 주문신청건들중 결제완료, 배송대기중인것들
+																			GROUP BY CL.hphone, CL.clay_id
 													) S2 ON (S2.hphone = T.hphone AND S2.clay_id = T.mb_nick)
 									WHERE		1=1
 									$FILTER_BY
@@ -163,7 +163,7 @@ else if($mode == 'orderlist' || $mode == 'shipedlist') {
 													END	AS IV_STATS_NAME,
 													IV.CNT,
 													IV.CNT_40,
-													RJ.real_jaego,
+													IF( CL.gpcode = 'QUICK' && CL.gpcode = 'AUCTION', RJ.qk_jaego, RJ.real_jaego) AS real_jaego,
 													GPQTY.GP_QTY
 									FROM		clay_order CL
 													LEFT JOIN clay_order_info CI ON (CI.od_id = CL.od_id)
@@ -192,7 +192,8 @@ else if($mode == 'orderlist' || $mode == 'shipedlist') {
 																							CL.od_qty,
 																							GP.jaego,
 																							II.iv_qty,
-																							( IFNULL(II.iv_qty,0) - IFNULL(CL.od_qty,0)) AS real_jaego
+																							( GP.jaego + IFNULL(II.iv_qty,0) - IFNULL(CL.od_qty,0)) AS qk_jaego,	/*빠른상품 재고산출*/
+																							( IFNULL(II.iv_qty,0) - IFNULL(CL.od_qty,0)) AS real_jaego						/*공구 재고산출*/
 																			FROM		(	SELECT	it_id,
 																												SUM(it_qty) AS od_qty
 																								FROM		clay_order
