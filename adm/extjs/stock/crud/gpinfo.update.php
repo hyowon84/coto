@@ -45,6 +45,24 @@ else if($mode == 'grid') {
 									WHERE		gpcode = '$gpcode'
 	";
 	sql_query($common_sql);
+
+	
+	/*주문마감시 공구코드와 관련 공구상품들 공구재고값 초기화 */
+	if($stats == '05') {
+
+		$sql = "SELECT	GI.links
+						FROM		gp_info GI
+						WHERE		GI.gpcode = '$gpcode' ";
+		$row = sql_fetch($sql);
+		$links = explodeMakeCode(',',$row[links]);
+			
+		$upd_sql = "UPDATE	g5_shop_group_purchase GP	SET
+													GP.gp_jaego = 0
+								WHERE		GP.gp_id IN ($links)
+		";
+		sql_query($upd_sql);
+
+	}
 	
 }
 

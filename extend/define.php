@@ -120,7 +120,7 @@ $sql_admin_product = "	(	SELECT	GP.*,
 																	CO.CO_SUM,
 																	IV.IV_SUM,
 																	
-																	IFNULL(GP.jaego	,0) + IFNULL(IV.IV_SUM,0) - IFNULL(CO.CO_SUM,0) AS real_jaego
+																	IFNULL(GP.jaego	,0) + IFNULL(GP.gp_jaego,0) + IFNULL(IV.IV_SUM,0) - IFNULL(CO.CO_SUM,0) AS real_jaego
 													FROM		(	SELECT	*
 																		FROM		g5_shop_group_purchase
 																		WHERE		ca_id LIKE 'CT%'
@@ -264,7 +264,7 @@ function makeProductSql($gpcode) {
 															END AS real_jaego,
 															*/
 															
-															IFNULL(GP.jaego	,0) + IFNULL(RIV.RIV_QTY,0) - IFNULL(CO.ORDER_QTY,0) AS real_jaego, 
+															IFNULL(GP.jaego	,0) + IFNULL(GP.gp_jaego,0) + IFNULL(RIV.RIV_QTY,0) - IFNULL(CO.ORDER_QTY,0) AS real_jaego, 
 															
 															VIV.VIV_QTY,
 															GPO.GP_ORDER_QTY,
@@ -502,10 +502,10 @@ $sql_cartproduct = "	(	SELECT	CT.number,
 																	WHEN	CT.gpcode != 'QUICK' THEN		
 																		IFNULL(VIV.VIV_QTY,0) - IFNULL(GPO.GP_ORDER_QTY,0)
 																	ELSE						
-																		IFNULL(GP.jaego	,0) + IFNULL(RIV.RIV_QTY,0) - IFNULL(CO.ORDER_QTY,0)
+																		IFNULL(GP.jaego,0) + IFNULL(GP.gp_jaego,0) + IFNULL(RIV.RIV_QTY,0) - IFNULL(CO.ORDER_QTY,0)
 																END AS real_jaego,
 																*/
-																IFNULL(GP.jaego	,0) + IFNULL(RIV.RIV_QTY,0) - IFNULL(CO.ORDER_QTY,0) AS real_jaego, 
+																IFNULL(GP.jaego	,0) + IFNULL(GP.gp_jaego,0) + IFNULL(RIV.RIV_QTY,0) - IFNULL(CO.ORDER_QTY,0) AS real_jaego, 
 																
 																VIV.VIV_QTY,
 																GPO.GP_ORDER_QTY,
@@ -591,7 +591,7 @@ $sql_cart_update = "
 																IFNULL(GP.jaego	,0) + IFNULL(RIV.RIV_QTY,0) - IFNULL(CO.ORDER_QTY,0)
 														END AS real_jaego,
 														*/
-														IFNULL(GP.jaego	,0) + IFNULL(RIV.RIV_QTY,0) - IFNULL(CO.ORDER_QTY,0) AS real_jaego,
+														IFNULL(GP.jaego	,0) + IFNULL(GP.gp_jaego,0) + IFNULL(RIV.RIV_QTY,0) - IFNULL(CO.ORDER_QTY,0) AS real_jaego,
 														IFNULL(VIV.VIV_QTY,0) AS VIV_QTY,								/*가상발주량*/
 														IFNULL(GPO.GP_ORDER_QTY,0) AS GP_ORDER_QTY,			/*해당공구주문량*/
 														
