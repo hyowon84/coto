@@ -15,12 +15,12 @@ $arr = jsonDecode($_POST['data']);
 if( strlen($arr[it_id]) > 3 ) {
 
 	$gp_id = $arr[it_id];
-	$jaego = $arr[jaego];
+	$gp_jaego = $arr[gp_jaego];
 	$admin_memo = $arr[admin_memo];
 
 	/* 상품정보 수정 */
 	$common_sql = "	UPDATE	g5_shop_group_purchase	SET
-														jaego = '$jaego',
+														gp_jaego = '$gp_jaego',
 														admin_memo = '$admin_memo'
 									WHERE		gp_id = '$gp_id'
 									
@@ -32,12 +32,12 @@ else {	/* 복수레코드일때 */
 	for($i = 0; $i < count($arr); $i++) {
 		$it = $arr[$i];
 		$gp_id = $it[it_id];
-		$jaego = $it[jaego];
+		$gp_jaego = $it[gp_jaego];
 		$admin_memo = $it[admin_memo];
 
 		/* 상품정보 수정 */
 		$common_sql = "	UPDATE	g5_shop_group_purchase	SET
-															jaego = '$jaego',
+															gp_jaego = '$gp_jaego',
 															admin_memo = '$admin_memo'
 										WHERE		gp_id = '$gp_id'
 		";

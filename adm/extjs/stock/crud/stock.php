@@ -267,6 +267,7 @@ else if($mode == 'orderitems') {
 																		GP.gp_img AS it_img,
 																		GP.gp_name AS it_name,
 																		IFNULL(GP.jaego,0) AS jaego,
+																		IFNULL(GP.gp_jaego,0) AS gp_jaego,
 																		GP.admin_memo,
 																		
 																		CLS.it_org_price,

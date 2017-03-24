@@ -456,7 +456,7 @@ var grid_orderitems = Ext.create('Ext.grid.Panel',{
 		{ text : '▲발주완료',				dataIndex : 'SUM_IV_QTY',						width:120,			style:'text-align:center',	align:'right',	renderer: Ext.util.Format.numberRenderer('0,000') },
 		{ text : '과발주',						dataIndex : 'OVER_IV_QTY',					style:'text-align:center',	align:'right',	renderer: Ext.util.Format.numberRenderer('0,000') },
 		{ text : '│',								dataIndex : 'NULL',									width : 20 },
-		{ text : icn_e1+"재고설정",	dataIndex : 'jaego',								width:120,			style:'text-align:center',	align:'right',	editor: { allowBlank : false },	cls: 'font_edit'	},
+		{ text : icn_e1+"공구재고설정",	dataIndex : 'gp_jaego',								width:140,			style:'text-align:center',	align:'right',	editor: { allowBlank : false },	cls: 'font_edit'	},
 		{ text : '전체발주수량',			dataIndex : 'RIV_QTY',							width:120,			style:'text-align:center',	align:'right',	renderer: Ext.util.Format.numberRenderer('0,000') },
 		{ text : '전체주문수량',			dataIndex : 'ORDER_QTY',						width:120,			style:'text-align:center',	align:'right',	renderer: Ext.util.Format.numberRenderer('0,000') },
 		{ text : '예상재고수량',			dataIndex : 'real_jaego',						width:120,			style:'text-align:center',	align:'right'		},
