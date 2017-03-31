@@ -5,7 +5,7 @@ include_once(G5_MSHOP_PATH.'/head.php');
 include_once(G5_LIB_PATH.'/iteminfo.lib.php');
 
 // 상품가격 업데이트
-UpdateGroupPurchasePrice($gp_id);
+//UpdateGroupPurchasePrice($gp_id);
 
 
 if (!$it['gp_id'])

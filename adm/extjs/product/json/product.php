@@ -195,6 +195,7 @@ else if($mode == 'itemlist') {
 														T.gp_price_org,
 														T.gp_update_time,
 														IFNULL(GO.OPT_CNT,0) AS OPT_CNT,
+														T.gp_card,
 														T.gp_price,
 														T.gp_usdprice,
 														T.gp_realprice,

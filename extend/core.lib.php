@@ -699,7 +699,7 @@ function makeHtmlGpPrdList() {
 		while($it = mysql_fetch_array($it_result)) {
 			$it[card_price] = ceil($it[cash_price] * 1.03 / 100) * 100;
 			$jaego = ($it[real_jaego] > 0) ? $it[real_jaego] : 0;
-
+			$카드가 = ($it[gp_card] == 'Y') ? "카드가 : ".number_format($it[card_price])."원<br>" : "";				
 			echo "
 					<div class='prdlist_item'>
 						<a href='/shop/grouppurchase.php?gpcode=$gp[gpcode]&gp_id=$it[gp_id]&ca_id=$it[ca_id]'>
@@ -715,7 +715,7 @@ function makeHtmlGpPrdList() {
 						</div>
 
 						<div class='prdlist_bottom'>
-							카드가 : ".number_format($it[card_price])."원<br>
+							$카드가
 							현금가 : ".number_format($it[cash_price])."원<br>
 							남은수량 : ".number_format($it[real_jaego])." ea
 						</div>
@@ -823,7 +823,7 @@ function makeHtmlCatePrdList() {
 
 			$it[card_price] = ceil($it[cash_price] * 1.03 / 100) * 100;
 			$jaego = ($it[real_jaego] > 0) ? $it[real_jaego] : 0;
-
+			$카드가 = ($it[gp_card] == 'Y') ? "카드가 : ".number_format($it[card_price])."원<br>" : "";
 			echo "<div class='prdlist_item'>
 							<a href='/shop/grouppurchase.php?gpcode=QUICK&gp_id=$it[gp_id]&ca_id=$it[ca_id]'>
 							<span class='sct_icon' style='position:absolute;'>".item_icon1($it)."</span>
@@ -838,7 +838,7 @@ function makeHtmlCatePrdList() {
 							</div>
 	
 							<div class='prdlist_bottom'>
-								카드가 : " . number_format($it[card_price]) . "원<br>
+								$카드가
 								현금가 : " . number_format($it[cash_price]) . "원<br>
 								남은수량 : " . number_format($it[real_jaego]) . " ea
 							</div>

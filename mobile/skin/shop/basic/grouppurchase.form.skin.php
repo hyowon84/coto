@@ -73,13 +73,19 @@ $카드가 = $it[it_card_price];
 		<div id="sit_price_area" style="padding:18px 15px 15px;">
 			<div>
 				<span style="color:#515151;font-weight:bold;font-size:1.250em">가격정보</span>
-				<span id="it_view_card_price">카드가 <?=display_price($카드가)?></span>
-				<input type="hidden" id="it_card_price" name="it_card_price" value="<?=$카드가?>">
-			</div>
-			<div style="padding:10px 0">
 				<span id="it_view_price">현금가 <?=display_price($현금가)?></span>
 				<input type="hidden" id="it_price" name="it_price" value="<?=$현금가?>">
 			</div>
+			<?
+			if($it[gp_card] == 'Y') {
+			?>
+			<div style="padding:10px 0">
+				<span id="it_view_card_price">카드가 <?= display_price($카드가) ?></span>
+				<input type="hidden" id="it_card_price" name="it_card_price" value="<?= $카드가 ?>">
+			</div>
+			<?
+			}
+			?>
 		</div>
 		<div style="margin:5px 15px 0;height:1px;background:#dcdcdc"></div>
 		<!-- <div style="float:right;height:45px;"><?=$sns_share_links?></div> -->

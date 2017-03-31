@@ -150,6 +150,17 @@ var grid_itemlist = Ext.create('Ext.grid.Panel',{
 		{ groupIndex:'1',		text: '품목명',					dataIndex : 'gp_name',				width: 350,		editor:{allowBlank:false}	},
 		{
 			xtype: 'gridcolumn',
+			dataIndex: 'gp_card',
+			text: '카드가노출',
+			style:'text-align:left',
+			width: 90,
+			align:'center',
+			allowBlank: true,
+			editor: Ext.create('Ext.combobox.item.yesno'),
+			renderer: rendererCombo
+		},
+		{
+			xtype: 'gridcolumn',
 			dataIndex: 'gp_price_type',
 			text: '가격유형',
 			style:'text-align:center',

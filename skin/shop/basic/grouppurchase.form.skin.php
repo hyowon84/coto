@@ -89,11 +89,18 @@ $(document).ready(function(){
 				<li style="float:left;width:219px">
 					<div class="price_en2">
 						<ul>
-							<li style="width:200px;">카드가</li>
-							<li style="width:219px;text-align:right">
-								 <span id="it_view_card_price"><?=display_price($카드가); ?></span>
-								   <input type="hidden" id="it_card_price" name="it_card_price" value="<?=ceil($it[it_card_price] / 100) * 100; ?>">
-							</li>
+							<?
+							if($it[gp_card] == 'Y') {
+							?>
+								<li style="width:200px;">카드가</li>
+								<li style="width:219px;text-align:right">
+									<span id="it_view_card_price"><?= display_price($카드가); ?></span>
+									<input type="hidden" id="it_card_price" name="it_card_price"
+												 value="<?= ceil($it[it_card_price] / 100) * 100; ?>">
+								</li>
+							<?
+							}
+							?>
 							<li style="width:200px;">현금가</li>
 							<li style="width:219px;text-align:right">
 								 <span id="it_view_price"><?=display_price($현금가); ?></span>

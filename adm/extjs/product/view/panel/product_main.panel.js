@@ -61,7 +61,7 @@ var panel_prdauction = Ext.create('Ext.Panel', {
 	bodyBorder: false,
 	defaults: {
 		collapsible: false,
-		//split : true,
+		split : true,
 		bodyPadding: 0,
 		scrollable: true
 	},

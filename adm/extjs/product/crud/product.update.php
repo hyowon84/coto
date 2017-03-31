@@ -20,6 +20,7 @@ function process($data) {
 	$jaego = $data[jaego];
 	$location = $data[location];
 	$gp_name = $data[gp_name];
+	$gp_card = $data[gp_card];
 	$gp_price = $data[gp_price];
 	$gp_usdprice = $data[gp_usdprice];
 	$gp_price_org = $data[gp_price_org];
@@ -55,7 +56,6 @@ function process($data) {
 		$ac_code = $prev[ac_code];
 	}
 
-
 	
 	/* 상품정보 수정 */
 	$common_sql = "	UPDATE	g5_shop_group_purchase	SET
@@ -63,6 +63,7 @@ function process($data) {
 														location = '$location',
 														gp_name = \"$gp_name\",
 														gp_use = '$gp_use',
+														gp_card = '$gp_card',
 														gp_price = '$gp_price',
 														gp_usdprice = '$gp_usdprice',
 														gp_price_org = '$gp_price_org',
