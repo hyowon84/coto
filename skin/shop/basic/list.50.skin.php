@@ -108,7 +108,13 @@ for ($i=1; $row=sql_fetch_array($result); $i++) {
 	}
 
 	if ($this->view_it_price) {
-		$카드가 = display_price($po_card_price)."\n";	//display_price(getExchangeRate($poR[po_card_price],$it[gp_id]))
+		if($it[gp_card] == 'Y') {
+			$카드가 ="<div class='sct_cost1'>
+									<div class='sct_cost_title'>카드가</div>
+									<div style='width:225px;font-weight:bold;'>".display_price($po_card_price)."\n"."</div>
+								</div>";
+		}
+
 	}
 
 	echo "<div style='float:left;width:840px;'>
@@ -118,10 +124,7 @@ for ($i=1; $row=sql_fetch_array($result); $i++) {
 							<div style='width:225px;font-weight:bold;'>$현금가</div>
 						</div>
 						
-						<div class='sct_cost1'>
-							<div class='sct_cost_title'>카드가</div>
-							<div style='width:225px;font-weight:bold;'>$카드가</div>
-						</div>
+						$카드가
 						
 						<div style='text-align:left; float:left; margin:12px; width:300px; font-size:1.2em; font-weight:bold;'>$재고</div>
 					</div>
