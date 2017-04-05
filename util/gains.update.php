@@ -292,14 +292,14 @@ while($row = mysql_fetch_array($result)) {
 				// 분할문자 - 로 분할한 경우 범위[1]의 마지막범위값을 대입, 아니라면 위에서 설정한 po_eqty를 대입
 				$옵션[$optcnt][po_eqty] = ($범위[1] && $범위[1] != '+') ? str_replace('&nbsp;','',trim($범위[1])) : $po_eqty;
 
-				//첫번째는 현금가, 두번째 값은 카드가
+				//첫번째는 구매가, 두번째 값은 카드가
 				if($z%2 == 0) {
 					$옵션[$optcnt][po_cash_price] = str_replace(',','',$match_price[$z]);
 				} else {
 					$옵션[$optcnt][po_card_price] = str_replace(',','',$match_price[$z]);
 				}
 
-				//현금가 입력후 카드가 입력후 다시 현금가 입력할때 옵션인덱스 증가
+				//구매가 입력후 카드가 입력후 다시 구매가 입력할때 옵션인덱스 증가
 				if($z%2 == 1 && $z > 0) {
 					$optcnt++;
 				}

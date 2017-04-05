@@ -248,7 +248,7 @@ if($mode == 'itemlist') {
 			echo ($vp_cnt == 1) ? $html : "<tr><td colspan='2'>재고수량: $재고수량 개<br> $주문통계 합계수량: $합계수량 개<br>예상총액: $".$총주문금액_달러." ( {$총주문금액}원 )</td></tr></table></div>".$html;
 
 			echo "<tr class='divTr_order' onclick=\"loadOrderDetail('orderlist_itid','$vp[gpcode]','$vp[it_id]')\"><td>$이미지</td><td style='text-align:left;'>[$vp[it_id]] $vp[gp_name]</td></tr>";
-			echo "<tr><th>수량</th><th>현금가</th></tr>";
+			echo "<tr><th>수량</th><th>구매가</th></tr>";
 		}
 
 		$주문신청 = $vp[S00];

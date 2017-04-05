@@ -104,11 +104,11 @@ for ($i=1; $row=sql_fetch_array($result); $i++) {
 	}
 
 	if ($this->view_it_price) {
-		$현금가 = display_price($po_cash_price, $row['it_tel_inq'])."\n";
+		$구매가 = display_price($po_cash_price, $row['it_tel_inq'])."\n";
 	}
 
 	if ($this->view_it_price) {
-		if($it[gp_card] == 'Y') {
+		if($it[gp_card] == '사용안함') {
 			$카드가 ="<div class='sct_cost1'>
 									<div class='sct_cost_title'>카드가</div>
 									<div style='width:225px;font-weight:bold;'>".display_price($po_card_price)."\n"."</div>
@@ -120,8 +120,8 @@ for ($i=1; $row=sql_fetch_array($result); $i++) {
 	echo "<div style='float:left;width:840px;'>
 					<div style='float:left;width:440px; height:80px;'>
 						<div class='sct_cost'>
-							<div class='sct_cost_title'>현금가</div>
-							<div style='width:225px;font-weight:bold;'>$현금가</div>
+							<div class='sct_cost_title'>구매가</div>
+							<div style='width:225px;font-weight:bold;'>$구매가</div>
 						</div>
 						
 						$카드가

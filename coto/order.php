@@ -394,7 +394,7 @@ if($it_id) {
 				if($이전it_id != $vp[it_id]) {
 					echo "<div class='div_volprice' style='width:300px; margin:0px auto;'><table class='hover_skyblue' style='width:300px;'>";
 		// 		echo ($vp_cnt == 1) ? $html : "<tr><td colspan='2'>공구누적수량: $합계수량 개<br>예상총액: $".$총주문금액_달러." ( {$총주문금액}원 )</td></tr></table></div>".$html;
-					echo "<tr><th>수량</th><th>현금가</th></tr>";
+					echo "<tr><th>수량</th><th>구매가</th></tr>";
 				}
 
 				/* 현재 볼륨가에 해당할경우 혹은 레코드가 총 1개일경우 */

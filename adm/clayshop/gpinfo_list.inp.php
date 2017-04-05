@@ -6,14 +6,17 @@ auth_check($auth[$sub_menu], "w");
 
 //if($is_admin != 'super') exit;
 
-if($mode == 'new') {
 
+
+
+if($mode == 'new') {
+	$links = explodeMakeCode(',',$links);
 	$sql = "		 INSERT INTO 	gp_info		SET
 															gpcode			= '$gpcode',			/*공구코드*/
 															gpcode_name	= '$gpcode_name',	/*공구이름*/
 															menu_name		= '$menu_name',		/*카테고리메뉴명*/
 															gp_type 		= '$gp_type',			/*정기 or 긴급*/
-															links			 	= '$links',				/*공구진행할 상품코드들*/
+															links			 	= \"$links\",						/*공구진행할 상품코드들*/
 															locks			 	= '$locks',				/*가격락킹할 상품코드들*/
 															solds			 	= '$solds',				/*딜러업체 품절상품코드들*/
 															start_date	= '$start_date',	/*시작일*/
@@ -114,11 +117,11 @@ else if($mode == 'mod') {
 	}
 
 
-
+	$links = explodeMakeCode(',',$links);
 	$sql = "		 UPDATE		gp_info		SET
 													gpcode_name	= '$gpcode_name',			/*공구이름*/
 													menu_name		= '$menu_name',				/*카테고리메뉴명*/
-													links			 	= '$links',						/*공구진행할 상품코드들*/
+													links			 	= \"$links\",						/*공구진행할 상품코드들*/
 													locks			 	= '$locks',						/*가격락킹할 상품코드들*/
 													solds			 	= '$solds',						/*딜러업체 품절상품코드들*/
 													start_date	= '$start_date',			/*시작일*/
@@ -145,7 +148,7 @@ else if($mode == 'mod') {
 						FROM		gp_info GI
 						WHERE		GI.gpcode = '$gpcode' ";
 		$row = sql_fetch($sql);
-		$links = explodeMakeCode(',',$row[links]);
+		$links = $row[links];
 
 		$upd_sql = "UPDATE	g5_shop_group_purchase GP	SET
 													GP.gp_jaego = 0

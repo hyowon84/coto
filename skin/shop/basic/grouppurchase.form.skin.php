@@ -26,7 +26,7 @@ $po_qty_op = sql_fetch("select * from {$g5['g5_shop_group_purchase_option_table'
 $it[it_price] = ceil($it[po_cash_price] / 100) * 100;
 $it[it_card_price] = ceil($it[po_cash_price] * 1.03 / 100) * 100;
 
-$현금가 = $it[it_price];
+$구매가 = $it[it_price];
 $카드가 = $it[it_card_price];
 ?>
 
@@ -90,7 +90,7 @@ $(document).ready(function(){
 					<div class="price_en2">
 						<ul>
 							<?
-							if($it[gp_card] == 'Y') {
+							if($it[gp_card] == '사용안함') {
 							?>
 								<li style="width:200px;">카드가</li>
 								<li style="width:219px;text-align:right">
@@ -101,9 +101,9 @@ $(document).ready(function(){
 							<?
 							}
 							?>
-							<li style="width:200px;">현금가</li>
+							<li style="width:200px;">구매가</li>
 							<li style="width:219px;text-align:right">
-								 <span id="it_view_price"><?=display_price($현금가); ?></span>
+								 <span id="it_view_price"><?=display_price($구매가); ?></span>
 								  <input type="hidden" id="it_price" name="it_price" value="<?=ceil($it[it_price] / 100) * 100; ?>">
 							</li>
 						</ul>
@@ -343,9 +343,9 @@ if(substr($it[ca_id],0,2) != 'CT') {
 
 							<tr>
 								<th scope="row" style="text-align:center;font-weight:bold;border:1px #d2d2d2 solid;height:27px;">수량</th>
-								<th scope="row" style="background:#f6fbff;border-bottom:1px solid #d2d2d2;text-align:center;color:#003ca5;font-weight:bold">현금가</th>
+								<th scope="row" style="background:#f6fbff;border-bottom:1px solid #d2d2d2;text-align:center;color:#003ca5;font-weight:bold">구매가</th>
 								<th scope="row" style="background:#f6fbff;border-bottom:1px solid #d2d2d2;border-right:1px solid #d2d2d2;text-align:center;color:#003ca5;font-weight:bold">카드가</th>
-								<th scope="row" style="background:#fffbf9;border-bottom:1px solid #d2d2d2;text-align:center;color:#f45100;font-weight:bold">현금가</th>
+								<th scope="row" style="background:#fffbf9;border-bottom:1px solid #d2d2d2;text-align:center;color:#f45100;font-weight:bold">구매가</th>
 								<th scope="row" style="background:#fffbf9;border-bottom:1px solid #d2d2d2;border-right:1px solid #d2d2d2;text-align:center;color:#f45100;font-weight:bold">카드가</th>
 							</tr>
 
@@ -353,7 +353,7 @@ if(substr($it[ca_id],0,2) != 'CT') {
 							$sql = " select * from {$g5['g5_shop_group_purchase_option_table']}  where gp_id = '$it[gp_id]' order by po_num";
 							$result = sql_query($sql);
 
-							//카드가, 현금가 가격 볼륨프라이싱 정보
+							//카드가, 구매가 가격 볼륨프라이싱 정보
 							for($i=0;$poR=sql_fetch_array($result);$i++){?>
 							<tr height="30px">
 								<td sqty="<?=$poR[po_sqty]?>" eqty="<?=$poR[po_eqty]?>" style="border:1px solid #d2d2d2;">

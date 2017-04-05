@@ -247,14 +247,14 @@ if($_FILES['excelfile']['tmp_name']) {
 					
 					$옵션[$optcnt][po_eqty] = ($범위[1] && $범위[1] != 'or') ? str_replace('&nbsp;','',trim($범위[1])) : $po_eqty;
 					
-					//첫번째는 카드가, 두번째 값은 현금가
+					//첫번째는 카드가, 두번째 값은 구매가
 					if($i%2 == 0) {
 						$옵션[$optcnt][po_card_price] = str_replace(',','',$match_price[$i]);
 					} else {
 						$옵션[$optcnt][po_cash_price] = str_replace(',','',$match_price[$i]);
 					}
 					
-					//카드가 입력후 현금가 입력후 다시 카드가 입력할때 옵션인덱스 증가
+					//카드가 입력후 구매가 입력후 다시 카드가 입력할때 옵션인덱스 증가
 					if($i%2 == 1 && $i > 0) {
 						$optcnt++;
 					}
@@ -457,14 +457,14 @@ if($_FILES['excelfile']['tmp_name']) {
 					// 분할문자 - 로 분할한 경우 범위[1]의 마지막범위값을 대입, 아니라면 위에서 설정한 po_eqty를 대입 
 					$옵션[$optcnt][po_eqty] = ($범위[1] && $범위[1] != '+') ? str_replace('&nbsp;','',trim($범위[1])) : $po_eqty;
 					
-					//첫번째는 현금가, 두번째 값은 카드가
+					//첫번째는 구매가, 두번째 값은 카드가
 					if($i%2 == 0) {
 						$옵션[$optcnt][po_cash_price] = str_replace(',','',$match_price[$i]);
 					} else {
 						$옵션[$optcnt][po_card_price] = str_replace(',','',$match_price[$i]);					
 					}
 					
-					//현금가 입력후 카드가 입력후 다시 현금가 입력할때 옵션인덱스 증가
+					//구매가 입력후 카드가 입력후 다시 구매가 입력할때 옵션인덱스 증가
 					if($i%2 == 1 && $i > 0) {
 						$optcnt++;
 					}

@@ -21,7 +21,7 @@ if($cnt[ct_qty]){
 $it[it_price] = ceil($it[po_cash_price] / 100) * 100;
 $it[it_card_price] = ceil($it[po_cash_price] * 1.03 / 100) * 100;
 
-$현금가 = $it[it_price];
+$구매가 = $it[it_price];
 $카드가 = $it[it_card_price];
 ?>
 
@@ -73,11 +73,11 @@ $카드가 = $it[it_card_price];
 		<div id="sit_price_area" style="padding:18px 15px 15px;">
 			<div>
 				<span style="color:#515151;font-weight:bold;font-size:1.250em">가격정보</span>
-				<span id="it_view_price">현금가 <?=display_price($현금가)?></span>
-				<input type="hidden" id="it_price" name="it_price" value="<?=$현금가?>">
+				<span id="it_view_price">구매가 <?=display_price($구매가)?></span>
+				<input type="hidden" id="it_price" name="it_price" value="<?=$구매가?>">
 			</div>
 			<?
-			if($it[gp_card] == 'Y') {
+			if($it[gp_card] == '사용안함') {
 			?>
 			<div style="padding:10px 0">
 				<span id="it_view_card_price">카드가 <?= display_price($카드가) ?></span>
@@ -167,9 +167,9 @@ if(substr($it[ca_id],0,2) != 'CT') {
 
 							<tr height="30px">
 								<th scope="row" style="text-align:center;font-weight:bold;border:1px #d2d2d2 solid;">수량</th>
-								<th scope="row" style="background:#f6fbff;border-bottom:1px solid #d2d2d2;border-right:1px solid #d2d2d2;text-align:center;color:#003ca5;font-weight:bold">현금가</th>
+								<th scope="row" style="background:#f6fbff;border-bottom:1px solid #d2d2d2;border-right:1px solid #d2d2d2;text-align:center;color:#003ca5;font-weight:bold">구매가</th>
 								<th scope="row" style="background:#f6fbff;border-bottom:1px solid #d2d2d2;border-right:1px solid #d2d2d2;text-align:center;color:#003ca5;font-weight:bold">카드가</th>
-								<th scope="row" style="background:#fffbf9;border-bottom:1px solid #d2d2d2;border-right:1px solid #d2d2d2;text-align:center;color:#f45100;font-weight:bold">현금가</th>
+								<th scope="row" style="background:#fffbf9;border-bottom:1px solid #d2d2d2;border-right:1px solid #d2d2d2;text-align:center;color:#f45100;font-weight:bold">구매가</th>
 								<th scope="row" style="background:#fffbf9;border-bottom:1px solid #d2d2d2;border-right:1px solid #d2d2d2;text-align:center;color:#f45100;font-weight:bold">카드가</th>
 							</tr>
 

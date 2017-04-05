@@ -429,6 +429,7 @@ $sql_auction_item = " SELECT
 																										MAX(AL.bid_price) AS MY_BID_PRICE
 																						FROM		auction_log AL
 																						WHERE		AL.mb_id = '$member[mb_id]'
+																						AND			AL.bid_stats <= '10'
 																						GROUP BY AL.mb_id, AL.ac_code, AL.it_id																
 																) MYBID ON (MYBID.ac_code = T.ac_code AND MYBID.it_id = T.gp_id)
 												WHERE		1=1

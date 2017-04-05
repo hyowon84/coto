@@ -58,7 +58,7 @@ for ($i=1; $row=sql_fetch_array($result); $i++) {
 	if ($this->view_it_cust_price || $this->view_it_price) {
 		echo "<div class=\"sct_cost_wrap\">
 						<div class=\"sct_cost\">
-							<div class=\"sct_cost_title\" >현금가
+							<div class=\"sct_cost_title\" >구매가
 								<span>";
 
 								if ($this->view_it_price) {

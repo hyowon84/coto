@@ -317,9 +317,9 @@ if($op_name1){
 
 							<tr height="30px">
 								<th scope="row" style="text-align:center;font-weight:bold;border:1px #d2d2d2 solid;">수량</th>
-								<th scope="row" style="background:#f6fbff;border-bottom:1px solid #d2d2d2;text-align:center;color:#003ca5;font-weight:bold">현금가</th>
+								<th scope="row" style="background:#f6fbff;border-bottom:1px solid #d2d2d2;text-align:center;color:#003ca5;font-weight:bold">구매가</th>
 								<th scope="row" style="background:#f6fbff;border-bottom:1px solid #d2d2d2;border-right:1px solid #d2d2d2;text-align:center;color:#003ca5;font-weight:bold">카드가</th>
-								<th scope="row" style="background:#fffbf9;border-bottom:1px solid #d2d2d2;text-align:center;color:#f45100;font-weight:bold">현금가</th>
+								<th scope="row" style="background:#fffbf9;border-bottom:1px solid #d2d2d2;text-align:center;color:#f45100;font-weight:bold">구매가</th>
 								<th scope="row" style="background:#fffbf9;border-bottom:1px solid #d2d2d2;border-right:1px solid #d2d2d2;text-align:center;color:#f45100;font-weight:bold">카드가</th>
 							</tr>
 

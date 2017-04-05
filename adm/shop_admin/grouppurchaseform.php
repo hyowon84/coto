@@ -469,7 +469,7 @@ $item_type_icon_res = sql_query("select * from {$g5['g5_gp_item_type_icon_table'
 							USD <input type="text" name="po_add_price[<?=$i?>]" value="<?=$gpo[po_add_price]?>" id="po_add_price<?=$i?>" class="frm_input" size="20">
 						</td>
 						<td>
-							<label for="opt1"><b>현금가</b></label>
+							<label for="opt1"><b>구매가</b></label>
 							USD <input type="text" name="po_cash_price[<?=$i?>]" value="<?=$gpo[po_cash_price]?>" id="po_cash_price<?=$i?>" class="frm_input" size="20">
 						</td>
 						<td>

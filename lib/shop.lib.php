@@ -3893,7 +3893,7 @@ function metal_sum_now($metal){
 
 
 
-/* 공동구매 상품 가격정보 - 현금가 */
+/* 공동구매 상품 가격정보 - 구매가 */
 function getGroupPurchaseBasicPrice($gp_id)
 {
 	global $g5;
