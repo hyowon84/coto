@@ -1039,17 +1039,43 @@ function choiceCodeColor($배열,$코드) {
 
 /* 무게별 배송비 구하기 */
 function getDeliveryPricePerKg($총무게kg) {
-	global $개별공구;
+	global $개별공구,$member;
 
 	$총무게kg = ($총무게kg) ? $총무게kg : 2;
 	$배송비 = ($개별공구[baesongbi]) ? $개별공구[baesongbi] : 3500;
-
-	//배송비 계산하기
-	for($kg = $총무게kg; $kg > 0; $kg -= 2) {
-		$누적배송비 += $배송비;
+	
+	/*30키로 단위 배송비 처리*/
+	if(30 < $총무게kg) {
+		$초과수량 = floor($총무게kg / 30);
+		$남은kg = $총무게kg - ($초과수량 * 30);
+		$누적배송비 = $초과수량 * 8500;
+		if(strstr($member[mb_addr1],'제주')) $누적배송비 += ($초과수량*500);
+	} 
+	else {
+		$남은kg = $총무게kg;
 	}
-
-	return ($누적배송비) ? $누적배송비 : $배송비;
+	
+	/*남은kg 배송비 처리*/
+	switch($남은kg) {
+		case ($남은kg > 20 && $남은kg < 30):
+			$누적배송비 += 8500;
+			break;
+		case ($남은kg > 10 && $남은kg < 20):
+			$누적배송비 += 7000;
+			break;
+		case ($남은kg > 5 && $남은kg < 10):
+			$누적배송비 += 5500;
+			break;
+		case ($남은kg > 2 && $남은kg < 5):
+			$누적배송비 += 4000;
+			break;
+		default:
+			$누적배송비 += 3500;
+			break;
+	}
+	if(strstr($member[mb_addr1],'제주')) $누적배송비 += 500;
+	
+	return $누적배송비;
 }
 
 
