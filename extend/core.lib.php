@@ -619,7 +619,7 @@ $나누기값 = (G5_IS_MOBILE) ? 2 : 4;
 
 /* 진행중인 공동구매의 상품목록 메인화면 노출HTML코드 */
 function makeHtmlGpPrdList() {
-	global $상품노출개수;
+	global $상품노출개수, $is_admin;
 	
 	$height = (G5_IS_MOBILE) ? '140px' : '230px';
 	$margin = (G5_IS_MOBILE) ? '5px' : '15px';
@@ -699,7 +699,10 @@ function makeHtmlGpPrdList() {
 		while($it = mysql_fetch_array($it_result)) {
 			$it[card_price] = ceil($it[cash_price] * 1.03 / 100) * 100;
 			$jaego = ($it[real_jaego] > 0) ? $it[real_jaego] : 0;
-			$카드가 = ($it[gp_card] == '사용안함') ? "카드가 : ".number_format($it[card_price])."원<br>" : "";				
+			$카드가 = ($it[gp_card] == '사용안함') ? "카드가 : ".number_format($it[card_price])."원<br>" : "";
+			
+			if($is_admin == 'super') $재고 = " 남은수량 : ".number_format($it[real_jaego])." ea ";
+			
 			echo "
 					<div class='prdlist_item'>
 						<a href='/shop/grouppurchase.php?gpcode=$gp[gpcode]&gp_id=$it[gp_id]&ca_id=$it[ca_id]'>
@@ -717,7 +720,7 @@ function makeHtmlGpPrdList() {
 						<div class='prdlist_bottom'>
 							$카드가
 							구매가 : ".number_format($it[cash_price])."원<br>
-							남은수량 : ".number_format($it[real_jaego])." ea
+							$재고
 						</div>
 					</div>
 			";
@@ -827,6 +830,9 @@ function makeHtmlCatePrdList() {
 			$it[card_price] = ceil($it[cash_price] * 1.03 / 100) * 100;
 			$jaego = ($it[real_jaego] > 0) ? $it[real_jaego] : 0;
 			$카드가 = ($it[gp_card] == '사용안함') ? "카드가 : ".number_format($it[card_price])."원<br>" : "";
+			
+			if($is_admin == 'super') $재고 = " 남은수량 : " . number_format($it[real_jaego]) . " ea ";
+			
 			echo "<div class='prdlist_item'>
 							<a href='/shop/grouppurchase.php?gpcode=QUICK&gp_id=$it[gp_id]&ca_id=$it[ca_id]'>
 							<span class='sct_icon' style='position:absolute;'>".item_icon1($it)."</span>
@@ -843,7 +849,7 @@ function makeHtmlCatePrdList() {
 							<div class='prdlist_bottom'>
 								$카드가
 								구매가 : " . number_format($it[cash_price]) . "원<br>
-								남은수량 : " . number_format($it[real_jaego]) . " ea
+								$재고
 							</div>
 						</div>
 			";

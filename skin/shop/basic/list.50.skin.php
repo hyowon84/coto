@@ -23,7 +23,7 @@ for ($i=1; $row=sql_fetch_array($result); $i++) {
 
 	$po_cash_price = $row[po_cash_price];
 	$po_card_price = ceil($po_cash_price * 1.03 / 100) * 100;
-	$재고 = ($row[real_jaego] > 0) ? "남은수량 ".$row[real_jaego]."개<br>" : "남은수량 0개<br>";
+	if($is_admin == 'Y') $재고 = ($row[real_jaego] > 0) ? "남은수량 ".$row[real_jaego]."개<br>" : "남은수량 0개<br>";
 	$gpcode = ($_GET[gpcode]) ? $_GET[gpcode] : 'QUICK';
 	
 	if($po_cash_price > 0 && $row[real_jaego] > 0 && $개별오더활성화) {

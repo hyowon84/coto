@@ -3,34 +3,40 @@ include_once('./_common.php');
 include_once(G5_MSHOP_PATH.'/head.php');
 
 
-//외환은행
-$bankUrl = "http://fx.keb.co.kr/FER1101C.web?schID=fex&mID=FER1101C";
-$bankSource = iconv("euc-kr","utf-8",curl($bankUrl));
+//네이버 환율정보 매매기준과 송금보낼때 차이는 11.20 정도 차이  송금환율 = 매매기준환율 + 11.20
+//$bankUrl = "http://m.stock.naver.com/marketindex/index.nhn?menu=exchange#exchange";
+$USD_URL = "http://m.stock.naver.com/api/json/marketindex/marketIndexDay.nhn?marketIndexCd=FX_USDKRW&pageSize=20&page=1";	//미국환율 JSON 데이터
+$CNY_URL = "http://m.stock.naver.com/api/json/marketindex/marketIndexDay.nhn?marketIndexCd=FX_CNYKRW&pageSize=20&page=1"; //중국
 
-$temp_unit = explode("<td class='grid_money' title='송금보내실때'>",$bankSource);
-$temp_unit2 = explode("<td class='grid_money' title='매매기준율'>",$bankSource);
+$USD_JSON = json_decode(get_httpRequest($USD_URL));
+$CNY_JSON = json_decode(get_httpRequest($CNY_URL));
+
+
+$USD송금기준 = $USD_JSON->result->marketIndexDay[0]->sv;
+$USD매매기준 = $USD_JSON->result->marketIndexDay[0]->nv;
+
+$CNY송금기준 = $CNY_JSON->result->marketIndexDay[0]->sv;
+$CNY매매기준 = $CNY_JSON->result->marketIndexDay[0]->nv;
+
 
 /* 미국 달러 */
-$usd_unit = explode("</td>",$temp_unit[2]);
-$usd_unit2 = explode("</td>",$temp_unit2[2]);
-$korUnit = $usd_unit[0];
-$korUnit2 = $usd_unit2[0];
+$korUnit = $USD송금기준;	//송금
+$korUnit2 = $USD매매기준;	//매매
 
 /* 중국 위안 */
-$cny_unit = explode("</td>",$temp_unit[35]);
-$cny_unit2 = explode("</td>",$temp_unit2[35]);
-$chaUnit = $cny_unit[0];
-$chaUnit2 = $cny_unit2[0];
+$chaUnit = $CNY송금기준;
+$chaUnit2 = $CNY매매기준;
+
 
 set_session('unit_usa', 1);
 set_session('unit_kor', $korUnit);
 set_session('unit_cha', $chaUnit);
 
-
+/*쿼리 계산시 사용하는 미국 환율 1145.12 */
 $USD =  (( $korUnit - $korUnit2 ) * 0.2 + $korUnit2);
+
+/*쿼리 계산시 사용하는 중국 환율 165.93 */
 $CNY =  (( $chaUnit - $chaUnit2 ) * 0.2 + $chaUnit2);
-
-
 
 
 // 금,은,백금,팔라듐 시세 내역
