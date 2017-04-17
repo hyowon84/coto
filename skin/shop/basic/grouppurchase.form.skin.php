@@ -229,10 +229,14 @@ $(document).ready(function(){
 						<input type="hidden" name="ct_qty1" value="<?=$cnt[ct_qty]; ?>">
 					</td>
 				</tr>
-				<tr>
-					<th style="font-weight:bold;margin" scope="row" colspan="2">남은수량 <?=($it[real_jaego] > 0)?$it[real_jaego]:0?>개</th>
-				</tr>
-<?
+				<? if($is_admin == 'Y') { ?>
+					<tr>
+						<th style="font-weight:bold;margin" scope="row" colspan="2">
+							남은수량 <?= ($it[real_jaego] > 0) ? $it[real_jaego] : 0 ?>개
+						</th>
+					</tr>
+				<?
+				}
 	/*			<tr>
 					<!--<th style="font-size:12px;">
 						<?=$ct_qty;?>
