@@ -478,7 +478,10 @@ var grid_window_baesong = Ext.create('Ext.grid.Panel',{
 				iconCls	: 'icon-table_print',
 				handler: function() {
 					var smt = grid_mblist.getSelectionModel().getSelection()[0];
-					Ext.ux.grid.Printer.mainTitle = smt.get('mb_nick')+'('+smt.get('mb_name')+')님의 발송목록';
+
+					//Ext.ux.grid.Printer.mainTitle = Ext.util.Format.date(new Date(),'Y-m-d g:i:s') +' 발주목록';
+					
+					Ext.ux.grid.Printer.mainTitle = Ext.util.Format.date(new Date(),'Y-m-d H:i:s ') + smt.get('mb_nick')+'('+smt.get('mb_name')+')님의 발송목록';
 					
 					var sm = grid_orderlist.getSelection();
 					var tag_list = new Array();
