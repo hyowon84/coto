@@ -229,7 +229,7 @@ $(document).ready(function(){
 						<input type="hidden" name="ct_qty1" value="<?=$cnt[ct_qty]; ?>">
 					</td>
 				</tr>
-				<? if($is_admin == 'Y') { ?>
+				<? if($is_admin == 'super') { ?>
 					<tr>
 						<th style="font-weight:bold;margin" scope="row" colspan="2">
 							남은수량 <?= ($it[real_jaego] > 0) ? $it[real_jaego] : 0 ?>개
