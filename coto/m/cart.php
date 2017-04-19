@@ -64,7 +64,9 @@ for ($i=0; $row=mysql_fetch_array($result); $i++)
 		<div class="productImg"><?=$image?></div>
 		<div class="productInfo">
 			<div class="price"><label>판매가</label><p><?=number_format($상품판매가)?>원</p></div>
+	<?	if($is_admin == 'super') {	?>
 			<div class="qty"><label>예상재고수량</label><p><?=number_format($예상재고수량)?>ea</p></div>
+	<?	}	?>
 			<div class="qty"><label>담은수량</label><p>
 				<input type="text" name="it_qty[<?=$i?>]" value="<?=$row[it_qty]?>" style='border:1px solid gray; width:30px; text-align:right;'> ea
 			</div>

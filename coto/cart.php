@@ -168,7 +168,9 @@ $(document).ready(function() {
 					<a <?="href=\"".G5_SHOP_URL."/grouppurchase.php?gpcode=".$row[gpcode]."&gp_id=".$row[it_id]."&ca_id=".$row[ca_id]."\" class=\"sct_a sct_img\""?>>
 						<?=$상품명?>
 						<div style="margin:7px 0 0 0;">
-							<div style="float:left;width:50%; text-align:left;">예상재고수량 <?=number_format($예상재고수량)?>ea</div>
+				<?	if($is_admin == 'super') {	?>
+							<div style="float:left;width:50%; text-align:left;">예상재고수량 <?= number_format($예상재고수량) ?>ea</div>
+				<?	}	?>
 							<div style="float:left;width:50%; text-align:right;">판매가 <?=number_format($상품판매가)?>원</div>
 						</div>
 					</a>
