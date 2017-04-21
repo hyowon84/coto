@@ -54,7 +54,14 @@ else if($mode == 'grid') {
 						FROM		gp_info GI
 						WHERE		GI.gpcode = '$gpcode' ";
 		$row = sql_fetch($sql);
-		$links = explodeMakeCode(',',$row[links]);
+
+		if(strstr($row[links],"'")){
+			$links = $row[links];
+		}
+		else {
+			$links = explodeMakeCode(",",$row[links]);	
+		}
+		
 			
 		$upd_sql = "UPDATE	g5_shop_group_purchase GP	SET
 													GP.gp_jaego = 0
