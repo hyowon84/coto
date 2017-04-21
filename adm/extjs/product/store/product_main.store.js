@@ -244,7 +244,7 @@ var store_aucPrdList = Ext.create('Ext.data.Store',{
 	autoSync : true,
 	sorters:[
 		{
-			property:'ac_enddate',
+			property:'ac_code',
 			direction:'DESC'
 		}
 	],
