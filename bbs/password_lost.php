@@ -93,10 +93,10 @@ if (G5_IS_MOBILE) {
 								<input type="radio" name="nation" value="1" checked>내국인
 								<input type="radio" name="nation" value="2">외국인</br></br>
 
-								성별 &nbsp;&nbsp;&nbsp;
+								<!-- 성별 &nbsp;&nbsp;&nbsp;
 								<input type="radio" name="gender" value="1" checked>남
 								<input type="radio" name="gender" value="0">여
-								</br></br>
+								</br></br>-->
 									
 								<input type="radio" name="tel_com_cd" value="01" checked>SKT
 								<input type="radio" name="tel_com_cd" value="02">KT
@@ -156,9 +156,10 @@ function jsSubmit(){
 	var form1 = document.form1;
 	var isChecked = false;
 	var inTpBit = "";
+	
 	var tel_no = $("input[name='tel_no']").val();
 	var name = $("input[name='name']").val();
-	var gender = $(':radio[name="gender"]:checked').val();
+//	var gender = $(':radio[name="gender"]:checked').val();
 
 	if (form1.name.value == "") {
 		if (form1.name.value == "") {
@@ -175,14 +176,14 @@ function jsSubmit(){
 		type : "POST",
 		dataType : "JSON",
 		url : "./_Ajax.password_lost.php",
-		data : "name=" + name + "&tel_no=" + tel_no + "&gender=" + gender,
+		data : "name=" + name + "&tel_no=" + tel_no,
 		success : function(data){
 			$("input[name='birthday']").val(data.birthday);
 
-			if(data.gender == "m"){
-				$("input[name='gender']").val(1);
-			}else{
+			if(data.gender == "w"){
 				$("input[name='gender']").val(0);
+			}else{
+				$("input[name='gender']").val(1);
 			}
 
 			window.open("", "auth_popup", "width=430,height=590,scrollbar=yes");
