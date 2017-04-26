@@ -168,12 +168,7 @@ function jsSubmit(){
 		data : "name=" + name + "&tel_no=" + tel_no,
 		success : function(data){
 			$("input[name='birthday']").val(data.birthday);
-
-			if(data.gender == "w" || data.gender == "W"){
-				$("input[name='gender']").val(0);
-			}else{
-				$("input[name='gender']").val(1);
-			}
+			$("input[name='gender']").val(data.gender);
 
 			window.open("", "auth_popup", "width=430,height=590,scrollbar=yes");
 
