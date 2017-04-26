@@ -158,8 +158,8 @@ function jsSubmit(){
 	var inTpBit = "";
 	var tel_no = $("input[name='tel_no']").val();
 	var name = $("input[name='name']").val();
-	var gender = $("input[name='gender']").val();
-		
+	var gender = $(':radio[name="gender"]:checked').val();
+
 	if (form1.name.value == "") {
 		if (form1.name.value == "") {
 			alert("성명을 입력해주세요");
