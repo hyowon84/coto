@@ -180,7 +180,7 @@ function jsSubmit(){
 		success : function(data){
 			$("input[name='birthday']").val(data.birthday);
 
-			if(data.gender == "w"){
+			if(data.gender == "w" || data.gender == "W"){
 				$("input[name='gender']").val(0);
 			}else{
 				$("input[name='gender']").val(1);

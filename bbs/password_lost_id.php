@@ -169,10 +169,10 @@ function jsSubmit(){
 		success : function(data){
 			$("input[name='birthday']").val(data.birthday);
 
-			if(data.gender == "m"){
-				$("input[name='gender']").val(1);
-			}else{
+			if(data.gender == "w" || data.gender == "W"){
 				$("input[name='gender']").val(0);
+			}else{
+				$("input[name='gender']").val(1);
 			}
 
 			window.open("", "auth_popup", "width=430,height=590,scrollbar=yes");
