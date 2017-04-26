@@ -89,10 +89,15 @@ if (G5_IS_MOBILE) {
 						<div style="margin:10px 0 0 0;">
 			
 							<div style="color:##8d8d8d;">
-								내외국인구분&nbsp;&nbsp;&nbsp;
+								내외국인구분&nbsp;&nbsp;&nbsp;								
 								<input type="radio" name="nation" value="1" checked>내국인
 								<input type="radio" name="nation" value="2">외국인</br></br>
 
+								성별 &nbsp;&nbsp;&nbsp;
+								<input type="radio" name="gender" value="1" checked>남
+								<input type="radio" name="gender" value="0">여
+								</br></br>
+									
 								<input type="radio" name="tel_com_cd" value="01" checked>SKT
 								<input type="radio" name="tel_com_cd" value="02">KT
 								<input type="radio" name="tel_com_cd" value="03">LGU+
@@ -153,7 +158,8 @@ function jsSubmit(){
 	var inTpBit = "";
 	var tel_no = $("input[name='tel_no']").val();
 	var name = $("input[name='name']").val();
-
+	var gender = $("input[name='gender']").val();
+		
 	if (form1.name.value == "") {
 		if (form1.name.value == "") {
 			alert("성명을 입력해주세요");
@@ -169,7 +175,7 @@ function jsSubmit(){
 		type : "POST",
 		dataType : "JSON",
 		url : "./_Ajax.password_lost.php",
-		data : "name=" + name + "&tel_no=" + tel_no,
+		data : "name=" + name + "&tel_no=" + tel_no + "&gender=" + gender,
 		success : function(data){
 			$("input[name='birthday']").val(data.birthday);
 
