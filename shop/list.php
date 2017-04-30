@@ -162,27 +162,6 @@ else
 		<input type="hidden" name="ca_id" value="<?=$ca_id?>">
 	</form>
 
-
-
-
-	<!-- APM 통합 검색 -->
-	<div class="apm_search_all">
-
-		<div class="logo">
-			<a href="<?=G5_URL?>/shop/gplist.php?ca_id=<?=$ca_id?>">
-				<?if($search_logo){?>
-					<img src="<?=G5_URL?>/img/<?=$search_logo?>" border="0" align="absmiddle">
-				<?}?>
-			</a>
-		</div>
-
-		<div class="search_input">
-
-			<input type="text" name="sch_val_all" class="sch_val_all" value="<?=$sch_val_all?>"><img src="<?=G5_URL?>/img/sch_all_bn.gif" border="0" align="absmiddle" class="sch_all_btn">
-
-		</div>
-	</div>
-
 <?
 $nav_skin = $skin_dir.'/navigation.skin.php';
 if(!is_file($nav_skin))
@@ -191,29 +170,6 @@ include $nav_skin;
 
 //추천상품 카테고리 클릭시에는 숨김처리
 // if($event_yn != 'y')
-?>
-
-	<!-- APM 바
-<div class="search_bar">
-	<div><input type="checkbox" name="search_btn_all" style="background:#000;" class="checkbox" value="" <?if($sch_val == ""){echo "checked";}?>> ALL</div>
-
-	<?
-	$item_type_icon_res = sql_query("select * from {$g5['g5_gp_item_type_icon_table']} order by no desc ");
-	for($i = 0; $item_type_icon_row = mysql_fetch_array($item_type_icon_res); $i++){
-		$sch_val_arr1 = explode("|", $sch_val);
-		?>
-		<div><input type="checkbox" name="search_btn[]" value="<?=$item_type_icon_row[no]?>" <?for($k = 0; $k < count($sch_val_arr1); $k++){if($sch_val_arr1[$k] == $item_type_icon_row[no]){echo "checked";}}?>> <?=$item_type_icon_row[tp_name]?></div>
-	<?
-	}
-	?>
-
-	<div style="float:right;text-align:center;cursor:pointer;" onclick="goto_url('./gplist.php?ca_id=<?=$ca_id?>&sort=<?=$sort?>&sortodr=<?=$sortodr?>&apmval=<?=$apmval?>&apm_type=<?=$apm_type?>&sch_val=<?=$sch_val?>&sch_val_all=<?=$sch_val_all?>&page=<?=$page?>&listnum=80');">80개</div>
-	<div style="float:right;text-align:center;cursor:pointer;" onclick="goto_url('./gplist.php?ca_id=<?=$ca_id?>&sort=<?=$sort?>&sortodr=<?=$sortodr?>&apmval=<?=$apmval?>&apm_type=<?=$apm_type?>&sch_val=<?=$sch_val?>&sch_val_all=<?=$sch_val_all?>&page=<?=$page?>&listnum=40');">40개</div>
-	<div style="float:right;text-align:center;cursor:pointer;" onclick="goto_url('./gplist.php?ca_id=<?=$ca_id?>&sort=<?=$sort?>&sortodr=<?=$sortodr?>&apmval=<?=$apmval?>&apm_type=<?=$apm_type?>&sch_val=<?=$sch_val?>&sch_val_all=<?=$sch_val_all?>&page=<?=$page?>&listnum=20');">20개</div>
-	<div style="float:right;text-align:center;cursor:pointer;" onclick="goto_url('./gplist.php?ca_id=<?=$ca_id?>&sort=<?=$sort?>&sortodr=<?=$sortodr?>&apmval=<?=$apmval?>&apm_type=<?=$apm_type?>&sch_val=<?=$sch_val?>&sch_val_all=<?=$sch_val_all?>&page=<?=$page?>&listnum=');">기본</div>
-</div>
--->
-<?
 if ($is_admin)
 	echo '<div class="cl sct_admin"><a href="'.G5_ADMIN_URL.'/shop_admin/categoryform.php?w=u&amp;ca_id='.$ca_id.'" class="btn_admin">분류 관리</a></div>';
 ?>
@@ -240,14 +196,6 @@ if ($is_admin)
 		$list_file = G5_SHOP_SKIN_PATH.'/'.$ca['ca_skin'];
 
 		if (file_exists($list_file)) {
-			/*
-					echo '<div id="sct_sortlst">';
-					include G5_SHOP_SKIN_PATH.'/list.sort.skin.php';
-			
-					// 상품 보기 타입 변경 버튼
-					include G5_SHOP_SKIN_PATH.'/list.sub.skin.php';
-					echo '</div>';
-			*/
 			// 총몇개 = 한줄에 몇개 * 몇줄
 			if($listnum){
 				$items = $listnum;

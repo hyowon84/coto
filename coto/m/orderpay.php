@@ -168,7 +168,7 @@ function chk_max_qty() {
 		var v_qty = $('.it_qty'+v_id).val()*1;
 
 		if(v_qty > ($('#gp_have_qty'+v_id).val()*1)) {
-			alert('남은수량을 초과하였습니다');
+			alert('남은수량을 초과하였습니다\r\n대량구매는 유선상으로 문의주세요');
 			$('.it_qty'+v_id).val('');
 		}
 		if(v_qty > ($('#gp_buy_max_qty'+v_id).val()*1)) {

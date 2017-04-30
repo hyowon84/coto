@@ -25,7 +25,7 @@ function cart_add(mode,it_id,gpcode) {
 					msg = '장바구니 담기에 실패';
 					break;
 				case 90:
-					msg = '남은수량을 초과하였습니다';
+					msg = '남은수량을 초과하였습니다\r\n대량구매는 유선상으로 문의주세요';
 					break;
 				case 999:
 					msg = '상품ID가 없음';

@@ -758,7 +758,7 @@ function makeHtmlGpPrdList() {
 
 /* 노출여부 설정된 카테고리의 상품목록 HTML 생성코드 */
 function makeHtmlCatePrdList() {
-	global $sql_product, $상품노출개수;
+	global $is_admin, $sql_product, $상품노출개수;
 	
 	$height = (G5_IS_MOBILE) ? '140px' : '230px';
 	$margin = (G5_IS_MOBILE) ? '5px' : '15px';
@@ -774,7 +774,7 @@ function makeHtmlCatePrdList() {
 	
 	
 	while($ca = mysql_fetch_array($ca_result)) {
-
+		
 		echo "<div class='prdlist_title cut_text1line'>
 						<a href='/shop/gplist.php?gpcode=QUICK&ca_id=$ca[ca_id]'>$ca[ca_name]
 						<font color=red>&nbsp;&nbsp;&nbsp;☜ 전체보기</font>
@@ -1128,6 +1128,7 @@ function db_log($쿼리,$테이블명,$메모) {
 	$쿼리 =	preg_replace("/\t\t\t\t/",'',$쿼리);
 	$쿼리 =	preg_replace("/\"/",'',$쿼리);
 	$쿼리 =	preg_replace("/\'/",'',$쿼리);
+	$쿼리 = strip_tags($쿼리);
 	
 	$sql = "	INSERT INTO 	db_log	SET
 												src = '$파일명',							/*소스명*/

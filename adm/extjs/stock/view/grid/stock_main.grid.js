@@ -1296,10 +1296,10 @@ var grid_todoClearance = Ext.create('Ext.grid.Panel',{
 
 				//v_keyword = Ext.getCmp('orderitems_keyword').getValue();
 				var v_param = {
-												'gpcode' : v_gpcode,
-												'iv_id' : v_iv_id,
-												'cr_id' : ''												
-				};				
+					'gpcode' : v_gpcode,
+					'iv_id' : v_iv_id,
+					'cr_id' : ''
+				};
 
 				/*공구별 참고사항 로딩*/
 				v_param.mode = 'gpinfo';

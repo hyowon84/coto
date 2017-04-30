@@ -15,7 +15,7 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
 
 <!-- 상품진열 10 시작 {		list.20.skin.php -->
 <?php
-global $개발자, $개별오더활성화; //재고가 있는경우에만 장바구니 및 주문이 가능
+global $is_admin, $개발자, $개별오더활성화; //재고가 있는경우에만 장바구니 및 주문이 가능
 
 
 echo "<ul class=\"sct sct_50\">\n";
@@ -25,7 +25,7 @@ for ($i=1; $row=sql_fetch_array($result); $i++) {
 	$po_cash_price = $row[po_cash_price];
 	$po_card_price = ceil($po_cash_price * 1.03 / 100) * 100;
 	
-	if($is_admin == 'Y') $재고 = ($row[real_jaego] > 0) ? "남은수량 ".$row[real_jaego]."개<br>" : "남은수량 0개<br>";
+	if($is_admin == 'super') $재고 = ($row[real_jaego] > 0) ? "남은수량 ".$row[real_jaego]."개<br>" : "남은수량 0개<br>";
 	
 	$gpcode = ($_GET[gpcode]) ? $_GET[gpcode] : 'QUICK';
 	
