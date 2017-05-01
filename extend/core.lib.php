@@ -1119,13 +1119,25 @@ function createGpCategoryMenu() {
 	return $html;
 }
 
+
+function getDataGpJaego($gp_id) {
+	$prev_sql = "	SELECT	gp_id,
+												CONCAT('재고:',jaego) AS jaego,
+												CONCAT('공구재고:',gp_jaego) AS gp_jaego
+								FROM		g5_shop_group_purchase
+								WHERE		gp_id = '$gp_id'
+	";
+	$prev = sql_fetch($prev_sql);
+	return implode(", ",$prev);	
+}
+
 /*DB로그 작성*/
-function db_log($쿼리,$테이블명,$메모) {
+function db_log($쿼리,$테이블명,$메모,$이전데이터,$현재데이터) {
 	global $member;
 	$관리자ID = $member[mb_id];
 	$파일명 = $_SERVER['PHP_SELF'];
 
-	$쿼리 =	preg_replace("/\t\t\t\t/",'',$쿼리);
+	$쿼리 =	preg_replace("/\t\t\t\t/",' ',$쿼리);
 	$쿼리 =	preg_replace("/\"/",'',$쿼리);
 	$쿼리 =	preg_replace("/\'/",'',$쿼리);
 	$쿼리 = strip_tags($쿼리);
@@ -1133,6 +1145,8 @@ function db_log($쿼리,$테이블명,$메모) {
 	$sql = "	INSERT INTO 	db_log	SET
 												src = '$파일명',							/*소스명*/
 												sqltxt = \"$쿼리\",				/*쿼리SQL*/
+												prev = '$이전데이터',
+												after = '$현재데이터',
 												tb = '$테이블명',								/*테이블명*/
 												memo = '$메모',
 												admin_id = '$관리자ID',	/*관리자 계정*/

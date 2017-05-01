@@ -481,13 +481,14 @@ if ($w == "")
 }
 else if ($w == "u")
 {
-		$sql_common .= " , gp_update_time = '".G5_TIME_YMDHIS."' ";
-		$sql = " update {$g5['g5_shop_group_purchase_table']}
-								set $sql_common
-							where gp_id = '$gp_id' ";
-		sql_query($sql);
-	
-	db_log($sql,'g5_shop_group_purchase','상품수정페이지');
+	$이전데이터 = getDataGpJaego($gp_id);
+	$sql_common .= " , gp_update_time = '".G5_TIME_YMDHIS."' ";
+	$sql = " UPDATE {$g5['g5_shop_group_purchase_table']}	SET
+										$sql_common
+						WHERE		gp_id = '$gp_id'	";
+	sql_query($sql);
+	$현재데이터 = getDataGpJaego($gp_id);
+	db_log($sql,'g5_shop_group_purchase','상품수정페이지', $이전데이터, $현재데이터);
 }
 
 

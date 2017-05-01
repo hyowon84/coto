@@ -19,24 +19,26 @@ if ($_POST['act_button'] == "선택수정") {
 			// 실제 번호를 넘김
 			$k = $_POST['chk'][$i];
 
-			$_POST['gp_name'][$k] = str_replace('\"', "", $_POST['gp_name'][$k]);			
-			$sql = "update {$g5['g5_shop_group_purchase_table']}
-								 set ca_id          = '{$_POST['ca_id'][$k]}',
-										 gp_name        = \"{$_POST['gp_name'][$k]}\",
-										 gp_use         = '{$_POST['gp_use'][$k]}',
-										 gp_price      	= '{$_POST['gp_price'][$k]}',
-										 gp_price_org  	= '{$_POST['gp_price_org'][$k]}',
-										 gp_duty        = '{$_POST['gp_duty'][$k]}',
-										 gp_charge      = '{$_POST['gp_charge'][$k]}',
-										 jaego					=	'{$_POST['jaego'][$k]}',
-										 gp_have_qty		=	'{$_POST['gp_have_qty'][$k]}',
-										 gp_order				= '{$_POST['gp_order'][$k]}',
-										 b2b_yn					=	'{$_POST['b2b_yn'][$k]}',
-										 gp_update_time = '".G5_TIME_YMDHIS."'
-							 where gp_id   = '{$_POST['gp_id'][$k]}' ";
+			$_POST['gp_name'][$k] = str_replace('\"', "", $_POST['gp_name'][$k]);
+			$이전데이터 = getDataGpJaego($_POST['gp_id'][$k]);
+			$sql = "UPDATE {$g5['g5_shop_group_purchase_table']}	SET
+										ca_id          = '{$_POST['ca_id'][$k]}',
+										gp_name        = \"{$_POST['gp_name'][$k]}\",
+										gp_use         = '{$_POST['gp_use'][$k]}',
+										gp_price      	= '{$_POST['gp_price'][$k]}',
+										gp_price_org  	= '{$_POST['gp_price_org'][$k]}',
+										gp_duty        = '{$_POST['gp_duty'][$k]}',
+										gp_charge      = '{$_POST['gp_charge'][$k]}',
+										jaego					=	'{$_POST['jaego'][$k]}',
+										gp_have_qty		=	'{$_POST['gp_have_qty'][$k]}',
+										gp_order				= '{$_POST['gp_order'][$k]}',
+										b2b_yn					=	'{$_POST['b2b_yn'][$k]}',
+										gp_update_time = '".G5_TIME_YMDHIS."'
+							 WHERE	gp_id   = '{$_POST['gp_id'][$k]}' ";
 			sql_query($sql);
-			
-			db_log($sql,'g5_shop_group_purchase','상품목록에서 일괄수정');
+
+			$현재데이터 = getDataGpJaego($_POST['gp_id'][$k]);
+			db_log($sql,'g5_shop_group_purchase','상품목록에서 일괄수정',$이전데이터,$현재데이터);
 		}
 } else if ($_POST['act_button'] == "선택삭제") {
 

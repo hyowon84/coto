@@ -56,6 +56,7 @@ function process($data) {
 		$ac_code = $prev[ac_code];
 	}
 
+	$이전데이터 = getDataGpJaego($gp_id);
 	
 	/* 상품정보 수정 */
 	$common_sql = "	UPDATE	g5_shop_group_purchase	SET
@@ -84,7 +85,9 @@ function process($data) {
 									WHERE		gp_id = '$gp_id'
 	";
 	sql_query($common_sql);
-	db_log($common_sql,'g5_shop_group_purchase','상품가격관리');
+	
+	$현재데이터 = getDataGpJaego($gp_id);
+	db_log($common_sql,'g5_shop_group_purchase','상품가격관리',$이전데이터,$현재데이터);
 }
 
 /* 단일레코드일때 */

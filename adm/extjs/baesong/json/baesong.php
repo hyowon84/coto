@@ -273,6 +273,8 @@ $main_sql = "	$SELECT_SQL
 ";
 $result = sql_query($main_sql);
 
+//echo $SELECT_SQL;
+
 while($row = mysql_fetch_assoc($result)) {
 	foreach($row as $key => $val) {
 		$row[$key] = 개행문자삭제($val);
