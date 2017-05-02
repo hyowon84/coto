@@ -11,6 +11,7 @@ function process($data) {
 	
 	$ac_yn = $data[ac_yn];
 	$gp_id = $data[gp_id];
+	$ac_enddate = $data[ac_enddate];
 
 	$prev_sql = "	SELECT	*	FROM	g5_shop_group_purchase WHERE	gp_id = '$gp_id'";
 	$prev = sql_fetch($prev_sql);
@@ -38,6 +39,7 @@ function process($data) {
 	$common_sql = "	UPDATE	g5_shop_group_purchase	SET
 														ac_yn = '$ac_yn',										/*경매진행여부*/
 														ac_code = '$ac_code',
+														ac_enddate = '$ac_enddate',
 														gp_update_time = now()
 									WHERE		gp_id = '$gp_id'
 	";
