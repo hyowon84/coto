@@ -41,7 +41,7 @@ function process($data) {
 	";
 	sql_query($ins_sql);
 
-	echo "$data[gp_name] - ".$data[mb_name]." ".$data[mb_hp]." 문자메시지 전송완료<br>";
+	echo "$경매명 - ".$data[mb_name]." ".$data[mb_hp]." 문자메시지 전송완료<br>";
 
 }// 프로세스 end
 
@@ -51,8 +51,8 @@ $ac_sql = "	SELECT	GP.gp_name,
 										AC.*,
 										MB.mb_name,
 										MB.mb_hp
-						FROM		auction_log AC
-										LEFT JOIN g5_shop_group_purchase GP ON (GP.gp_id = AC.it_id)
+						FROM		g5_shop_group_purchase GP
+										LEFT JOIN	auction_log AC ON (AC.ac_code = GP.ac_code AND AC.it_id = GP.gp_id )
 										LEFT JOIN g5_member MB ON (MB.mb_id = AC.mb_id)
 						WHERE		1=1
 						AND			DATE_ADD(GP.ac_enddate,INTERVAL -30 MINUTE) <= NOW()
