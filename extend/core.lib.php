@@ -697,20 +697,24 @@ function makeHtmlGpPrdList() {
 		}
 		
 		while($it = mysql_fetch_array($it_result)) {
-			$imgthumb = getThumb($it);
 			
 			$it[card_price] = ceil($it[cash_price] * 1.03 / 100) * 100;
 			$jaego = ($it[real_jaego] > 0) ? $it[real_jaego] : 0;
 			$카드가 = ($it[gp_card] == '사용안함') ? "카드가 : ".number_format($it[card_price])."원<br>" : "";
+
+			$imgthumb = getThumb($it);
+			$it[gp_img] = $imgthumb[src];
 			
-			if($is_admin == 'super') $재고 = " 남은수량 : ".number_format($it[real_jaego])." ea ";
+			if($is_admin == 'super') {
+				$재고 = " 남은수량 : ".number_format($it[real_jaego])." ea ";
+			}
 			
 			echo "
 					<div class='prdlist_item'>
 						<a href='/shop/grouppurchase.php?gpcode=$gp[gpcode]&gp_id=$it[gp_id]&ca_id=$it[ca_id]'>
 						<span class='sct_icon' style='position:absolute;'>".item_icon1($it)."</span>
 						<div class='imgLiquidNoFill imgLiquid' style='width:98%; height:$height; margin:$margin auto;'>
-							<img src='$imgthumb[src]' />
+							<img src='$it[gp_img]' />
 						</div>
 						<div class='prdlist_itemname cut_text'>$it[gp_name]</div>
 						</a>
@@ -806,7 +810,7 @@ function makeHtmlCatePrdList() {
 								AND			T.gp_use = 1
 								AND			IF( (T.gp_realprice + T.gp_fixprice + T.gp_price) > 0,TRUE,FALSE)
 								ORDER BY T.gp_update_time DESC
-								LIMIT 16
+								LIMIT 24
 		";
 		$it_result = sql_query($it_sql);
 		
@@ -828,19 +832,22 @@ function makeHtmlCatePrdList() {
 		}
 		
 		while ($it = mysql_fetch_array($it_result)) {
-			$imgthumb = getThumb($it);
-			
 			$it[card_price] = ceil($it[cash_price] * 1.03 / 100) * 100;
 			$jaego = ($it[real_jaego] > 0) ? $it[real_jaego] : 0;
 			$카드가 = ($it[gp_card] == '사용안함') ? "카드가 : ".number_format($it[card_price])."원<br>" : "";
+
+			$imgthumb = getThumb($it);
+			$it[gp_img] = $imgthumb[src];
 			
-			if($is_admin == 'super') $재고 = " 남은수량 : " . number_format($it[real_jaego]) . " ea ";
+			if($is_admin == 'super') {
+				$재고 = " 남은수량 : " . number_format($it[real_jaego]) . " ea ";
+			} 
 			
 			echo "<div class='prdlist_item'>
 							<a href='/shop/grouppurchase.php?gpcode=QUICK&gp_id=$it[gp_id]&ca_id=$it[ca_id]'>
 							<span class='sct_icon' style='position:absolute;'>".item_icon1($it)."</span>
 							<div class='imgLiquidNoFill imgLiquid' style='width:98%;height:$height; margin:$margin auto;'>
-								<img src='$imgthumb[src]' />
+								<img src='$it[gp_img]' />
 							</div>
 							<div class='prdlist_itemname cut_text'>$it[gp_name]</div>
 							</a>
@@ -963,8 +970,6 @@ function makeHtmlAucPrdList() {
 	}
 
 	while ($it = mysql_fetch_array($it_result)) {
-		$imgthumb = getThumb($it);
-		
 		$it[card_price] = ceil($it[cash_price] * 1.03 / 100) * 100;
 		$jaego = ($it[real_jaego] > 0) ? $it[real_jaego] : 0;
 		$현재가 = ($it[MAX_BID_LAST_PRICE]) ? $it[MAX_BID_LAST_PRICE] : $it[ac_startprice];
@@ -979,7 +984,7 @@ function makeHtmlAucPrdList() {
 						<a href='/shop/auction.php?gp_id=$it[gp_id]'>
 						<span class='sct_icon' style='position:absolute;'>".item_icon1($it)."</span>
 						<div class='imgLiquidNoFill imgLiquid' style='width:98%;height:$height; margin:$margin auto;'>
-							<img src='$imgthumb[src]' />
+							<img src='$it[gp_img]' />
 						</div>
 						<div class='prdlist_itemname cut_text'>$it[gp_name]</div>
 						</a>

@@ -18,4 +18,15 @@ for($i = 0; $i < sizeof($filelist); $i++) {
 	echo $filelist[$i].".html 파일 생성 완료<br>\r\n";
 }
 
+
+//$ch = curl_init();
+//"https://www.moderncoinmart.com/images/D.cache.dpthmbn/62023.jpg";
+
+
+/* 진행중인 공동구매 상품목록 */
+include_once "../data/html/mainGpItemLIst.html";
+
+/* 카테고리 상품목록 */
+include_once "../data/html/mainCateItemLIst.html";
+
 ?>

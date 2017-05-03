@@ -128,12 +128,12 @@ function getThumb($param){
 	preg_match_all("/(jpg|gif|jpeg|png|JPG|PNG|GIF)/",$param[gp_img],$last);
 	$lastname = $last[0][0];
 	
-	//apmex 예외처리
-	if( strstr($param[gp_img], 'apmex') ) {
+	//apmex, mcm 예외처리
+	if( strstr($param[gp_img], 'apmex') || strstr($param[gp_img], 'moderncoinmart') || strstr($param[gp_img], 'jmbullion') ) {
 //		$file = remote_image($param[gp_img]);
-//		$apmex_img = "$DOCUMENT_ROOT/data/outsrc/".$param[gp_id].".".$lastname;
+//		$out_img = "$DOCUMENT_ROOT/data/outsrc/".$param[gp_id].".".$lastname;
 //		image_save($file, $apmex_img);
-//		$param['o_path'] = $apmex_img;
+//		$param['o_path'] = $out_img;
 		return array('bool' => true, 'src' => $param[gp_img]);
 	}
 	else {
@@ -175,11 +175,25 @@ function getThumb($param){
 	else{
 		// 외부서버 이미지
 		if(filter_var($param['o_path'], FILTER_VALIDATE_URL)){
-			$tmp['dir'] = './';	// curl 임시 다운로드 경로
+			$tmp['dir'] = $DOCUMENT_ROOT.'/data/outsrc/';	// curl 임시 다운로드 경로
 
 			$ch = curl_init();
 			curl_setopt($ch, CURLOPT_URL, $param['o_path']);
+
+			$http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+
+			if($http_code == 200) {
+				return array('bool' => false, 'msg' => '이미지 파일이 아닙니다.'); 
+			}
+
 			curl_setopt($ch, CURLOPT_NOBODY, true);
+//			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // 인증서 체크같은데 true 시 안되는 경우가 많다.
+//			curl_setopt($ch, CURLOPT_POST, false); // Post Get 접속 여부
+//			curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+//			curl_setopt($ch, CURLOPT_TIMEOUT, 60); // TimeOut 값
+//			curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true); //http 응답코드가 302일때 redirect_url 로 따라감
+//			curl_setopt($ch, CURLOPT_MAXREDIRS, 5); //if http server gives redirection responce
+//			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // 결과값을 받을것인지 
 			curl_exec($ch);
 			$ch_info = curl_getinfo($ch);
 			curl_close($ch);
