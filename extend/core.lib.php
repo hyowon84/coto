@@ -697,6 +697,8 @@ function makeHtmlGpPrdList() {
 		}
 		
 		while($it = mysql_fetch_array($it_result)) {
+			$imgthumb = getThumb($it);
+			
 			$it[card_price] = ceil($it[cash_price] * 1.03 / 100) * 100;
 			$jaego = ($it[real_jaego] > 0) ? $it[real_jaego] : 0;
 			$카드가 = ($it[gp_card] == '사용안함') ? "카드가 : ".number_format($it[card_price])."원<br>" : "";
@@ -708,7 +710,7 @@ function makeHtmlGpPrdList() {
 						<a href='/shop/grouppurchase.php?gpcode=$gp[gpcode]&gp_id=$it[gp_id]&ca_id=$it[ca_id]'>
 						<span class='sct_icon' style='position:absolute;'>".item_icon1($it)."</span>
 						<div class='imgLiquidNoFill imgLiquid' style='width:98%; height:$height; margin:$margin auto;'>
-							<img src='$it[gp_img]' />
+							<img src='$imgthumb[src]' />
 						</div>
 						<div class='prdlist_itemname cut_text'>$it[gp_name]</div>
 						</a>
@@ -826,7 +828,8 @@ function makeHtmlCatePrdList() {
 		}
 		
 		while ($it = mysql_fetch_array($it_result)) {
-
+			$imgthumb = getThumb($it);
+			
 			$it[card_price] = ceil($it[cash_price] * 1.03 / 100) * 100;
 			$jaego = ($it[real_jaego] > 0) ? $it[real_jaego] : 0;
 			$카드가 = ($it[gp_card] == '사용안함') ? "카드가 : ".number_format($it[card_price])."원<br>" : "";
@@ -837,7 +840,7 @@ function makeHtmlCatePrdList() {
 							<a href='/shop/grouppurchase.php?gpcode=QUICK&gp_id=$it[gp_id]&ca_id=$it[ca_id]'>
 							<span class='sct_icon' style='position:absolute;'>".item_icon1($it)."</span>
 							<div class='imgLiquidNoFill imgLiquid' style='width:98%;height:$height; margin:$margin auto;'>
-								<img src='$it[gp_img]' />
+								<img src='$imgthumb[src]' />
 							</div>
 							<div class='prdlist_itemname cut_text'>$it[gp_name]</div>
 							</a>
@@ -960,7 +963,8 @@ function makeHtmlAucPrdList() {
 	}
 
 	while ($it = mysql_fetch_array($it_result)) {
-
+		$imgthumb = getThumb($it);
+		
 		$it[card_price] = ceil($it[cash_price] * 1.03 / 100) * 100;
 		$jaego = ($it[real_jaego] > 0) ? $it[real_jaego] : 0;
 		$현재가 = ($it[MAX_BID_LAST_PRICE]) ? $it[MAX_BID_LAST_PRICE] : $it[ac_startprice];
@@ -975,7 +979,7 @@ function makeHtmlAucPrdList() {
 						<a href='/shop/auction.php?gp_id=$it[gp_id]'>
 						<span class='sct_icon' style='position:absolute;'>".item_icon1($it)."</span>
 						<div class='imgLiquidNoFill imgLiquid' style='width:98%;height:$height; margin:$margin auto;'>
-							<img src='$it[gp_img]' />
+							<img src='$imgthumb[src]' />
 						</div>
 						<div class='prdlist_itemname cut_text'>$it[gp_name]</div>
 						</a>
@@ -1016,6 +1020,8 @@ function makeHtmlAucPrdList() {
 	else {
 		echo "</section>";
 	}
+	
+//	exit;
 }
 
 /* 배열과 키값으로 셀렉트박스 만들기 */
