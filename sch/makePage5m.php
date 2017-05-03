@@ -8,7 +8,7 @@ $filelist = array(
 	"mainGpItemLIst"
 );
 
-
+//PC
 for($i = 0; $i < sizeof($filelist); $i++) {
 	$Response = get_httpRequest("http://coinstoday.co.kr/ajax/".$filelist[$i].".php");
 
@@ -16,6 +16,17 @@ for($i = 0; $i < sizeof($filelist); $i++) {
 	fwrite($f, $Response);
 	fclose($f);
 	echo $filelist[$i].".html 파일 생성 완료<br>\r\n";
+}
+
+
+//MOBILE
+for($i = 0; $i < sizeof($filelist); $i++) {
+	$Response = get_httpRequest("http://coinstoday.co.kr/ajax/".$filelist[$i].".php?device=mobile");
+
+	$f = fopen("../data/html/".$filelist[$i]."_m.html","w+");
+	fwrite($f, $Response);
+	fclose($f);
+	echo $filelist[$i]."_m.html 파일 생성 완료<br>\r\n";
 }
 
 
@@ -28,5 +39,13 @@ include_once "../data/html/mainGpItemLIst.html";
 
 /* 카테고리 상품목록 */
 include_once "../data/html/mainCateItemLIst.html";
+
+
+
+/* 진행중인 공동구매 상품목록 */
+include_once "../data/html/mainGpItemLIst_m.html";
+
+/* 카테고리 상품목록 */
+include_once "../data/html/mainCateItemLIst_m.html";
 
 ?>
