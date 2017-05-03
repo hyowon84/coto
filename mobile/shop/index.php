@@ -51,11 +51,11 @@ makeMainSlideImage();
 /* 경매상품 목록 */
 makeHtmlAucPrdList();
 
-/* 진행중인 공동구매 상품목록 노출 */
-makeHtmlGpPrdList();
+/* 진행중인 공동구매 상품목록 */
+include_once "./data/html/mainGpItemLIst_m.html";
 
-/* 빠른배송상품 */
-makeHtmlCatePrdList();
+/* 카테고리 상품목록 */
+include_once "./data/html/mainCateItemLIst_m.html";
 ?>
 
 <script src='<?=G5_JS_URL?>/imgLiquid.js'></script>
