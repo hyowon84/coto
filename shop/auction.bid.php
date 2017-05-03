@@ -189,7 +189,7 @@ if($mode == 'auc_bid') {
 			";
 			sql_query($auto_sql);
 			
-			alert("현재 입찰중인 가격(".number_format($bid_last_price)."원)과 동일하여 입찰에 실패하였습니다 좀더 높은 금액을 입력해주세요");
+			alert("현재 입찰하신 ".number_format($입찰시도금액)."원 보다 더 높은 경매금액을 제시한 분이 있습니다. 더 높은 경매금액으로 다시 참여해주세요");
 			//break
 		}
 		else {
@@ -228,7 +228,7 @@ if($mode == 'auc_bid') {
 	sql_query($UPD_SQL);
 	delayAuctionEnddate($it[gp_id]);
 	
-	alert_close("입찰되었습니다 현재 입찰가가 ".number_format($bid_last_price)."원으로 갱신되었습니다");
+	alert_close("축하합니다. 현재 최고금액(".number_format($bid_last_price)."원) 경매자입니다.");
 	exit;
 }
 //echo "<textarea>".$sql."</textarea>";

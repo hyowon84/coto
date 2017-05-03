@@ -973,7 +973,7 @@ function makeHtmlAucPrdList() {
 		$남은시간 = getLeftTime($it[ac_enddate]);
 		
 		//나의입찰액이 최고가인 경우 나의 입찰금액 노출
-		$나의입찰금액 = ($it[MAX_BID_PRICE] == $it[MY_BID_PRICE]) ? "<dl><font color='blue' style='font-size:1.1em; font-weight:bold;'>나의입찰액 ".number_format($it[MY_BID_PRICE])."원</font></dl>" : "";
+		$나의입찰금액 = ($it[MAX_BID_PRICE] == $it[MY_BID_PRICE]) ? "<dl><font color='blue' style='font-size:1.1em; font-weight:bold;'>최고가 입찰중 ".number_format($it[MY_BID_PRICE])."원</font></dl>" : "";
 		
 		echo "<div class='prdlist_item'>
 						<a href='/shop/auction.php?gp_id=$it[gp_id]'>

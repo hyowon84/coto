@@ -72,10 +72,10 @@ makeMainSlideImage();
 makeHtmlAucPrdList();
 
 /* 진행중인 공동구매 상품목록 */
-include_once "/data/html/mainGpItemLIst.html";
+include_once "./data/html/mainGpItemLIst.html";
 
 /* 카테고리 상품목록 */
-include_once "/data/html/mainCateItemLIst.html";
+include_once "./data/html/mainCateItemLIst.html";
 ?>
 
 <script src='<?=G5_JS_URL?>/imgLiquid.js'></script>
