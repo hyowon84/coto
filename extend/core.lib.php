@@ -676,7 +676,7 @@ function makeHtmlGpPrdList() {
 									WHERE		T.real_jaego > 0
 									AND			IF( (T.gp_realprice + T.gp_fixprice + T.gp_price) > 0,TRUE,FALSE)
 									ORDER BY T.gp_update_time DESC
-									LIMIT 20
+									LIMIT 24
 		";
 		$it_result = sql_query($prd_sql);
 		if($_GET[mode] == 'jhw') echo "<textarea>$prd_sql</textarea>";
@@ -806,7 +806,7 @@ function makeHtmlCatePrdList() {
 								AND			T.gp_use = 1
 								AND			IF( (T.gp_realprice + T.gp_fixprice + T.gp_price) > 0,TRUE,FALSE)
 								ORDER BY T.gp_update_time DESC
-								LIMIT 12
+								LIMIT 24
 		";
 		$it_result = sql_query($it_sql);
 		
