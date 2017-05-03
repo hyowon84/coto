@@ -64,9 +64,6 @@ include_once(G5_PATH.'/_head.php');
 	/*.slide_contain { width:1100px; }*/
 </style>
 
-
-
-
 <?
 /* 메인화면 슬라이드 */
 makeMainSlideImage();
@@ -74,11 +71,11 @@ makeMainSlideImage();
 /* 경매상품 목록 */
 makeHtmlAucPrdList();
 
-/* 진행중인 공동구매 상품목록 노출 */
-makeHtmlGpPrdList();
+/* 진행중인 공동구매 상품목록 */
+include_once "/data/html/mainGpItemLIst.html";
 
-/* 빠른배송상품 */
-makeHtmlCatePrdList();
+/* 카테고리 상품목록 */
+include_once "/data/html/mainCateItemLIst.html";
 ?>
 
 <script src='<?=G5_JS_URL?>/imgLiquid.js'></script>
