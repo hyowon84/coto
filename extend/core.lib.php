@@ -941,7 +941,7 @@ function makeHtmlAucPrdList() {
 	//경매상품 정보
 	$sql_auction_item = str_replace('#상품기본조건#', " AND ac_yn = 'Y' AND	ac_enddate > DATE_ADD(NOW(), INTERVAL -18 HOUR)  ", $sql_auction_item);
 	
-	$sql_auction_item.=" ORDER BY T.ac_enddate ASC";
+	$sql_auction_item.=" ORDER BY T.ac_yn DESC, T.ac_enddate ASC";
 	$it_result = sql_query($sql_auction_item);
 
 	$item_cnt = 0;
@@ -1019,6 +1019,7 @@ function makeHtmlAucPrdList() {
 			}
 		}
 	}
+	
 	if(G5_IS_MOBILE) {
 		echo "</ul></div>";
 	}

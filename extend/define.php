@@ -64,7 +64,7 @@ if($_GET[gp_id]) {
 	$_GET[ca_id] = $ca_id = $item[ca_id];
 }
 
-$개별오더활성화 = ( stristr($개별공구[choice_dealer], "ALL") || stristr($개별공구[choice_dealer], $ca_id) || substr($ca_id,0,2) == 'CT' || substr($ca_id,0,2) == 'GP') ? true : false;
+@$개별오더활성화 = ( stristr($개별공구[choice_dealer], "ALL") || stristr($개별공구[choice_dealer], $ca_id) || substr($ca_id,0,2) == 'CT' || substr($ca_id,0,2) == 'GP') ? true : false;
 
 
 /* 공통으로 사용할 스팟시세관련 SQL
@@ -187,7 +187,60 @@ function makeProductSql($gpcode) {
 											AND			ca_id LIKE 'CT%'
 			";
 		}
-		$PRODUCT_QUERY = "	SELECT	*
+		$PRODUCT_QUERY = "	SELECT	gp_id,	
+																ca_id,	
+																ca_id2,	/*2차 분류*/
+																ca_id3,	/*3차 분류*/
+																location,	
+																event_yn,	/*이벤트 진행 상품 유(Y)/무(N)*/
+																b2b_yn,	
+																gp_name,	
+																gp_site,	/*상품 원본URL*/
+																gp_img,	
+																gp_explan,	
+																gp_360img,	
+																gp_objective_price,	
+																jaego,	/*상품초기재고*/
+																gp_jaego,	/*공동구매 셋팅재고*/
+																gp_have_qty,	
+																gp_buy_min_qty,	/*최소구매수량*/
+																gp_buy_max_qty,	/*최대구매수량*/
+																gp_charge,	/*수수료*/
+																gp_duty,	/*관세*/
+																gp_use,	/*판매유무*/
+																gp_order,	
+																gp_stock,	
+																gp_time,	
+																gp_update_time,	
+																gp_price,	/*코투현금가(\)*/
+																gp_usdprice,	/*상품 달러가격*/
+																gp_price_org,	/*코투 매입가($)*/
+																gp_card,	/*카드가 노출 여부*/
+																gp_card_price,	/*코투카드가(\)*/
+																gp_price_type,	/*고정형 / 실시간형*/
+																gp_spotprice_type,	/*스팟시세유형 $달러, %, 원*/
+																gp_spotprice,	/*스팟시세값*/
+																gp_metal_type,	/*GL, SL, PT, PD,ETC*/
+																gp_metal_don,	/*oz*/
+																gp_metal_etc_price,	
+																gp_sc_method,	/*배송유형*/
+																gp_sc_price,	/*배송비*/
+																it_type,	/*상품유형아이콘*/
+																gp_type1,	/*히트*/
+																gp_type2,	/*추천*/
+																gp_type3,	/*신상품*/
+																gp_type4,	/*인기*/
+																gp_type5,	/*할인*/
+																gp_type6,	/*경매*/
+																admin_memo,	
+																IF(NOW() > ac_enddate, 'N',ac_yn) AS ac_yn,		/*경매진행여부*/
+																ac_code,					/*경매진행코드*/
+																ac_enddate,					/*경매마감일*/
+																ac_delay_date,	/*연장최대시간*/
+																ac_delay_cnt,				/*경매마감일 연장횟수*/
+																ac_qty,							/*경매가능수량*/
+																ac_startprice,	/*경매시작가*/
+																ac_buyprice					/*경매즉시구매가*/
 												FROM		g5_shop_group_purchase
 												WHERE		1=1
 												$관리자조건
