@@ -123,6 +123,10 @@ $timestamp = date("Y-m-d H:i:s.",$t[0]).$t[1];
 		<?
 		
 		function makeHideID($str) {
+			global $is_admin;
+			if($is_admin == 'super') return $str;
+			
+			
 			$f = substr($str,0,1);
 //			$max = strlen($str)-4;
 			$max = 5;
@@ -130,6 +134,8 @@ $timestamp = date("Y-m-d H:i:s.",$t[0]).$t[1];
 			for($i=0; $i < $max; $i++) {
 				$l .= '*';
 			}
+			
+			
 			return $f.$l;
 		}	
 		
