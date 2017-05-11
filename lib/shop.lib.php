@@ -340,6 +340,690 @@ class item_list
 }
 
 
+//경매진행중인 상품목록
+class auction_list
+{
+	// 상품유형 : 기본적으로 1~5 까지 사용할수 있으며 0 으로 설정하는 경우 상품유형별로 노출하지 않습니다.
+	// 분류나 이벤트로 노출하는 경우 상품유형을 0 으로 설정하면 됩니다.
+	protected $type;
+
+	protected $list_skin;
+	protected $list_mod;
+	protected $list_row;
+	protected $img_width;
+	protected $img_height;
+
+	// 상품상세보기 경로
+	protected $href = "";
+	protected $auc_href = "";
+
+	// select 에 사용되는 필드
+	protected $fields = "*";
+
+	// 분류코드로만 사용하는 경우 상품유형($type)을 0 으로 설정하면 됩니다.
+	protected $ca_id = "";
+	protected $ca_id2 = "";
+	protected $ca_id3 = "";
+
+	// 노출순서
+	protected $order_by = "";
+
+	// 상품의 이벤트번호를 저장합니다.
+	protected $event = "";
+
+	// 스킨의 기본 css 를 다른것으로 사용하고자 할 경우에 사용합니다.
+	protected $css = "";
+
+	// 상품의 사용여부를 따져 노출합니다. 0 인 경우 모든 상품을 노출합니다.
+	protected $use = 1;
+
+	// 모바일에서 노출하고자 할 경우에 true 로 설정합니다.
+	protected $is_mobile = false;
+
+	// 기본으로 보여지는 필드들
+	protected $view_it_id	= false;	   // 상품코드
+	protected $view_it_img   = true;		// 상품이미지
+	protected $view_it_name  = true;		// 상품명
+	protected $view_it_basic = true;		// 기본설명
+	protected $view_it_price = true;		// 판매가격
+	protected $view_it_cust_price = false;  // 소비자가
+	protected $view_it_icon = false;		// 아이콘
+	protected $view_sns = false;			// SNS
+
+	// 몇번째 class 호출인지를 저장합니다.
+	protected $count = 0;
+
+	// true 인 경우 페이지를 구한다.
+	protected $is_page = false;
+
+	// 페이지 표시를 위하여 총 상품수를 구합니다.
+	public $total_count = 0;
+
+	// sql limit 의 시작 레코드
+	protected $from_record = 0;
+
+	// 외부에서 쿼리문을 넘겨줄 경우에 담아두는 변수
+	protected $query = "";
+
+	// 검색 데이터
+	protected $sch_que = "";
+
+
+	// $type		: 상품유형 (기본으로 1~5까지 사용)
+	// $list_skin   : 상품리스트를 노출할 스킨을 설정합니다. 스킨위치는 skin/shop/쇼핑몰설정스킨/type??.skin.php
+	// $list_mod	: 1줄에 몇개의 상품을 노출할지를 설정합니다.
+	// $list_row	: 상품을 몇줄에 노출할지를 설정합니다.
+	// $img_width   : 상품이미지의 폭을 설정합니다.
+	// $img_height  : 상품이미지의 높이을 설정합니다. 0 으로 설정하는 경우 썸네일 이미지의 높이는 폭에 비례하여 생성합니다.
+	//function __construct($type=0, $list_skin='', $list_mod='', $list_row='', $img_width='', $img_height=0, $ca_id='') {
+	function __construct($list_skin='', $list_mod='', $list_row='', $img_width='', $img_height=0, $sch_que='') {
+		$this->list_skin  = $list_skin;
+		$this->list_mod   = $list_mod;
+		$this->list_row   = $list_row;
+		$this->img_width  = $img_width;
+		$this->img_height = $img_height;
+		$this->sch_que	= $sch_que;
+		$this->set_href(G5_SHOP_URL.'/auction.php?gp_id=', G5_SHOP_URL.'/item.php?it_id=');
+		$this->count++;
+	}
+
+	function set_type($type) {
+		$this->type = $type;
+		if ($type) {
+			$this->set_list_skin($list_skin);
+			$this->set_list_mod($list_mod);
+			$this->set_list_row($list_row);
+			$this->set_img_size($img_width);
+		}
+	}
+
+	// 분류코드로 검색을 하고자 하는 경우 아래와 같이 인수를 넘겨줍니다.
+	// 1단계 분류는 (분류코드, 1)
+	// 2단계 분류는 (분류코드, 2)
+	// 3단계 분류는 (분류코드, 3)
+	function set_category($ca_id, $level=1) {
+		if ($level == 2) {
+			$this->ca_id2 = $ca_id;
+		} else if ($level == 3) {
+			$this->ca_id3 = $ca_id;
+		} else {
+			$this->ca_id = $ca_id;
+		}
+	}
+
+	// 이벤트코드를 인수로 넘기게 되면 해당 이벤트에 속한 상품을 노출합니다.
+	function set_event($ev_id) {
+		$this->event = $ev_id;
+	}
+
+	// 리스트 스킨을 바꾸고자 하는 경우에 사용합니다.
+	// 리스트 스킨의 위치는 skin/shop/쇼핑몰설정스킨/type??.skin.php 입니다.
+	// 특별히 설정하지 않는 경우 상품유형을 사용하는 경우는 쇼핑몰설정 값을 그대로 따릅니다.
+	function set_list_skin($list_skin) {
+		global $default;
+		if ($this->is_mobile) {
+			$this->list_skin = $list_skin ? $list_skin : $default['de_mobile_type'.$this->type.'_list_skin'];
+		} else {
+			$this->list_skin = $list_skin ? $list_skin : $default['de_type'.$this->type.'_list_skin'];
+		}
+	}
+
+	// 1줄에 몇개를 노출할지를 사용한다.
+	// 특별히 설정하지 않는 경우 상품유형을 사용하는 경우는 쇼핑몰설정 값을 그대로 따릅니다.
+	function set_list_mod($list_mod) {
+		global $default;
+		if ($this->is_mobile) {
+			$this->list_mod = $list_mod ? $list_mod : $default['de_mobile_type'.$this->type.'_list_mod'];
+		} else {
+			$this->list_mod = $list_mod ? $list_mod : $default['de_type'.$this->type.'_list_mod'];
+		}
+	}
+
+	// 몇줄을 노출할지를 사용한다.
+	// 특별히 설정하지 않는 경우 상품유형을 사용하는 경우는 쇼핑몰설정 값을 그대로 따릅니다.
+	function set_list_row($list_row) {
+		global $default;
+		if ($this->is_mobile) {
+			$this->list_row = $list_row ? $list_row : $default['de_mobile_type'.$this->type.'_list_row'];
+		} else {
+			$this->list_row = $list_row ? $list_row : $default['de_type'.$this->type.'_list_row'];
+		}
+		if (!$this->list_row)
+			$this->list_row = 1;
+	}
+
+	// 노출이미지(썸네일생성)의 폭, 높이를 설정합니다. 높이를 0 으로 설정하는 경우 쎰네일 비율에 따릅니다.
+	// 특별히 설정하지 않는 경우 상품유형을 사용하는 경우는 쇼핑몰설정 값을 그대로 따릅니다.
+	function set_img_size($img_width, $img_height=0) {
+		global $default;
+		if ($this->is_mobile) {
+			$this->img_width = $img_width ? $img_width : $default['de_mobile_type'.$this->type.'_img_width'];
+			$this->img_height = $img_height ? $img_height : $default['de_mobile_type'.$this->type.'_img_height'];
+		} else {
+			$this->img_width = $img_width ? $img_width : $default['de_type'.$this->type.'_img_width'];
+			$this->img_height = $img_height ? $img_height : $default['de_type'.$this->type.'_img_height'];
+		}
+	}
+
+	// 특정 필드만 select 하는 경우에는 필드명을 , 로 구분하여 "field1, field2, field3, ... fieldn" 으로 인수를 넘겨줍니다.
+	function set_fields($str) {
+		$this->fields = $str;
+	}
+
+	// 특정 필드로 정렬을 하는 경우 필드와 정렬순서를 , 로 구분하여 "field1 desc, field2 asc, ... fieldn desc " 으로 인수를 넘겨줍니다.
+	function set_order_by($str) {
+		$this->order_by = $str;
+	}
+
+	// 사용하는 상품외에 모든 상품을 노출하려면 0 을 인수로 넘겨줍니다.
+	function set_use($use) {
+		$this->use = $use;
+	}
+
+	// 모바일로 사용하려는 경우 true 를 인수로 넘겨줍니다.
+	function set_mobile($mobile=true) {
+		$this->is_mobile = $mobile;
+	}
+
+	// 스킨에서 특정 필드를 노출하거나 하지 않게 할수 있습니다.
+	// 가령 소비자가는 처음에 노출되지 않도록 설정되어 있지만 노출을 하려면
+	// ("it_cust_price", true) 와 같이 인수를 넘겨줍니다.
+	// 이때 인수로 넘겨주는 값은 스킨에 정의된 필드만 가능하다는 것입니다.
+	function set_view($field, $view=true) {
+		$this->{"view_".$field} = $view;
+	}
+
+	// anchor 태그에 하이퍼링크를 다른 주소로 걸거나 아예 링크를 걸지 않을 수 있습니다.
+	// 인수를 "" 공백으로 넘기면 링크를 걸지 않습니다.
+	function set_href($href, $auc_href='') {
+		$this->href = $href;
+		$this->auc_href = $auc_href;
+	}
+
+	// ul 태그의 css 를 교체할수 있다. "sct sct_abc" 를 인수로 넘기게 되면
+	// 기존의 ul 태그에 걸린 css 는 무시되며 인수로 넘긴 css 가 사용됩니다.
+	function set_css($css) {
+		$this->css = $css;
+	}
+
+	// 페이지를 노출하기 위해 true 로 설정할때 사용합니다.
+	function set_is_page($is_page) {
+		$this->is_page = $is_page;
+	}
+
+	// select ... limit 의 시작값
+	function set_from_record($from_record) {
+		$this->from_record = $from_record;
+	}
+
+	// 외부에서 쿼리문을 넘겨줄 경우에 담아둡니다.
+	function set_query($query) {
+		$this->query = $query;
+	}
+
+	// class 에 설정된 값으로 최종 실행합니다.
+	function run() {
+
+		global $g5, $config, $member, $default, $sch_que, $sql_auction_item, $mode;
+
+		if ($this->query) {
+
+			$sql = $this->query;
+			$result = sql_query($sql);
+			$this->total_count = @mysql_num_rows($result);
+
+		} else {
+
+			$where = array();
+			if ($this->use) {
+				$where[] = " it_use = '1' ";
+			}
+
+			if ($this->type) {
+				$where[] = " it_type{$this->type} = '1' ";
+			}
+
+			if ($this->order_by) {
+				$sql_order = " order by {$this->order_by} ";
+			}
+
+			$sql_auction_item = str_replace('#상품기본조건#', " AND ac_yn = 'Y' AND	ac_enddate > DATE_ADD(NOW(), INTERVAL -18 HOUR)  ", $sql_auction_item);
+			$it_result = sql_query($sql_auction_item);
+			$sql_limit = " limit " . $this->from_record . " , " . ($this->list_mod * $this->list_row);
+			
+			$sql = $sql_auction_item . $sql_order . $sql_limit;
+			
+			if($mode == 'jhw') {
+				echo "<textarea>".$sql."</textarea>";
+			}
+			$result = sql_query($sql);
+
+			if ($this->is_page) {
+				$this->total_count = mysql_num_rows(sql_query($sql_auction_item));
+			}
+		}
+
+		if ($this->is_mobile) {
+			$file = G5_MSHOP_SKIN_PATH."/{$this->list_skin}";
+		} else {
+			$file = G5_SHOP_SKIN_PATH."/{$this->list_skin}";
+		}
+
+		if ($this->list_skin == "") {
+			return $this->count."번 item_list() 의 스킨파일이 지정되지 않았습니다.";
+		} else if (!file_exists($file)) {
+			return $file." 파일을 찾을 수 없습니다.";
+		} else {
+			ob_start();
+			$list_mod = $this->list_mod;
+			include($file);
+			$content = ob_get_contents();
+			ob_end_clean();
+			return $content;
+		}
+	}
+}
+
+
+
+
+/* 공동구매 상품목록 추출 함수  */
+class group_purchase_list
+{
+	// 상품유형 : 기본적으로 1~5 까지 사용할수 있으며 0 으로 설정하는 경우 상품유형별로 노출하지 않습니다.
+	// 분류나 이벤트로 노출하는 경우 상품유형을 0 으로 설정하면 됩니다.
+	protected $type;
+
+	protected $list_skin;
+	protected $list_mod;
+	protected $list_row;
+	protected $img_width;
+	protected $img_height;
+
+	// 상품상세보기 경로
+	protected $href = "";
+
+	// select 에 사용되는 필드
+	protected $fields = "GP.*,	AC.gc_state AS all_gc_state ";	/* 경매상품정보 + 경매진행여부값 by.JHW */
+
+	// 분류코드로만 사용하는 경우 상품유형($type)을 0 으로 설정하면 됩니다.
+	protected $ca_id = "";
+	protected $ca_id2 = "";
+	protected $ca_id3 = "";
+
+	// 노출순서
+	protected $order_by = "gp_order, gp_id desc";
+
+	// 상품의 이벤트번호를 저장합니다.
+	protected $event = "";
+
+	// 스킨의 기본 css 를 다른것으로 사용하고자 할 경우에 사용합니다.
+	protected $css = "";
+
+	// 상품의 사용여부를 따져 노출합니다. 0 인 경우 모든 상품을 노출합니다.
+	protected $use = 1;
+
+	// 모바일에서 노출하고자 할 경우에 true 로 설정합니다.
+	protected $is_mobile = false;
+
+	// 기본으로 보여지는 필드들
+	protected $view_it_id	= false;	   // 상품코드
+	protected $view_it_img   = true;		// 상품이미지
+	protected $view_gc_state = true;		// 공구진행상태
+	protected $view_it_name  = true;		// 상품명
+	protected $view_it_basic = true;		// 기본설명
+	protected $view_it_price = true;		// 판매가격
+	protected $view_it_cust_price = false;  // 소비자가
+	protected $view_it_icon = false;		// 아이콘
+	protected $view_sns = false;			// SNS
+
+	// 몇번째 class 호출인지를 저장합니다.
+	protected $count = 0;
+
+	// true 인 경우 페이지를 구한다.
+	protected $is_page = false;
+
+	// 페이지 표시를 위하여 총 상품수를 구합니다.
+	public $total_count = 0;
+
+	// sql limit 의 시작 레코드
+	protected $from_record = 0;
+
+	// 외부에서 쿼리문을 넘겨줄 경우에 담아두는 변수
+	protected $query = "";
+
+	// 검색 데이터
+	protected $sch_que = "";
+
+	// 페이지당 리스트 갯수
+	protected $listnum = "";
+
+
+	// $type		: 상품유형 (기본으로 1~5까지 사용)
+	// $list_skin   : 상품리스트를 노출할 스킨을 설정합니다. 스킨위치는 skin/shop/쇼핑몰설정스킨/type??.skin.php
+	// $list_mod	: 1줄에 몇개의 상품을 노출할지를 설정합니다.
+	// $list_row	: 상품을 몇줄에 노출할지를 설정합니다.
+	// $img_width   : 상품이미지의 폭을 설정합니다.
+	// $img_height  : 상품이미지의 높이을 설정합니다. 0 으로 설정하는 경우 썸네일 이미지의 높이는 폭에 비례하여 생성합니다.
+	//function __construct($type=0, $list_skin='', $list_mod='', $list_row='', $img_width='', $img_height=0, $ca_id='') {
+	function __construct($list_skin='', $list_mod='', $list_row='', $img_width='', $img_height=0, $sch_que='', $listnum='') {
+		$this->list_skin  = $list_skin;
+		$this->list_mod   = $list_mod;
+		$this->list_row   = $list_row;
+		$this->img_width  = $img_width;
+		$this->img_height = $img_height;
+		$this->sch_que	= $sch_que;
+		$this->listnum	= $listnum;
+		$this->set_href(G5_SHOP_URL.'/grouppurchase.php?gp_id=');
+		$this->count++;
+	}
+
+	function set_type($type) {
+		$this->type = $type;
+		if ($type) {
+			$this->set_list_skin($list_skin);
+			$this->set_list_mod($list_mod);
+			$this->set_list_row($list_row);
+			$this->set_img_size($img_width);
+		}
+	}
+
+	// 분류코드로 검색을 하고자 하는 경우 아래와 같이 인수를 넘겨줍니다.
+	// 1단계 분류는 (분류코드, 1)
+	// 2단계 분류는 (분류코드, 2)
+	// 3단계 분류는 (분류코드, 3)
+	function set_category($ca_id, $level=1) {
+		if ($level == 2) {
+			$this->ca_id2 = $ca_id;
+		} else if ($level == 3) {
+			$this->ca_id3 = $ca_id;
+		} else {
+			$this->ca_id = $ca_id;
+		}
+	}
+
+	// 이벤트코드를 인수로 넘기게 되면 해당 이벤트에 속한 상품을 노출합니다.
+	function set_event($ev_id) {
+		$this->event = $ev_id;
+	}
+
+	// 리스트 스킨을 바꾸고자 하는 경우에 사용합니다.
+	// 리스트 스킨의 위치는 skin/shop/쇼핑몰설정스킨/type??.skin.php 입니다.
+	// 특별히 설정하지 않는 경우 상품유형을 사용하는 경우는 쇼핑몰설정 값을 그대로 따릅니다.
+	function set_list_skin($list_skin) {
+		global $default;
+		if ($this->is_mobile) {
+			$this->list_skin = $list_skin ? $list_skin : $default['de_mobile_type'.$this->type.'_list_skin'];
+		} else {
+			$this->list_skin = $list_skin ? $list_skin : $default['de_type'.$this->type.'_list_skin'];
+		}
+	}
+
+	// 1줄에 몇개를 노출할지를 사용한다.
+	// 특별히 설정하지 않는 경우 상품유형을 사용하는 경우는 쇼핑몰설정 값을 그대로 따릅니다.
+	function set_list_mod($list_mod) {
+		global $default;
+		if ($this->is_mobile) {
+			$this->list_mod = $list_mod ? $list_mod : $default['de_mobile_type'.$this->type.'_list_mod'];
+		} else {
+			$this->list_mod = $list_mod ? $list_mod : $default['de_type'.$this->type.'_list_mod'];
+		}
+	}
+
+	// 몇줄을 노출할지를 사용한다.
+	// 특별히 설정하지 않는 경우 상품유형을 사용하는 경우는 쇼핑몰설정 값을 그대로 따릅니다.
+	function set_list_row($list_row) {
+		global $default;
+		if ($this->is_mobile) {
+			$this->list_row = $list_row ? $list_row : $default['de_mobile_type'.$this->type.'_list_row'];
+		} else {
+			$this->list_row = $list_row ? $list_row : $default['de_type'.$this->type.'_list_row'];
+		}
+		if (!$this->list_row)
+			$this->list_row = 1;
+	}
+
+	// 노출이미지(썸네일생성)의 폭, 높이를 설정합니다. 높이를 0 으로 설정하는 경우 쎰네일 비율에 따릅니다.
+	// 특별히 설정하지 않는 경우 상품유형을 사용하는 경우는 쇼핑몰설정 값을 그대로 따릅니다.
+	function set_img_size($img_width, $img_height=0) {
+		global $default;
+		if ($this->is_mobile) {
+			$this->img_width = $img_width ? $img_width : $default['de_mobile_type'.$this->type.'_img_width'];
+			$this->img_height = $img_height ? $img_height : $default['de_mobile_type'.$this->type.'_img_height'];
+		} else {
+			$this->img_width = $img_width ? $img_width : $default['de_type'.$this->type.'_img_width'];
+			$this->img_height = $img_height ? $img_height : $default['de_type'.$this->type.'_img_height'];
+		}
+	}
+
+	// 특정 필드만 select 하는 경우에는 필드명을 , 로 구분하여 "field1, field2, field3, ... fieldn" 으로 인수를 넘겨줍니다.
+	function set_fields($str) {
+		$this->fields = $str;
+	}
+
+	// 특정 필드로 정렬을 하는 경우 필드와 정렬순서를 , 로 구분하여 "field1 desc, field2 asc, ... fieldn desc " 으로 인수를 넘겨줍니다.
+	function set_order_by($str) {
+		$this->order_by = $str;
+	}
+
+	// 사용하는 상품외에 모든 상품을 노출하려면 0 을 인수로 넘겨줍니다.
+	function set_use($use) {
+		$this->use = $use;
+	}
+
+	// 모바일로 사용하려는 경우 true 를 인수로 넘겨줍니다.
+	function set_mobile($mobile=true) {
+		$this->is_mobile = $mobile;
+	}
+
+	// 스킨에서 특정 필드를 노출하거나 하지 않게 할수 있습니다.
+	// 가령 소비자가는 처음에 노출되지 않도록 설정되어 있지만 노출을 하려면
+	// ("it_cust_price", true) 와 같이 인수를 넘겨줍니다.
+	// 이때 인수로 넘겨주는 값은 스킨에 정의된 필드만 가능하다는 것입니다.
+	function set_view($field, $view=true) {
+		$this->{"view_".$field} = $view;
+	}
+
+	// anchor 태그에 하이퍼링크를 다른 주소로 걸거나 아예 링크를 걸지 않을 수 있습니다.
+	// 인수를 "" 공백으로 넘기면 링크를 걸지 않습니다.
+	function set_href($href) {
+		$this->href = $href;
+	}
+
+	// ul 태그의 css 를 교체할수 있다. "sct sct_abc" 를 인수로 넘기게 되면
+	// 기존의 ul 태그에 걸린 css 는 무시되며 인수로 넘긴 css 가 사용됩니다.
+	function set_css($css) {
+		$this->css = $css;
+	}
+
+	// 페이지를 노출하기 위해 true 로 설정할때 사용합니다.
+	function set_is_page($is_page) {
+		$this->is_page = $is_page;
+	}
+
+	// select ... limit 의 시작값
+	function set_from_record($from_record) {
+		$this->from_record = $from_record;
+	}
+
+	// 외부에서 쿼리문을 넘겨줄 경우에 담아둡니다.
+	function set_query($query) {
+		$this->query = $query;
+	}
+
+	// class 에 설정된 값으로 최종 실행합니다.
+	function run() {
+
+		global $g5, $config, $member, $default, $sch_que, $listnum;
+		global $개인구매코드, $sql_product;
+		global $개발자,$is_admin;		/* 최고관리자일경우에만 임시로 공구신청가능 버튼 오픈 */
+
+
+		if ($this->query) {
+			$sql = $this->query;
+			$result = sql_query($sql);
+			$this->total_count = @mysql_num_rows($result);
+
+		} else {
+
+			$where = array();
+
+			//품목 사용여부값
+//			if ($this->use && substr($_GET[ca_id],0,2) != 'CT') {
+			//$where[] = " T.gp_use = '1' ";
+//			}
+
+			//$where[] = " ( IF( (GP.jaego - IFNULL(CO.CO_SUM,0)) > 0, (GP.jaego - IFNULL(CO.CO_SUM,0)), 0) != 0 && IF( (GP.jaego - IFNULL(PB.PB_SUM,0)) > 0, (GP.jaego - IFNULL(PB.PB_SUM,0)), 0) != 0) ";
+			//개별공구 진행중일경우 별도 공구진행중인 상품코드는 노출안되게,  코인용품(CTSS)은 예외
+			if($개인구매코드) {
+
+				$find_sql = "	SELECT	VG.links_itid AS it_id
+											FROM		(	SELECT	*
+																FROM		gp_info
+																ORDER BY reg_date DESC
+															) GI
+															LEFT JOIN v_gpinfo_links VG ON (VG.gpcode = GI.gpcode)
+															LEFT JOIN g5_shop_group_purchase GP ON (GP.gp_id = VG.links_itid)
+											WHERE		GI.stats IN ('00','10','20')
+											AND			GI.start_date <= NOW()
+											AND			GI.end_date >= NOW()
+											AND			GP.ca_id != 'CTSS'
+											ORDER BY GI.gpcode DESC
+				";
+				$find_result = sql_query($find_sql);
+				$find_cnt = mysql_num_rows($find_result);
+
+				//최소 한개 이상이면 제외코드 삽입
+				if($find_cnt > 0) {
+
+					while($arr = mysql_fetch_array($find_result)) {
+						$제외코드 .= "'$arr[it_id]',";
+					}
+					$제외코드 = substr($제외코드, 0, strlen($제외코드)-1);
+					$inWhere[] = " gp_id NOT IN ($제외코드) ";
+				}
+			}
+
+
+			if ($this->ca_id) {
+				$where_ca_id = array();
+				if ($this->ca_id) {
+					$where_ca_id[] = " ca_id like '{$this->ca_id}%' ";
+				}
+				$inWhere[] = implode(" or ", $where_ca_id);
+			}
+
+
+			if($_GET[mode] == 'jhw') {
+				echo "<textarea>this->caid: ".$this->ca_id." inWhere:".$inWhere."</textarea>";
+			}
+
+
+
+			if ($this->order_by) {
+				$sql_order = " order by {$this->order_by} ";
+			}
+
+			if($listnum){
+				$listnum = $listnum;
+			}else{
+				$listnum = ($this->list_mod * $this->list_row);
+			}
+
+
+			/* 코투상품 예외처리 */
+			if( substr($_GET[ca_id],0,2) != 'CT' ) {
+				$상품가격컬럼 = 'GP.gp_price  AS po_cash_price,';
+				$outWhere[] = " 1=1 ";
+			}
+			else {
+				$상품가격컬럼 = 'PB.PB_cash_price  AS po_cash_price,';
+
+				//0원인 상품은 노출 안되게,	재고없는 상품은 노출 안되게 수정
+				$outWhere[] = " IF( (T.gp_realprice + T.gp_fixprice + T.gp_price) > 0,TRUE,FALSE) ";
+				$outWhere[] = " T.real_jaego > 0 ";
+			}
+
+
+			//제한은 마지막에 걸어서
+			$sql_inWhere = " AND " . implode(" and ", $inWhere) . $sch_que;
+			$sql_outWhere = " WHERE		" . implode(" and ", $outWhere) . $sch_que;
+
+			$sql_limit = " LIMIT " . $this->from_record . " , " . $listnum;
+
+
+			$sql_product = str_replace('#상품기본조건#', $sql_inWhere, $sql_product);
+
+			/*
+			 CO.CO_SUM : 모든공구와 개별주문등등, 지금까지 총 주문수량  빠른배송상품은 공구, 개별주문의 주문량을 빼줘야됨
+			 PB.PB_SUM : 공구에 한정된 총주문수량. 딜러업체의 재고값은 우리가 발주할경우 감소하나 딜러업체가 추가입고시 늘어날수 있음.
+			 누적주문량을 빼선 안되고 현재 진행중인 주문량만 빼줘야함
+			 */
+			$sql_select = "	SELECT	T.*,
+															IF(T.real_jaego > 0,T.real_jaego,0) AS real_jaego,
+															CASE
+																WHEN	T.ca_id LIKE 'CT%' || T.ca_id = 'GP'	THEN
+																	CASE
+																		WHEN	T.gp_price_type = 'Y'	THEN	/*실시간스팟시세*/
+																			CEIL(T.gp_realprice / 100) * 100
+																		WHEN	T.gp_price_type = 'N'	THEN	/*고정가달러환율*/
+																			CEIL(T.gp_fixprice / 100) * 100
+																		WHEN	T.gp_price_type = 'W'	THEN	/*원화적용*/
+																			T.gp_price
+																		ELSE
+																			0
+																	END
+																ELSE
+																	CEIL(IFNULL(T.po_cash_price,T.gp_price) / 100) * 100
+															END po_cash_price
+			";
+			$sql_common = "	FROM		$sql_product	$sql_outWhere	";
+
+			$sql = $sql_select . $sql_common . $sql_where . $sql_order . $sql_limit;
+
+			if($_GET[mode] == 'jhw') {
+				echo "<textarea>".$sql."</textarea><br><br><br><br>";
+			}
+
+
+			$result = sql_query($sql);
+
+			if ($this->is_page) {
+				$sql2 = " select count(*) as cnt " . $sql_common . $sql_where;
+				$row2 = sql_fetch($sql2);
+				$this->total_count = $row2['cnt'];
+			}
+
+		}
+
+		/* TM*/
+		if ($this->is_mobile) {
+			$file = G5_MSHOP_SKIN_PATH."/{$this->list_skin}";
+		} else {
+			$file = G5_SHOP_SKIN_PATH."/{$this->list_skin}";
+		}
+
+		if ($this->list_skin == "") {
+			return $this->count."번 item_list() 의 스킨파일이 지정되지 않았습니다.";
+		} else if (!file_exists($file)) {
+			return $file." 파일을 찾을 수 없습니다.";
+		} else {
+			ob_start();
+			$list_mod = $this->list_mod;	/* 노출되는 상품개수 */
+			include($file);
+			$content = ob_get_contents();
+			ob_end_clean();
+			return $content;
+		}
+	}
+}
+
+
+/**********************************************************************************************************/
+
+
+
+
 
 
 // 장바구니 건수 검사
@@ -3957,396 +4641,6 @@ function getGroupPurchaseBasicPrice1($gp_id)
 
 
 
-/* 공동구매 상품목록 추출 함수  */
-class group_purchase_list
-{
-	// 상품유형 : 기본적으로 1~5 까지 사용할수 있으며 0 으로 설정하는 경우 상품유형별로 노출하지 않습니다.
-	// 분류나 이벤트로 노출하는 경우 상품유형을 0 으로 설정하면 됩니다.
-	protected $type;
-
-	protected $list_skin;
-	protected $list_mod;
-	protected $list_row;
-	protected $img_width;
-	protected $img_height;
-
-	// 상품상세보기 경로
-	protected $href = "";
-
-	// select 에 사용되는 필드
-	protected $fields = "GP.*,	AC.gc_state AS all_gc_state ";	/* 경매상품정보 + 경매진행여부값 by.JHW */
-
-	// 분류코드로만 사용하는 경우 상품유형($type)을 0 으로 설정하면 됩니다.
-	protected $ca_id = "";
-	protected $ca_id2 = "";
-	protected $ca_id3 = "";
-
-	// 노출순서
-	protected $order_by = "gp_order, gp_id desc";
-
-	// 상품의 이벤트번호를 저장합니다.
-	protected $event = "";
-
-	// 스킨의 기본 css 를 다른것으로 사용하고자 할 경우에 사용합니다.
-	protected $css = "";
-
-	// 상품의 사용여부를 따져 노출합니다. 0 인 경우 모든 상품을 노출합니다.
-	protected $use = 1;
-
-	// 모바일에서 노출하고자 할 경우에 true 로 설정합니다.
-	protected $is_mobile = false;
-
-	// 기본으로 보여지는 필드들
-	protected $view_it_id	= false;	   // 상품코드
-	protected $view_it_img   = true;		// 상품이미지
-	protected $view_gc_state = true;		// 공구진행상태
-	protected $view_it_name  = true;		// 상품명
-	protected $view_it_basic = true;		// 기본설명
-	protected $view_it_price = true;		// 판매가격
-	protected $view_it_cust_price = false;  // 소비자가
-	protected $view_it_icon = false;		// 아이콘
-	protected $view_sns = false;			// SNS
-
-	// 몇번째 class 호출인지를 저장합니다.
-	protected $count = 0;
-
-	// true 인 경우 페이지를 구한다.
-	protected $is_page = false;
-
-	// 페이지 표시를 위하여 총 상품수를 구합니다.
-	public $total_count = 0;
-
-	// sql limit 의 시작 레코드
-	protected $from_record = 0;
-
-	// 외부에서 쿼리문을 넘겨줄 경우에 담아두는 변수
-	protected $query = "";
-
-	// 검색 데이터
-	protected $sch_que = "";
-
-	// 페이지당 리스트 갯수
-	protected $listnum = "";
-
-
-	// $type		: 상품유형 (기본으로 1~5까지 사용)
-	// $list_skin   : 상품리스트를 노출할 스킨을 설정합니다. 스킨위치는 skin/shop/쇼핑몰설정스킨/type??.skin.php
-	// $list_mod	: 1줄에 몇개의 상품을 노출할지를 설정합니다.
-	// $list_row	: 상품을 몇줄에 노출할지를 설정합니다.
-	// $img_width   : 상품이미지의 폭을 설정합니다.
-	// $img_height  : 상품이미지의 높이을 설정합니다. 0 으로 설정하는 경우 썸네일 이미지의 높이는 폭에 비례하여 생성합니다.
-	//function __construct($type=0, $list_skin='', $list_mod='', $list_row='', $img_width='', $img_height=0, $ca_id='') {
-	function __construct($list_skin='', $list_mod='', $list_row='', $img_width='', $img_height=0, $sch_que='', $listnum='') {
-		$this->list_skin  = $list_skin;
-		$this->list_mod   = $list_mod;
-		$this->list_row   = $list_row;
-		$this->img_width  = $img_width;
-		$this->img_height = $img_height;
-		$this->sch_que	= $sch_que;
-		$this->listnum	= $listnum;
-		$this->set_href(G5_SHOP_URL.'/grouppurchase.php?gp_id=');
-		$this->count++;
-	}
-
-	function set_type($type) {
-		$this->type = $type;
-		if ($type) {
-			$this->set_list_skin($list_skin);
-			$this->set_list_mod($list_mod);
-			$this->set_list_row($list_row);
-			$this->set_img_size($img_width);
-		}
-	}
-
-	// 분류코드로 검색을 하고자 하는 경우 아래와 같이 인수를 넘겨줍니다.
-	// 1단계 분류는 (분류코드, 1)
-	// 2단계 분류는 (분류코드, 2)
-	// 3단계 분류는 (분류코드, 3)
-	function set_category($ca_id, $level=1) {
-		if ($level == 2) {
-			$this->ca_id2 = $ca_id;
-		} else if ($level == 3) {
-			$this->ca_id3 = $ca_id;
-		} else {
-			$this->ca_id = $ca_id;
-		}
-	}
-
-	// 이벤트코드를 인수로 넘기게 되면 해당 이벤트에 속한 상품을 노출합니다.
-	function set_event($ev_id) {
-		$this->event = $ev_id;
-	}
-
-	// 리스트 스킨을 바꾸고자 하는 경우에 사용합니다.
-	// 리스트 스킨의 위치는 skin/shop/쇼핑몰설정스킨/type??.skin.php 입니다.
-	// 특별히 설정하지 않는 경우 상품유형을 사용하는 경우는 쇼핑몰설정 값을 그대로 따릅니다.
-	function set_list_skin($list_skin) {
-		global $default;
-		if ($this->is_mobile) {
-			$this->list_skin = $list_skin ? $list_skin : $default['de_mobile_type'.$this->type.'_list_skin'];
-		} else {
-			$this->list_skin = $list_skin ? $list_skin : $default['de_type'.$this->type.'_list_skin'];
-		}
-	}
-
-	// 1줄에 몇개를 노출할지를 사용한다.
-	// 특별히 설정하지 않는 경우 상품유형을 사용하는 경우는 쇼핑몰설정 값을 그대로 따릅니다.
-	function set_list_mod($list_mod) {
-		global $default;
-		if ($this->is_mobile) {
-			$this->list_mod = $list_mod ? $list_mod : $default['de_mobile_type'.$this->type.'_list_mod'];
-		} else {
-			$this->list_mod = $list_mod ? $list_mod : $default['de_type'.$this->type.'_list_mod'];
-		}
-	}
-
-	// 몇줄을 노출할지를 사용한다.
-	// 특별히 설정하지 않는 경우 상품유형을 사용하는 경우는 쇼핑몰설정 값을 그대로 따릅니다.
-	function set_list_row($list_row) {
-		global $default;
-		if ($this->is_mobile) {
-			$this->list_row = $list_row ? $list_row : $default['de_mobile_type'.$this->type.'_list_row'];
-		} else {
-			$this->list_row = $list_row ? $list_row : $default['de_type'.$this->type.'_list_row'];
-		}
-		if (!$this->list_row)
-			$this->list_row = 1;
-	}
-
-	// 노출이미지(썸네일생성)의 폭, 높이를 설정합니다. 높이를 0 으로 설정하는 경우 쎰네일 비율에 따릅니다.
-	// 특별히 설정하지 않는 경우 상품유형을 사용하는 경우는 쇼핑몰설정 값을 그대로 따릅니다.
-	function set_img_size($img_width, $img_height=0) {
-		global $default;
-		if ($this->is_mobile) {
-			$this->img_width = $img_width ? $img_width : $default['de_mobile_type'.$this->type.'_img_width'];
-			$this->img_height = $img_height ? $img_height : $default['de_mobile_type'.$this->type.'_img_height'];
-		} else {
-			$this->img_width = $img_width ? $img_width : $default['de_type'.$this->type.'_img_width'];
-			$this->img_height = $img_height ? $img_height : $default['de_type'.$this->type.'_img_height'];
-		}
-	}
-
-	// 특정 필드만 select 하는 경우에는 필드명을 , 로 구분하여 "field1, field2, field3, ... fieldn" 으로 인수를 넘겨줍니다.
-	function set_fields($str) {
-		$this->fields = $str;
-	}
-
-	// 특정 필드로 정렬을 하는 경우 필드와 정렬순서를 , 로 구분하여 "field1 desc, field2 asc, ... fieldn desc " 으로 인수를 넘겨줍니다.
-	function set_order_by($str) {
-		$this->order_by = $str;
-	}
-
-	// 사용하는 상품외에 모든 상품을 노출하려면 0 을 인수로 넘겨줍니다.
-	function set_use($use) {
-		$this->use = $use;
-	}
-
-	// 모바일로 사용하려는 경우 true 를 인수로 넘겨줍니다.
-	function set_mobile($mobile=true) {
-		$this->is_mobile = $mobile;
-	}
-
-	// 스킨에서 특정 필드를 노출하거나 하지 않게 할수 있습니다.
-	// 가령 소비자가는 처음에 노출되지 않도록 설정되어 있지만 노출을 하려면
-	// ("it_cust_price", true) 와 같이 인수를 넘겨줍니다.
-	// 이때 인수로 넘겨주는 값은 스킨에 정의된 필드만 가능하다는 것입니다.
-	function set_view($field, $view=true) {
-		$this->{"view_".$field} = $view;
-	}
-
-	// anchor 태그에 하이퍼링크를 다른 주소로 걸거나 아예 링크를 걸지 않을 수 있습니다.
-	// 인수를 "" 공백으로 넘기면 링크를 걸지 않습니다.
-	function set_href($href) {
-		$this->href = $href;
-	}
-
-	// ul 태그의 css 를 교체할수 있다. "sct sct_abc" 를 인수로 넘기게 되면
-	// 기존의 ul 태그에 걸린 css 는 무시되며 인수로 넘긴 css 가 사용됩니다.
-	function set_css($css) {
-		$this->css = $css;
-	}
-
-	// 페이지를 노출하기 위해 true 로 설정할때 사용합니다.
-	function set_is_page($is_page) {
-		$this->is_page = $is_page;
-	}
-
-	// select ... limit 의 시작값
-	function set_from_record($from_record) {
-		$this->from_record = $from_record;
-	}
-
-	// 외부에서 쿼리문을 넘겨줄 경우에 담아둡니다.
-	function set_query($query) {
-		$this->query = $query;
-	}
-
-	// class 에 설정된 값으로 최종 실행합니다.
-	function run() {
-
-		global $g5, $config, $member, $default, $sch_que, $listnum;
-		global $개인구매코드, $sql_product;
-		global $개발자,$is_admin;		/* 최고관리자일경우에만 임시로 공구신청가능 버튼 오픈 */
-
-
-		if ($this->query) {
-			$sql = $this->query;
-			$result = sql_query($sql);
-			$this->total_count = @mysql_num_rows($result);
-
-		} else {
-
-			$where = array();
-
-			//품목 사용여부값
-//			if ($this->use && substr($_GET[ca_id],0,2) != 'CT') {
-				//$where[] = " T.gp_use = '1' ";
-//			}
-			
-			//$where[] = " ( IF( (GP.jaego - IFNULL(CO.CO_SUM,0)) > 0, (GP.jaego - IFNULL(CO.CO_SUM,0)), 0) != 0 && IF( (GP.jaego - IFNULL(PB.PB_SUM,0)) > 0, (GP.jaego - IFNULL(PB.PB_SUM,0)), 0) != 0) ";
-			//개별공구 진행중일경우 별도 공구진행중인 상품코드는 노출안되게,  코인용품(CTSS)은 예외
-			if($개인구매코드) {
-
-				$find_sql = "	SELECT	VG.links_itid AS it_id
-											FROM		(	SELECT	*
-																FROM		gp_info
-																ORDER BY reg_date DESC
-															) GI
-															LEFT JOIN v_gpinfo_links VG ON (VG.gpcode = GI.gpcode)
-															LEFT JOIN g5_shop_group_purchase GP ON (GP.gp_id = VG.links_itid)
-											WHERE		GI.stats IN ('00','10','20')
-											AND			GI.start_date <= NOW()
-											AND			GI.end_date >= NOW()
-											AND			GP.ca_id != 'CTSS'
-											ORDER BY GI.gpcode DESC
-				";
-				$find_result = sql_query($find_sql);
-				$find_cnt = mysql_num_rows($find_result);
-
-				//최소 한개 이상이면 제외코드 삽입
-				if($find_cnt > 0) {
-
-					while($arr = mysql_fetch_array($find_result)) {
-						$제외코드 .= "'$arr[it_id]',";
-					}
-					$제외코드 = substr($제외코드, 0, strlen($제외코드)-1);
-					$inWhere[] = " gp_id NOT IN ($제외코드) ";
-				}
-			}
-
-
-			if ($this->ca_id) {
-				$where_ca_id = array();
-				if ($this->ca_id) {
-					$where_ca_id[] = " ca_id like '{$this->ca_id}%' ";
-				}
-				$inWhere[] = implode(" or ", $where_ca_id);
-			}
-			
-
-			if($_GET[mode] == 'jhw') {
-				echo "<textarea>this->caid: ".$this->ca_id." inWhere:".$inWhere."</textarea>";
-			}
-
-			
-
-			if ($this->order_by) {
-				$sql_order = " order by {$this->order_by} ";
-			}
-
-			if($listnum){
-				$listnum = $listnum;
-			}else{
-				$listnum = ($this->list_mod * $this->list_row);
-			}
-
-
-			/* 코투상품 예외처리 */
-			if( substr($_GET[ca_id],0,2) != 'CT' ) {
-				$상품가격컬럼 = 'GP.gp_price  AS po_cash_price,';
-				$outWhere[] = " 1=1 ";
-			}
-			else {
-				$상품가격컬럼 = 'PB.PB_cash_price  AS po_cash_price,';
-				
-				//0원인 상품은 노출 안되게,	재고없는 상품은 노출 안되게 수정
-				$outWhere[] = " IF( (T.gp_realprice + T.gp_fixprice + T.gp_price) > 0,TRUE,FALSE) ";
-				$outWhere[] = " T.real_jaego > 0 ";
-			}
-			
-
-			//제한은 마지막에 걸어서
-			$sql_inWhere = " AND " . implode(" and ", $inWhere) . $sch_que;
-			$sql_outWhere = " WHERE		" . implode(" and ", $outWhere) . $sch_que;
-
-			$sql_limit = " LIMIT " . $this->from_record . " , " . $listnum;
-			
-			
-			$sql_product = str_replace('#상품기본조건#', $sql_inWhere, $sql_product);
-
-			/*
-			 CO.CO_SUM : 모든공구와 개별주문등등, 지금까지 총 주문수량  빠른배송상품은 공구, 개별주문의 주문량을 빼줘야됨
-			 PB.PB_SUM : 공구에 한정된 총주문수량. 딜러업체의 재고값은 우리가 발주할경우 감소하나 딜러업체가 추가입고시 늘어날수 있음.
-			 누적주문량을 빼선 안되고 현재 진행중인 주문량만 빼줘야함
-			 */
-			$sql_select = "	SELECT	T.*,
-															IF(T.real_jaego > 0,T.real_jaego,0) AS real_jaego,
-															CASE
-																WHEN	T.ca_id LIKE 'CT%' || T.ca_id = 'GP'	THEN
-																	CASE
-																		WHEN	T.gp_price_type = 'Y'	THEN	/*실시간스팟시세*/
-																			CEIL(T.gp_realprice / 100) * 100
-																		WHEN	T.gp_price_type = 'N'	THEN	/*고정가달러환율*/
-																			CEIL(T.gp_fixprice / 100) * 100
-																		WHEN	T.gp_price_type = 'W'	THEN	/*원화적용*/
-																			T.gp_price
-																		ELSE
-																			0
-																	END
-																ELSE
-																	CEIL(IFNULL(T.po_cash_price,T.gp_price) / 100) * 100
-															END po_cash_price
-			";
-			$sql_common = "	FROM		$sql_product	$sql_outWhere	";
-
-			$sql = $sql_select . $sql_common . $sql_where . $sql_order . $sql_limit;
-
-			if($_GET[mode] == 'jhw') {
-				echo "<textarea>".$sql."</textarea><br><br><br><br>";
-			}
-
-
-			$result = sql_query($sql);
-
-			if ($this->is_page) {
-				$sql2 = " select count(*) as cnt " . $sql_common . $sql_where;
-				$row2 = sql_fetch($sql2);
-				$this->total_count = $row2['cnt'];
-			}
-
-		}
-
-			/* TM*/
-		if ($this->is_mobile) {
-			$file = G5_MSHOP_SKIN_PATH."/{$this->list_skin}";
-		} else {
-			$file = G5_SHOP_SKIN_PATH."/{$this->list_skin}";
-		}
-
-		if ($this->list_skin == "") {
-			return $this->count."번 item_list() 의 스킨파일이 지정되지 않았습니다.";
-		} else if (!file_exists($file)) {
-			return $file." 파일을 찾을 수 없습니다.";
-		} else {
-			ob_start();
-			$list_mod = $this->list_mod;	/* 노출되는 상품개수 */
-			include($file);
-			$content = ob_get_contents();
-			ob_end_clean();
-			return $content;
-		}
-	}
-}
 
 
 ?>

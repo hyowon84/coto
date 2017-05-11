@@ -270,61 +270,62 @@ if(!defined('G5_IS_ADMIN') && !$is_admin) include_once(G5_PATH.'/analyticstracki
 
 <nav id="mobile-menu">
 	<ul>
+		<li class="depth1">
+			<span onclick="document.location.href='<?=G5_SHOP_URL?>/auclist.php'" style="color:#56ccc8">오늘의 경매</span>
+		</li>
+		
 		<li class="store depth1">
-			<span>공동구매</span>
-			<!-- 모바일 화면 -->
+			<span style="color:#56ccc8">진행중인 공동구매</span>
 			<ul>
-				<li>
-					<span style="color:#56ccc8">진행중인 공동구매</span>
-					<ul>
-						<?=createGpCategoryMenu();?>
-					</ul>
-				</li>
-				<li>
-					<span style="color:#56ccc8">코인스투데이</span>
-					<ul>
-						<?=getCotoCategory()?>
-					</ul>
-				</li>
-
-				<?
-				/*
-				?>
-			  <li>
-					<span style="color:#56ccc8">개별오더신청</span>
-					<ul>
-					  <li><a href="/shop/gplist.php?ca_id=AP">APMEX</a></li>
-					  <li><a href="/shop/gplist.php?ca_id=GV">GAINESVILLE</a></li>
-					  <li><a href="/shop/gplist.php?ca_id=MC">MCM</a></li>
-					  <li><a href="/shop/gplist.php?ca_id=PM">PARADISE MINT</a></li>
-					  <li><a href="/shop/gplist.php?ca_id=OD">OTHER DEALER</a></li>
-					  <!-- li><a href="/shop/gplist.php?ca_id=SC">SCOTTS DALE</a></li-->
-					</ul>
-				</li>
-				
-				<?
-				*/
-				?>
-				
-				<!-- 1차 오픈에서 제외
-				<li><span>구매대행</span>
-					<ul>
-						<li><a href="">EBAY</a></li>
-						<li><a href="">AMAZON</a></li>
-					</ul>
-				</li>
-				<li><span>배송대행</span>
-					<ul>
-						<li><a href="">신청하기</a></li>
-					</ul>
-				</li>
-				-->
-				<li>
-				<!--<li><a href="">위탁판매대행</a></li>-->
-					<a href="/sec_lock.php">실물투자 컨설팅 & 보안금고</a>
-				</li>
+				<?=createGpCategoryMenu();?>
 			</ul>
 		</li>
+
+		<li class="store depth1">
+			<span style="color:#56ccc8">코인스투데이</span>
+			<ul>
+				<?=getCotoCategory()?>
+			</ul>
+		</li>
+
+		<li>
+			<!--<li><a href="">위탁판매대행</a></li>-->
+			<a href="/sec_lock.php">실물투자 컨설팅 & 보안금고</a>
+		</li>
+
+		<?
+		/*
+		?>
+		<li>
+			<span style="color:#56ccc8">개별오더신청</span>
+			<ul>
+				<li><a href="/shop/gplist.php?ca_id=AP">APMEX</a></li>
+				<li><a href="/shop/gplist.php?ca_id=GV">GAINESVILLE</a></li>
+				<li><a href="/shop/gplist.php?ca_id=MC">MCM</a></li>
+				<li><a href="/shop/gplist.php?ca_id=PM">PARADISE MINT</a></li>
+				<li><a href="/shop/gplist.php?ca_id=OD">OTHER DEALER</a></li>
+				<!-- li><a href="/shop/gplist.php?ca_id=SC">SCOTTS DALE</a></li-->
+			</ul>
+		</li>
+		
+		<?
+		*/
+		?>
+
+		<!-- 1차 오픈에서 제외
+		<li><span>구매대행</span>
+			<ul>
+				<li><a href="">EBAY</a></li>
+				<li><a href="">AMAZON</a></li>
+			</ul>
+		</li>
+		<li><span>배송대행</span>
+			<ul>
+				<li><a href="">신청하기</a></li>
+			</ul>
+		</li>
+		-->
+		
 		<?
 		/*
 		<li class="depth1 order" style=''>

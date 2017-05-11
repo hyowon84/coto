@@ -56,8 +56,10 @@ if($mode == 'mblist') {
 																							SUM(CL.it_qty) AS SUM_QTY,
 																							SUM(CL.it_qty * CL.it_org_price) AS SUM_TOTAL
 																			FROM		clay_order CL
+																							LEFT JOIN gp_info GI ON (GI.gpcode = CL.gpcode)
 																			WHERE		CL.stats IN (15,20,22,25)
 																			AND			CL.gpcode IN ('QUICK','AUCTION')
+																			AND			GI.gpcode_name LIKE '%릴레이%'
 																			GROUP BY CL.hphone, CL.clay_id
 													) Q1 ON (Q1.hphone = T.hphone AND Q1.mb_nick = T.mb_nick) /* 퀵주문 건수, 총액 */
 													LEFT JOIN (
@@ -76,8 +78,9 @@ if($mode == 'mblist') {
 																													FROM		v_invoice_cnt T
 																																	LEFT JOIN v_invoice_cnt40 T40 ON (T40.gpcode = T.gpcode AND T40.iv_it_id = T.iv_it_id)
 																							)	IV ON (IV.gpcode = CL.gpcode AND IV.iv_it_id = CL.it_id)
+																							
 																			WHERE		CL.stats IN (20,22,25)
-																			AND			IV.CNT <= IV.CNT_40
+																			AND			IV.CNT <= IV.CNT_40 
 																			GROUP BY CL.hphone, CL.clay_id
 													) S1 ON (S1.hphone = T.hphone AND S1.mb_nick = T.mb_nick) /* 발송가능 건수, 총액 */
 													LEFT JOIN (	SELECT	DISTINCT

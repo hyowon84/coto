@@ -971,6 +971,8 @@ include_once(G5_GOLDSPOT_PATH."/goldspot_search_header.php");
 
 							<!-- PC 화면 -->
 							<ul>
+								<li id="menu_title" style="cursor:pointer" onclick="document.location.href='<?=G5_SHOP_URL?>/auclist.php'">오늘의 경매</li>
+								
 								<li id="menu_title" style="cursor:pointer" onclick="">진행중인 공동구매</li>
 								<?=createGpCategoryMenu();?>
 								<li id="menu_line"><img src="<?=G5_URL?>/img/menu_line.png"></li>
@@ -982,7 +984,6 @@ include_once(G5_GOLDSPOT_PATH."/goldspot_search_header.php");
 
 								<?
 								/*
-
 								<li id="menu_title">개별오더신청</li>
 								<li><a href="<?=G5_SHOP_URL?>/gplist.php?ca_id=AP">APMEX</a></li>
 								<li><a href="<?=G5_SHOP_URL?>/gplist.php?ca_id=GV">GAINSVILLE</a></li>
@@ -1150,8 +1151,15 @@ include_once(G5_GOLDSPOT_PATH."/goldspot_search_header.php");
 
 <div id="container">
 
-		<?if(strpos($_SERVER[REQUEST_URI], "sec_lock.php") !== false){?>
+		<?
+			if(strpos($_SERVER[REQUEST_URI], "sec_lock.php") !== false) {
+		?>
 			<div id="content" style="width:1070px;background:#fff;">
-		<?}else{?>
-			<div id="content" style="width:1070px;">
-		<?}?>
+		<?}
+			else
+			{
+		?>
+			<div id="content" style="">
+		<?
+			}
+?>
