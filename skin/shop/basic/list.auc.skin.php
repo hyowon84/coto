@@ -34,11 +34,7 @@ for ($i=1; $it=sql_fetch_array($result); $i++) {
 	$남은시간 = getLeftTime($it[ac_enddate]);
 
 	//나의입찰액이 최고가인 경우 나의 입찰금액 노출
-	$나의입찰금액 = ($it[MAX_BID_PRICE] == $it[MY_BID_PRICE]) ? "<dl><font color='blue' style='font-size:1.1em; font-weight:bold;'>최고가 입찰중 ".number_format($it[MY_BID_PRICE])."원</font></dl>" : "";
-
-
-
-
+	$나의입찰금액 = ($it[MAX_BID_PRICE] == $it[MY_BID_PRICE]) ? "<font color='blue' style='font-size:1.1em; font-weight:bold;'>최고가 입찰중 ".number_format($it[MY_BID_PRICE])."원</font>" : "&nbsp;";
 	
 	echo "<div class='prdlist_item'>
 						<a href='/shop/auction.php?gp_id=$it[gp_id]'>
@@ -51,8 +47,8 @@ for ($i=1; $it=sql_fetch_array($result); $i++) {
 						<div class='prdlist_btn'>							
 						</div>
 						<div class='prdlist_bottom'>
-							<dl> <dt>현재가 ".number_format($현재가)."원</dt></dt>
-							$나의입찰금액
+							<dl>$나의입찰금액</dl>
+							<dl> <dt>현재가 ".number_format($현재가)."원</dt></dt>							
 							<dl>시세정보 ".number_format($즉시구매가)."원</dt>
 							<dl>종료일 $종료일</dl>
 							<dl>남은시간 $남은시간</dl>
