@@ -5,6 +5,10 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
 
 
 <link rel="stylesheet" href="<?php echo G5_MSHOP_SKIN_URL; ?>/style.css">
+<style>
+.ac_btn1 {margin-bottom: 4px;	font-familiy: 'NanumGothicBold'; background: DEEPSKYBLUE; border: 0px; color: #fff; font-size: 1.2em;	font-weight: 900;	width: 130px;	height: 32px; }
+.ac_btn1:hover {background: skyblue;}
+</style>
 <script type="text/javascript" src="<?=G5_URL?>/js/common_product.js"></script>
 
 <script src="<?=G5_JS_URL?>/imgLiquid.js"></script>
@@ -55,6 +59,7 @@ for ($i=1; $it=sql_fetch_array($result); $i++) {
 						<dl>시세정보 ".number_format($즉시구매가)."원</dt>
 						<dl>종료일 $종료일</dl>
 						<dl>남은시간 $남은시간</dl>
+						<div class='ac_btns'><input type='button' class='ac_btn1' value='입찰하기' onclick=\"openPopup('auction.bid.php?gp_id=<?=$gp_id?>', 'width=544,height=589,directories=no,toolbar=no')\" /></div>
 					</div>
 	";
 	$item_cnt++;

@@ -83,7 +83,6 @@ $(document).ready(function(){
 
 			<dt>종료날짜</dt>
 			<dd><span style="letter-spacing:-1px;"><?=$종료일?> </span></dd>
-			
 		</dl>
 
 		<dl>
