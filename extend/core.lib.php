@@ -953,7 +953,7 @@ function makeHtmlAucPrdList() {
 	
 	//<a href='/shop/auclist.php?gpcode=AUCTION'>오늘의 경매	<font color=red>&nbsp;&nbsp;&nbsp;☜ 전체보기</font><br></a>
 	echo "<div class='prdlist_title cut_text1line'>
-					<a href='/shop/auclist.php?gpcode=AUCTION'>오늘의 경매	<font color=red>&nbsp;&nbsp;&nbsp;☜ 전체보기</font><br></a>
+					<a href='/shop/auclist.php?gpcode=AUCTION'>오늘의 경매<font color=white>&nbsp;&nbsp;&nbsp;☜ 전체보기</font></a>
 				</div>";
 
 

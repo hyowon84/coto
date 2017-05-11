@@ -971,7 +971,7 @@ include_once(G5_GOLDSPOT_PATH."/goldspot_search_header.php");
 
 							<!-- PC 화면 -->
 							<ul>
-								<li id="menu_title" style="cursor:pointer" onclick="document.location.href='<?=G5_SHOP_URL?>/auclist.php'">오늘의 경매</li>
+								<li id="menu_title" style="cursor:pointer" onclick="document.location.href='<?=G5_SHOP_URL?>/auclist.php'">오늘의 경매 <font color=white>&nbsp;&nbsp;&nbsp;☜ 전체보기</font></li>
 								
 								<li id="menu_title" style="cursor:pointer" onclick="">진행중인 공동구매</li>
 								<?=createGpCategoryMenu();?>

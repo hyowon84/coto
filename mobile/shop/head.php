@@ -271,7 +271,7 @@ if(!defined('G5_IS_ADMIN') && !$is_admin) include_once(G5_PATH.'/analyticstracki
 <nav id="mobile-menu">
 	<ul>
 		<li class="depth1">
-			<span onclick="document.location.href='<?=G5_SHOP_URL?>/auclist.php'" style="color:#56ccc8">오늘의 경매</span>
+			<span onclick="document.location.href='<?=G5_SHOP_URL?>/auclist.php'" style="color:#56ccc8">오늘의 경매<font color=white>&nbsp;&nbsp;&nbsp;☜ 전체보기</font></span>
 		</li>
 		
 		<li class="store depth1">
