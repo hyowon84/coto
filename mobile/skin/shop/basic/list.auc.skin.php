@@ -59,7 +59,7 @@ for ($i=1; $it=sql_fetch_array($result); $i++) {
 						<dl>시세정보 ".number_format($즉시구매가)."원</dt>
 						<dl>종료일 $종료일</dl>
 						<dl>남은시간 $남은시간</dl>
-						<div class='ac_btns'><input type='button' class='ac_btn1' value='입찰하기' onclick=\"openPopup('auction.bid.php?gp_id=<?=$gp_id?>', 'width=544,height=589,directories=no,toolbar=no')\" /></div>
+						<div class='ac_btns'><input type='button' class='ac_btn1' value='입찰하기' onclick=\"openPopup('auction.bid.php?gp_id=$it[gp_id]', 'width=544,height=589,directories=no,toolbar=no')\" /></div>
 					</div>
 	";
 	$item_cnt++;
