@@ -45,16 +45,30 @@ global $is_admin;
 
 <table id='bank_excel_tb' border='0'>
 	<tr>
+		<th>(신)공구통장</th>
+		<td><input type='file' name='excelfile3' /></td>
+	</tr>
+	<tr>
 		<th>지출통장</th>
 		<td><input type='file' name='excelfile2' /></td>
 	</tr>
+
 	<tr>
-		<th>공구통장</th>
+		<th>-</th>
+		<td>-</td>
+	</tr>
+	
+	<tr>
+		<th>(구)공구통장</th>
 		<td><input type='file' name='excelfile1' /></td>
 	</tr>
+	
+	
+	
+	
 	<tr>
 		<td colspan='2' height='40' align='center'>
-			<input type="submit" value="입력" /> 
+			<input type="submit" value="입력" />
 		</td>
 	</tr>
 </table>

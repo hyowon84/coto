@@ -15,7 +15,7 @@ function only_number($n)
 }
 
 
-for($z = 1; $z <= 2; $z++) {
+for($z = 1; $z <= 3; $z++) {
 
 	if($_FILES['excelfile'.$z]['tmp_name']) {
 
@@ -63,7 +63,7 @@ for($z = 1; $z <= 2; $z++) {
 		$fail_count = 0;
 		$succ_count = 0;
 
-		for ($i = 2; $i <= $data->sheets[0]['numRows']; $i++) {
+		for ($i = 8; $i <= $data->sheets[0]['numRows']; $i++) {
 			$total_count++;
 
 			$j = 1;
@@ -136,6 +136,8 @@ for($z = 1; $z <= 2; $z++) {
 
 	} //if end
 } //for z=1 end
+
+
 
 if($result) {
 	echo "<script>location.href='/util/bank_list.php';</script>";
