@@ -30,11 +30,12 @@ for ($i=1; $it=sql_fetch_array($result); $i++) {
 	$jaego = ($it[real_jaego] > 0) ? $it[real_jaego] : 0;
 	$현재가 = ($it[MAX_BID_LAST_PRICE]) ? $it[MAX_BID_LAST_PRICE] : $it[ac_startprice];
 	$즉시구매가 = ($it[ac_buyprice]) ? $it[ac_buyprice] : $it[po_cash_price];	//즉구가 설정값이 없으면 실시간시세값으로 설정
-	$종료일 = date("n/j H:i",strtotime($it[ac_enddate]));
-	$남은시간 = getLeftTime($it[ac_enddate]);
+	$종료일 = ($it[ac_yn] == 'Y') ? "종료일 ".date("n/j H:i",strtotime($it[ac_enddate])) : "종료된 경매상품";
+	$남은시간 = ($it[ac_yn] == 'Y') ? "남은시간 ".getLeftTime($it[ac_enddate]) : "";
 
 	//나의입찰액이 최고가인 경우 나의 입찰금액 노출
 	$나의입찰금액 = ($it[MAX_BID_PRICE] == $it[MY_BID_PRICE]) ? "<font color='blue' style='font-size:1.1em; font-weight:bold;'>최고가 입찰중 ".number_format($it[MY_BID_PRICE])."원</font>" : "&nbsp;";
+	$입찰하기버튼 = ($it[ac_yn] == 'Y') ? "<div class='ac_btns'><input type='button' class='ac_btn1' value='입찰하기' onclick=\"openPopup('auction.bid.php?gp_id=$it[gp_id]', 'width=544,height=589,directories=no,toolbar=no')\" /></div>" : "";
 	
 	echo "<div class='prdlist_item'>
 						<a href='/shop/auction.php?gp_id=$it[gp_id]'>
@@ -50,9 +51,9 @@ for ($i=1; $it=sql_fetch_array($result); $i++) {
 							<dl>$나의입찰금액</dl>
 							<dl> <dt>현재가 ".number_format($현재가)."원</dt></dt>							
 							<dl>시세정보 ".number_format($즉시구매가)."원</dt>
-							<dl>종료일 $종료일</dl>
-							<dl>남은시간 $남은시간</dl>
-							<div class='ac_btns'><input type='button' class='ac_btn1' value='입찰하기' onclick=\"openPopup('auction.bid.php?gp_id=$it[gp_id]','width=544,height=589,directories=no,toolbar=no')\" /></div>
+							<dl>$종료일</dl>
+							<dl>$남은시간</dl>
+							$입찰하기버튼							
 						</div>
 					</div>
 		";
