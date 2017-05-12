@@ -47,7 +47,7 @@ if($mode == 'excel') {
 										LEFT JOIN clay_order CL ON (CL.od_id = CI.od_id) 
 						WHERE		(CI.od_id	LIKE	'%$od_id%'
 						OR			CI.clay_id	= '$od_id')
-						AND			CL.stats IN (20,25,30,35)	/* 결제완료, 배송대기중, 직배대기중, 픽업대기중 상태일경우에만 기표지 출력 가능 */
+						AND			CL.stats IN (20,22,23,25,30,35)	/* 결제완료, 통합배송요청, 포장완료, 배송대기중, 직배대기중, 픽업대기중 상태일경우에만 기표지 출력 가능 */
 		";
 		$result = sql_query($sql);
 		$row = mysql_fetch_array($result);

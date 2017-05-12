@@ -79,7 +79,7 @@ if($mode == 'mblist') {
 																																	LEFT JOIN v_invoice_cnt40 T40 ON (T40.gpcode = T.gpcode AND T40.iv_it_id = T.iv_it_id)
 																							)	IV ON (IV.gpcode = CL.gpcode AND IV.iv_it_id = CL.it_id)
 																							
-																			WHERE		CL.stats IN (20,22,25)
+																			WHERE		CL.stats IN (20,22,23,25) /* 결제완료, 통합배송요청, 포장완료, 배송대기중까지만 픽업대기, 직배대기는 배송대상에 포함안함 */
 																			AND			IV.CNT <= IV.CNT_40 
 																			GROUP BY CL.hphone, CL.clay_id
 													) S1 ON (S1.hphone = T.hphone AND S1.mb_nick = T.mb_nick) /* 발송가능 건수, 총액 */
