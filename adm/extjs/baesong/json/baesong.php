@@ -115,7 +115,7 @@ else if($mode == 'orderlist' || $mode == 'shipedlist') {
 	if($od_id) $AND_SQL.=" AND CL.od_id = '$od_id' ";
 
 	if($mode == 'orderlist') {
-		$상태조건 = "15,17,20,22,25,30,35";
+		$상태조건 = "15,17,20,22,23,25,30,35";
 	}
 	if($mode == 'shipedlist') {
 		$상태조건 = "40,50,60";
