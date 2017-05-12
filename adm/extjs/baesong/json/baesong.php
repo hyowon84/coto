@@ -58,8 +58,8 @@ if($mode == 'mblist') {
 																			FROM		clay_order CL
 																							LEFT JOIN gp_info GI ON (GI.gpcode = CL.gpcode)
 																			WHERE		CL.stats IN (15,20,22,25)
-																			AND			CL.gpcode IN ('QUICK','AUCTION')
-																			AND			GI.gpcode_name LIKE '%릴레이%'
+																			AND			( CL.gpcode IN ('QUICK','AUCTION')
+																			OR			GI.gpcode_name LIKE '%릴레이%' )
 																			GROUP BY CL.hphone, CL.clay_id
 													) Q1 ON (Q1.hphone = T.hphone AND Q1.mb_nick = T.mb_nick) /* 퀵주문 건수, 총액 */
 													LEFT JOIN (
