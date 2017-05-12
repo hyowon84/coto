@@ -23,6 +23,7 @@ Ext.define('Ext.store.item.odstats',{
 		{	name:'선배송예정,미결제',	value:'15'	},
 		{	name:'선배송완료,미결제',	value:'17'	},
 		{	name:'통합배송요청',	value:'22'	},
+		{	name:'포장완료',	value:'23'	},
 		{	name:'배송대기',	value:'25'	},
 		{	name:'픽업대기',	value:'35'	},
 		{	name:'직배대기',	value:'30'	},
