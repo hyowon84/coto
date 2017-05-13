@@ -143,9 +143,9 @@ if ($is_admin)
 
 		#$sch_que .= ' AND PO.po_cash_price > 0 ';
 		/*상품목록*/
-		$order_by = "T.ac_yn DESC, T.ac_enddate ASC";
+		$order_by = "T.ac_yn DESC, T.ac_enddate	DESC";
 
-//		$list = new auction_list('list.auc.skin.php', $ca['ca_list_mod'], $ca['ca_list_row'], $ca['ca_img_width'], $ca['ca_img_height'], $sch_que, $listnum);
+//	$list = new auction_list('list.auc.skin.php', $ca['ca_list_mod'], $ca['ca_list_row'], $ca['ca_img_width'], $ca['ca_img_height'], $sch_que, $listnum);
 		$list = new auction_list('list.auc.skin.php', 4, 8, 170, 170, $sch_que, $listnum);
 		$list->set_mobile(true);
 		/* 이벤트 진행중 체크시 카테고리id 해제 */
