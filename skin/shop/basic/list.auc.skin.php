@@ -2,8 +2,9 @@
 if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
 ?>
 
-<link rel="stylesheet" href="<?php echo G5_SHOP_SKIN_URL; ?>/style.css">
+
 <style>
+	#content { width:1100px !important;}
 	.ac_btn1 {margin-bottom: 4px;	font-familiy: 'NanumGothicBold'; background: DEEPSKYBLUE; border: 0px; color: #fff; font-size: 1.2em;	font-weight: 900;	width: 130px;	height: 32px; }
 	.ac_btn1:hover {background: skyblue;}
 </style>

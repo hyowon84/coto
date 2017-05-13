@@ -85,12 +85,12 @@ else
 		<input type="hidden" name="ca_id" value="<?=$ca_id?>">
 	</form>
 
-<?
-$nav_skin = $skin_dir.'/navigation.skin.php';
-if(!is_file($nav_skin))
-	$nav_skin = G5_SHOP_SKIN_PATH.'/navigation.skin.php';
-include $nav_skin;
+<br>
+<div class='prdlist_title cut_text1line'>
+	<font color=red>오늘의 경매상품 목록</font>
+</div>
 
+<?
 //추천상품 카테고리 클릭시에는 숨김처리
 // if($event_yn != 'y')
 if ($is_admin)

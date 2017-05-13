@@ -168,7 +168,7 @@ http://coinstoday.co.kr/img/logo_bottom.png#hd_sch #sch_submit {padding:0 5px;he
 #container:after {display:block;visibility:hidden;clear:both;content:"";z-index:10000}
 #container_title {margin-bottom:20px;font-size:1.2em;font-weight:bold;z-index:10000}
 
-#content { margin:0px auto; margin-top:125px; position:relative; width:1100px;min-height:600px; height:auto !important;height:500px;font-size:1.1em;zoom:1;z-index:0}
+#content { margin:0px auto; margin-top:125px; position:relative; width:1070px;min-height:600px; height:auto !important;height:500px;font-size:1.1em;zoom:1;z-index:0}
 #content:after {display:block;visibility:hidden;clear:both;content:"";z-index:10000}
 
 
