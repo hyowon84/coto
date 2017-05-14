@@ -133,7 +133,7 @@ if ($is_admin)
 
 
 			/*상품목록*/
-			$order_by = "T.ac_yn DESC, T.ac_enddate	DESC";
+			$order_by = "T.ac_yn DESC, T.ac_enddate	ASC";
 			
 			$list = new auction_list('list.auc.skin.php', 4, 8, 170, 170, $sch_que, $listnum);
 			$list->set_is_page(true);
