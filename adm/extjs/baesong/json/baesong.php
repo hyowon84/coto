@@ -159,7 +159,7 @@ else if($mode == 'orderlist' || $mode == 'shipedlist') {
 																	|| IV.CNT <= IV.CNT_40
 																	|| RJ.real_jaego >= GPQTY.GP_QTY
 																	|| RJ.qk_jaego >= GPQTY.GP_QTY
-																	|| RJ.iv_qty >= GPQTY.GP_QTY
+																	#|| RJ.iv_qty >= GPQTY.GP_QTY
 														THEN
 															'40'
 														ELSE
@@ -172,7 +172,7 @@ else if($mode == 'orderlist' || $mode == 'shipedlist') {
 																	|| IV.CNT <= IV.CNT_40
 																	|| RJ.real_jaego >= GPQTY.GP_QTY
 																	|| RJ.qk_jaego >= GPQTY.GP_QTY
-																	|| RJ.iv_qty >= GPQTY.GP_QTY
+																	#|| RJ.iv_qty >= GPQTY.GP_QTY
 														THEN
 															'배송가능'
 														ELSE
