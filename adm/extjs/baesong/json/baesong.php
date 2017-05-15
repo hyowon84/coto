@@ -153,16 +153,30 @@ else if($mode == 'orderlist' || $mode == 'shipedlist') {
 													GN.value AS gpstats_name,
 													SN.value AS stats_name,
 													CASE
-														WHEN	CL.gpcode = 'QUICK' || CL.gpcode = 'AUCTION' || GI.gpcode_name LIKE '%릴레이%' || IV.CNT <= IV.CNT_40 || RJ.real_jaego >= GPQTY.GP_QTY	|| RJ.qk_jaego >= GPQTY.GP_QTY 		THEN
+														WHEN	CL.gpcode = 'QUICK'
+																	|| CL.gpcode = 'AUCTION'
+																	|| GI.gpcode_name LIKE '%릴레이%'
+																	|| IV.CNT <= IV.CNT_40
+																	|| RJ.real_jaego >= GPQTY.GP_QTY
+																	|| RJ.qk_jaego >= GPQTY.GP_QTY
+																	|| RJ.iv_qty >= GPQTY.GP_QTY
+														THEN
 															'40'
 														ELSE
 															'00'
 													END	AS IV_STATS,
 													CASE
-														WHEN	CL.gpcode = 'QUICK' || CL.gpcode = 'AUCTION' || GI.gpcode_name LIKE '%릴레이%' || IV.CNT <= IV.CNT_40 || RJ.real_jaego >= GPQTY.GP_QTY	|| RJ.qk_jaego >= GPQTY.GP_QTY			THEN
-															'입고'
+														WHEN	CL.gpcode = 'QUICK' 
+																	|| CL.gpcode = 'AUCTION'
+																	|| GI.gpcode_name LIKE '%릴레이%'
+																	|| IV.CNT <= IV.CNT_40
+																	|| RJ.real_jaego >= GPQTY.GP_QTY
+																	|| RJ.qk_jaego >= GPQTY.GP_QTY
+																	|| RJ.iv_qty >= GPQTY.GP_QTY
+														THEN
+															'배송가능'
 														ELSE
-															'미입고'
+															'배송불가'
 													END	AS IV_STATS_NAME,
 													IV.CNT,
 													IV.CNT_40,
