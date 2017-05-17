@@ -77,18 +77,12 @@ else
 //if ($skin) $ca[ca_skin] = $skin;
 
 ?>
-	<div class="test"></div>
-
-
-	<form name="fapmsearch" id="fapmsearch" method="GET">
-		<input type="hidden" name="apmval">
-		<input type="hidden" name="ca_id" value="<?=$ca_id?>">
-	</form>
-
+<form name="fapmsearch" id="fapmsearch" method="GET">
+	<input type="hidden" name="apmval">
+	<input type="hidden" name="ca_id" value="<?=$ca_id?>">
+</form>
 <br>
-<div class='prdlist_title cut_text1line'>
-	<font color=red>오늘의 경매상품 목록</font>
-</div>
+
 
 <?
 //추천상품 카테고리 클릭시에는 숨김처리
@@ -134,11 +128,11 @@ if ($is_admin)
 
 			/*상품목록*/
 			$order_by = "T.ac_yn DESC, T.ac_enddate	ASC";
-			
-			$list = new auction_list('list.auc.skin.php', 4, 8, 170, 170, $sch_que, $listnum);
+			$list = new auction_list('list.auc.skin.php', 4, 8, 170, 170, '', '100');
 			$list->set_is_page(true);
 			$list->set_order_by($order_by);
 			$list->set_from_record($from_record);
+			$list->set_acyn('Y');
 			$list->set_view('gp_img', true);
 			$list->set_view('gp_id', false);
 			$list->set_view('gp_name', true);
@@ -162,18 +156,38 @@ if ($is_admin)
 		{
 			echo '<div>'.$error.'</div>';
 		}
-		?>
 
-		<?php
+
+		/* 경매종료 상품목록*/
+		$order_by = "T.ac_enddate	DESC";
+		$list = new auction_list('list.auc.skin.php', 4, 8, 170, 170, $sch_que, $listnum);
+		$list->set_is_page(true);
+		$list->set_order_by($order_by);
+		$list->set_from_record($from_record);
+		$list->set_acyn('N');
+		$list->set_view('gp_img', true);
+		$list->set_view('gp_id', false);
+		$list->set_view('gp_name', true);
+		$list->set_view('gc_state', true);
+		$list->set_view('it_icon', true);
+		$list->set_view('sns', false);
+		echo $list->run();
+
+		// where 된 전체 상품수
+		$total_count = $list->total_count;
+		// 전체 페이지 계산
+		$total_page  = ceil($total_count / $items);
+
+
 		$qstr1 .= 'ca_id='.$ca_id;
 		if($skin)
 			$qstr1 .= '&amp;skin='.$skin;
 		$qstr1 .="&sort=$sort&sortodr=$sortodr";
 		$소스URL = $_SERVER['PHP_SELF']."?".$qstr1.'&amp;apmval='.$apmval.'&amp;apm_type='.$apm_type.'&amp;sch_val='.$sch_val.'&amp;sch_val_all='.$sch_val_all.'&amp;listnum='.$listnum.'&amp;page=';
 		echo get_paging($config['cf_write_pages'], $page, $total_page, $소스URL);
-		?>
-
-		<?php
+		
+		
+		
 		// 하단 HTML
 		echo '<div id="sct_thtml">'.stripslashes($ca['ca_tail_html']).'</div>';
 

@@ -145,14 +145,10 @@ if ($is_admin)
 		/*상품목록*/
 		$order_by = "T.ac_yn DESC, T.ac_enddate	ASC";
 
-//	$list = new auction_list('list.auc.skin.php', $ca['ca_list_mod'], $ca['ca_list_row'], $ca['ca_img_width'], $ca['ca_img_height'], $sch_que, $listnum);
-		$list = new auction_list('list.auc.skin.php', 4, 8, 170, 170, $sch_que, $listnum);
-		$list->set_mobile(true);
-		/* 이벤트 진행중 체크시 카테고리id 해제 */
-		if($event_yn != 'y') $list->set_category($ca['ca_id'], 1);
-
+		$list = new auction_list('list.auc.skin.php', 4, 8, 170, 170, '', $listnum);
 		$list->set_mobile(true);
 		$list->set_is_page(true);
+		$list->set_acyn('Y');
 		$list->set_order_by($order_by);
 		$list->set_from_record($from_record);
 		$list->set_view('gp_img', true);
@@ -177,14 +173,39 @@ if ($is_admin)
 	{
 		echo '<div>'.$error.'</div>';
 	}
-	?>
 
-	<?php
+
+	$order_by = "T.ac_yn DESC, T.ac_enddate	DESC";
+
+	$list = new auction_list('list.auc.skin.php', 4, 8, 170, 170, $sch_que, $listnum);
+	$list->set_mobile(true);
+	$list->set_is_page(true);
+	$list->set_acyn('N');
+	$list->set_order_by($order_by);
+	$list->set_from_record($from_record);
+	$list->set_view('gp_img', true);
+	$list->set_view('gp_id', false);
+	$list->set_view('gp_name', true);
+	$list->set_view('it_icon', true);
+	$list->set_view('sns', false);
+	echo $list->run();
+
+	// where 된 전체 상품수
+	$total_count = $list->total_count;
+	// 전체 페이지 계산
+	$total_page  = ceil($total_count / $items);
+	
+	
+	
 	$qstr1 .= 'ca_id='.$ca_id;
 	if($skin)
 		$qstr1 .= '&amp;skin='.$skin;
 	$qstr1 .="&sort=$sort&sortodr=$sortodr";
 	//echo get_paging($config['cf_write_pages'], $page, $total_page, $_SERVER['PHP_SELF'].'?'.$qstr1.'&amp;apmval='.$apmval.'&amp;apm_type='.$apm_type.'&amp;sch_val='.$sch_val.'&amp;page=');
+	
+	
+	
+	
 	?>
 	<script>
 		$(function() {

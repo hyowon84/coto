@@ -345,6 +345,7 @@ class auction_list
 {
 	// 상품유형 : 기본적으로 1~5 까지 사용할수 있으며 0 으로 설정하는 경우 상품유형별로 노출하지 않습니다.
 	// 분류나 이벤트로 노출하는 경우 상품유형을 0 으로 설정하면 됩니다.
+	protected $ac_yn = 'Y';
 	protected $type;
 
 	protected $list_skin;
@@ -427,6 +428,11 @@ class auction_list
 		$this->count++;
 	}
 
+
+	function set_acyn($ac_yn) {
+		$this->ac_yn = $ac_yn;
+	}
+	
 	function set_type($type) {
 		$this->type = $type;
 		if ($type) {
@@ -575,8 +581,8 @@ class auction_list
 		} else {
 
 			$where = array();
-			if ($this->use) {
-				$where[] = " it_use = '1' ";
+			if ($this->ac_yn) {
+				$where[] = " T.ac_yn = '{$this->ac_yn}' ";
 			}
 
 			if ($this->type) {
@@ -591,7 +597,7 @@ class auction_list
 			$it_result = sql_query($sql_auction_item);
 			$sql_limit = " limit " . $this->from_record . " , " . ($this->list_mod * $this->list_row);
 			
-			$sql = $sql_auction_item . $sql_order . $sql_limit;
+			$sql = $sql_auction_item ." AND ".implode("AND", $where). $sql_order . $sql_limit;
 			
 			if($mode == 'jhw') {
 				echo "<textarea>".$sql."</textarea>";

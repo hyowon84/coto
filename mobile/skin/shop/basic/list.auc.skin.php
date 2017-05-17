@@ -26,9 +26,10 @@ $height = (G5_IS_MOBILE) ? '140px' : '230px';
 $margin = (G5_IS_MOBILE) ? '0px' : '15px';
 
 
+$타이틀 = ($this->ac_yn == 'Y') ? "진행중인 경매상품" : "종료된 경매상품"; 
 
 echo "<div class='prdlist_title cut_text1line'>
-				<font color='red'>오늘의 경매</font>
+				<font color='red'>$타이틀</font>
 			</div>";
 echo "<ul class=\"sct sct_50\">\n";
 

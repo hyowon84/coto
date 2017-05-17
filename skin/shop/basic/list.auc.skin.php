@@ -21,12 +21,16 @@ $height = (G5_IS_MOBILE) ? '140px' : '230px';
 $margin = (G5_IS_MOBILE) ? '0px' : '15px';
 
 
+
+$타이틀 = ($this->ac_yn == 'Y') ? "진행중인 경매상품" : "종료된 경매상품";
+echo "<div class='prdlist_title cut_text1line'>
+				<font color='red'>$타이틀</font>
+			</div>";
+
 echo "<section class='slide' style=''>
 						<div class='slide_contain'>";
 
-for ($i=1; $it=sql_fetch_array($result); $i++) {
-
-	
+for ($i=1; $it=sql_fetch_array($result); $i++) {	
 	$it[card_price] = ceil($it[cash_price] * 1.03 / 100) * 100;
 	$jaego = ($it[real_jaego] > 0) ? $it[real_jaego] : 0;
 	$현재가 = ($it[MAX_BID_LAST_PRICE]) ? $it[MAX_BID_LAST_PRICE] : $it[ac_startprice];
