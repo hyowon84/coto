@@ -180,10 +180,7 @@ var grid_orderlist = Ext.create('Ext.grid.Panel',{
 	headerPosition: 'left',
 	title : '배송예정 목록',
 	multiColumnSort: true,
-	plugins: ['clipboard'],
-	requires: [
-		'Ext.grid.plugin.Clipboard'
-	],
+	plugins: ['clipboard',Ext.create('Ext.grid.plugin.CellEditing',{clicksToEdit: 1})],
 	viewConfig: {
 		stripeRows: true,
 		enableTextSelection: true,
@@ -205,97 +202,120 @@ var grid_orderlist = Ext.create('Ext.grid.Panel',{
 		{ text : 'projectId',		dataIndex : 'projectId',			hidden:true	},
 		{ text : 'taskId',			dataIndex : 'taskId',					hidden:true	},
 		{ text : 'project',			dataIndex : 'project',				hidden:true,	 sortable: true },
-		{ text : '주문자',				dataIndex : 'buyer',					width:120	},
-		{ text : '주문일시',			dataIndex : 'od_date',				sortable: true	},
-		{ text : '공구코드',			dataIndex : 'gpcode',					hidden:true	},		
-		{ text : '공구명',				dataIndex : 'gpcode_name',		style:'text-align:center',	width:220	},
-		{ text : '상태코드',			dataIndex : 'IV_STATS',				width:70,	hidden:true	},
-		{ text : '입고상태',			dataIndex : 'IV_STATS_NAME',	width:120	},
-		{ text : '주문ID',				dataIndex : 'od_id',					width:140	},
-		{ text : '주문상태',			dataIndex : 'stats_name',			width:100	},
+		{ text : '주문자',			dataIndex : 'buyer',					width:120	},
+		{ text : '주문일시',		dataIndex : 'od_date',				sortable: true	},
+		{ text : '공구코드',		dataIndex : 'gpcode',					hidden:true	},		
+		{ text : '공구명',			dataIndex : 'gpcode_name',		style:'text-align:center',	width:220	},
+		{ text : '상태코드',		dataIndex : 'IV_STATS',				width:70,	hidden:true	},
+		{ text : '입고상태',		dataIndex : 'IV_STATS_NAME',	width:120	},
+		{ text : '품목별 메모',	dataIndex : 'it_memo',				width: 160,		style:'text-align:center',			editor:{allowBlank:false} },
+		{ text : '주문ID',			dataIndex : 'od_id',					width:140	},
+		{ text : '주문상태',		dataIndex : 'stats_name',			width:100	},
 		{ text : 'img',					dataIndex : 'gp_img',					width:60,			renderer: function(value){	return '<img src="' + value + '" width=40 height=40 />';}			},
-		{ text : '상품코드',			dataIndex : 'it_id',					width:160	},
-		{ text : '품목명',				dataIndex : 'it_name',				width:450	},
-		{ text : '주문가',				dataIndex : 'it_org_price',		sortable: true,		style:'text-align:center',	align:'right',	renderer: Ext.util.Format.numberRenderer('0,000') },
-		{ text : '주문수량',			dataIndex : 'it_qty',					sortable: true,		style:'text-align:center',	align:'right',	renderer: Ext.util.Format.numberRenderer('0,000') },
-		{ text : '주문총액',			dataIndex : 'total_price',		sortable: true,		style:'text-align:center',	align:'right',	renderer: Ext.util.Format.numberRenderer('0,000') },
-		{ text : '관리자메모',		dataIndex : 'admin_memo',			width:120,	hidden:true	},
-		{ text : '구매자메모',		dataIndex : 'memo',						width:120,	hidden:true	},		
-		{ text : '통관수량',			dataIndex : 'CR_CNT',					width:120,	hidden:true	},
-		{ text : '입고수량',			dataIndex : 'IP_CNT',					width:120,	hidden:true	},
-		{ text : '예상재고',			dataIndex : 'real_jaego',			width:120	}
+		{ text : '상품코드',		dataIndex : 'it_id',					width:160	},
+		{ text : '품목명',			dataIndex : 'it_name',				width:450	},
+		{ text : '주문가',			dataIndex : 'it_org_price',		sortable: true,		style:'text-align:center',	align:'right',	renderer: Ext.util.Format.numberRenderer('0,000') },
+		{ text : '주문수량',		dataIndex : 'it_qty',					sortable: true,		style:'text-align:center',	align:'right',	renderer: Ext.util.Format.numberRenderer('0,000') },
+		{ text : '주문총액',		dataIndex : 'total_price',		sortable: true,		style:'text-align:center',	align:'right',	renderer: Ext.util.Format.numberRenderer('0,000') },
+		{ text : '관리자메모',	dataIndex : 'admin_memo',			width:120,	hidden:true	},
+		{ text : '구매자메모',	dataIndex : 'memo',						width:120,	hidden:true	},		
+		{ text : '통관수량',		dataIndex : 'CR_CNT',					width:120,	hidden:true	},
+		{ text : '입고수량',		dataIndex : 'IP_CNT',					width:120,	hidden:true	},
+		{ text : '예상재고',		dataIndex : 'real_jaego',			width:120	}
 	],
 	tbar : [
-			{	
-				id : 'output_order',
-				text	: '추출',
-				iconCls	: 'icon-table_print_add',
-				handler : function() {
+		{
+			xtype : 'textfield',
+			fieldLabel: '품목별 메모 변경',
+			labelWidth : 140,
+			name: 'message',
+			width : 300,
+			style : 'float:left',
+			enableKeyEvents: true,
+			listeners : {
+				keyup: function(f,e){
+					var sm = grid_orderlist.getSelectionModel().getSelection();
 					
-					if( grid_mblist.getSelectionModel().getSelection() == '' ) {
-						Ext.Msg.alert('알림','좌측 회원목록에서 회원을 선택하세요');
-						return false;
+					if(sm.length) {
+						for(var i = 0; i < sm.length; i++) {
+							sm[i].set('it_memo',this.getValue());
+						}
 					}
-					
-					var sm = grid_orderlist.getSelection();
-					if( sm == '' ) {
-						Ext.Msg.alert('알림','상품들을 선택해주세요');
-						return false;
+					else {
 					}
-
-					var mblist_sm = grid_mblist.getSelectionModel().getSelection()[0];
-					winInvoice.setTitle(mblist_sm.get('mb_nick')+'('+mblist_sm.get('mb_name')+')님의 배송예정 목록');
-					
-					
-					store_window_baesong.loadData([],false);
-					for(var i = 0; i < sm.length; i++) {
-						var rec = Ext.create('Task', {
-										'taskId'				:	sm[i].data.taskId,
-										'projectId'			:	sm[i].data.projectId,
-										'project'				:	sm[i].data.project,
-										'buyer'					: sm[i].data.buyer,
-										'number'				:	sm[i].data.number,
-										'gpcode'				:	sm[i].data.gpcode,
-										'gpcode_name'		:	sm[i].data.gpcode_name,
-										'gpstats'				:	sm[i].data.gpstats,
-										'gpstats_name'	:	sm[i].data.gpstats_name,
-										'od_id'					:	sm[i].data.od_id,
-										'clay_id'				:	sm[i].data.clay_id,
-										'stats'					:	sm[i].data.stats,
-										'stats_name'		:	sm[i].data.stats_name,
-										'gp_img'				:	sm[i].data.gp_img,
-										'it_id'					:	sm[i].data.it_id,
-										'it_name'				:	sm[i].data.it_name,
-										'it_org_price'	:	sm[i].data.it_org_price,
-										'it_qty'				:	sm[i].data.it_qty,
-										'total_price'		:	sm[i].data.total_price,
-										'od_date'				:	sm[i].data.od_date
-						});
-						store_window_baesong.add(rec);
-					}
-					
-					
-					var button = Ext.get('output_order');
-					button.dom.disabled = true;
-					//this.container.dom.style.visibility=true
-					
-					if (winInvoice.isVisible()) {
-						winInvoice.hide(this, function() {
-							button.dom.disabled = false;
-						});
-					} else {
-						winInvoice.show(this, function() {
-							button.dom.disabled = false;
-						});
-					}
-					
-					grid_window_baesong.reconfigure(store_window_baesong);
-					
 				}
-			},
-			{	xtype: 'label',		fieldLabel: 'alert',		style : 'margin-left:20px; font-weight:bold; font-size:1.5em; color:red;',
-				text: '묶음대기중인것은 미리 포장하지 마시오, 배송나갈때 한번에 포장하시오!!!'
 			}
+		},
+		{	
+			id : 'output_order',
+			text	: '추출',
+			iconCls	: 'icon-table_print_add',
+			handler : function() {
+				
+				if( grid_mblist.getSelectionModel().getSelection() == '' ) {
+					Ext.Msg.alert('알림','좌측 회원목록에서 회원을 선택하세요');
+					return false;
+				}
+				
+				var sm = grid_orderlist.getSelection();
+				if( sm == '' ) {
+					Ext.Msg.alert('알림','상품들을 선택해주세요');
+					return false;
+				}
+
+				var mblist_sm = grid_mblist.getSelectionModel().getSelection()[0];
+				winInvoice.setTitle(mblist_sm.get('mb_nick')+'('+mblist_sm.get('mb_name')+')님의 배송예정 목록');
+				
+				
+				store_window_baesong.loadData([],false);
+				for(var i = 0; i < sm.length; i++) {
+					var rec = Ext.create('Task', {
+									'taskId'				:	sm[i].data.taskId,
+									'projectId'			:	sm[i].data.projectId,
+									'project'				:	sm[i].data.project,
+									'buyer'					: sm[i].data.buyer,
+									'number'				:	sm[i].data.number,
+									'gpcode'				:	sm[i].data.gpcode,
+									'gpcode_name'		:	sm[i].data.gpcode_name,
+									'gpstats'				:	sm[i].data.gpstats,
+									'gpstats_name'	:	sm[i].data.gpstats_name,
+									'od_id'					:	sm[i].data.od_id,
+									'clay_id'				:	sm[i].data.clay_id,
+									'stats'					:	sm[i].data.stats,
+									'stats_name'		:	sm[i].data.stats_name,
+									'gp_img'				:	sm[i].data.gp_img,
+									'it_id'					:	sm[i].data.it_id,
+									'it_name'				:	sm[i].data.it_name,
+									'it_org_price'	:	sm[i].data.it_org_price,
+									'it_qty'				:	sm[i].data.it_qty,
+									'total_price'		:	sm[i].data.total_price,
+									'od_date'				:	sm[i].data.od_date
+					});
+					store_window_baesong.add(rec);
+				}
+				
+				
+				var button = Ext.get('output_order');
+				button.dom.disabled = true;
+				//this.container.dom.style.visibility=true
+				
+				if (winInvoice.isVisible()) {
+					winInvoice.hide(this, function() {
+						button.dom.disabled = false;
+					});
+				} else {
+					winInvoice.show(this, function() {
+						button.dom.disabled = false;
+					});
+				}
+				
+				grid_window_baesong.reconfigure(store_window_baesong);
+				
+			}
+		},
+		{	xtype: 'label',		fieldLabel: 'alert',		style : 'margin-left:20px; font-weight:bold; font-size:1.5em; color:red;',
+			text: '묶음대기중인것은 미리 포장하지 마시오, 배송나갈때 한번에 포장하시오!!!'
+		}
 	],
 	bbar : {
 		plugins: new Ext.ux.SlidingPager(),
@@ -338,20 +358,21 @@ var grid_shiped_list = Ext.create('Ext.grid.Panel',{
 		{ text : 'projectId',				dataIndex : 'projectId',				hidden:true	},
 		{ text : 'taskId',					dataIndex : 'taskId',						hidden:true	},
 		{ text : 'project',					dataIndex : 'project',					hidden:true,	 	sortable: true },
-		{ text : '주문일시',					dataIndex : 'od_date',					sortable: true	},
-		{ text : '공구코드',					dataIndex : 'gpcode',						hidden:true	},
-		{ text : '주문자',						dataIndex : 'buyer',						width:120	},
-		{ text : '공구명',						dataIndex : 'gpcode_name',			style:'text-align:center',	width:220	},
-		{ text : '주문ID',						dataIndex : 'od_id',						width:120	},
-		{ text : '주문상태',					dataIndex : 'stats_name',				width:100	},
+		{ text : '주문일시',				dataIndex : 'od_date',					sortable: true	},
+		{ text : '공구코드',				dataIndex : 'gpcode',						hidden:true	},
+		{ text : '주문자',					dataIndex : 'buyer',						width:120	},
+		{ text : '공구명',					dataIndex : 'gpcode_name',			style:'text-align:center',	width:220	},
+		{ text : '주문ID',					dataIndex : 'od_id',						width:120	},
+		{ text : '주문상태',				dataIndex : 'stats_name',				width:100	},
 		{ text : '품목별 송장번호',	dataIndex : 'delivery_invoice',	width:130	},
+		{ text : '품목별 메모',			dataIndex : 'it_memo',					width: 160,		style:'text-align:center' },
 		{ text : '최근 송장번호',		dataIndex : 'delivery_invoice2',width:130	},
 		{ text : 'img',							dataIndex : 'gp_img',						width:60,			renderer: function(value){	return '<img src="' + value + '" width=40 height=40 />';}			},
-		{ text : '상품코드',					dataIndex : 'it_id',						width:160	},
-		{ text : '품목명',						dataIndex : 'it_name',					width:450	},
-		{ text : '주문가',						dataIndex : 'it_org_price',			sortable: true,		style:'text-align:center',	align:'right',	renderer: Ext.util.Format.numberRenderer('0,000') },
-		{ text : '주문수량',					dataIndex : 'it_qty',						sortable: true,		style:'text-align:center',	align:'right',	renderer: Ext.util.Format.numberRenderer('0,000') },
-		{ text : '주문총액',					dataIndex : 'total_price',			sortable: true,		style:'text-align:center',	align:'right',	renderer: Ext.util.Format.numberRenderer('0,000') }
+		{ text : '상품코드',				dataIndex : 'it_id',						width:160	},
+		{ text : '품목명',					dataIndex : 'it_name',					width:450	},
+		{ text : '주문가',					dataIndex : 'it_org_price',			sortable: true,		style:'text-align:center',	align:'right',	renderer: Ext.util.Format.numberRenderer('0,000') },
+		{ text : '주문수량',				dataIndex : 'it_qty',						sortable: true,		style:'text-align:center',	align:'right',	renderer: Ext.util.Format.numberRenderer('0,000') },
+		{ text : '주문총액',				dataIndex : 'total_price',			sortable: true,		style:'text-align:center',	align:'right',	renderer: Ext.util.Format.numberRenderer('0,000') }
 	],
 	store : store_shiped_list,
 	selModel: Ext.create('Ext.selection.CheckboxModel', {

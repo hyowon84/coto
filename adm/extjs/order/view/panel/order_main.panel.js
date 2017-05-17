@@ -419,15 +419,15 @@ var panel_winSms = Ext.create('Ext.Panel', {
 									margin : '10 0 0 0px',
 									border : 0,
 									items : [
-									         {
-									         	xtype : 'checkboxfield',
-									         	fieldLabel: '같이변경시 체크 ->',
+												{
+									      	xtype : 'checkboxfield',
+									        fieldLabel: '같이변경시 체크 ->',
 													labelWidth : 120,
 													width : 200,
 													style : 'float:left',
-									         	id : 'checkedEdit',
-									         	value : 'Y'
-									         },
+									        id : 'checkedEdit',
+									        value : 'Y'
+												},
 												{
 													fieldLabel: '메시지',
 													labelWidth : 50,
@@ -439,7 +439,7 @@ var panel_winSms = Ext.create('Ext.Panel', {
 														keyup: function(f,e){
 															var sm = grid_winSms.getSelectionModel().getSelection();
 															Ext.getCmp('sizecnt').setValue(this.getValue().length);
-															
+
 															if(sm.length) {
 																for(var i = 0; i < sm.length; i++) {
 																	sm[i].set('message',this.getValue());

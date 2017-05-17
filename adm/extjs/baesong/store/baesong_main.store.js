@@ -121,6 +121,7 @@ var store_orderlist = Ext.create('Ext.data.Store',{
 	model	:	'model_orderlist',
 	//remoteSort: true,
 	//remoteFilter: true,
+	autoSync : true,
 	autoLoad : false,
 	remoteSort: true,
 	sorters:[
@@ -138,19 +139,20 @@ var store_orderlist = Ext.create('Ext.data.Store',{
 		extraParams : {
 		},
 		api : {
-			read : '/adm/extjs/baesong/json/baesong.php?mode=orderlist'
+			read : '/adm/extjs/baesong/json/baesong.php?mode=orderlist',
+			update : '/adm/extjs/baesong/crud/baesong.update.php'
 		},
 		reader : {
 			rootProperty : 'data',
 			totalProperty : 'total'
 		}
-		/*,
+		,
 		writer : {
 			type : 'json',
 			writeAllFields : true,
 			encode : true,
 			rootProperty : 'data'
-		}*/
+		}
 	}
 });
 

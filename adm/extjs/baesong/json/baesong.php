@@ -136,6 +136,7 @@ else if($mode == 'orderlist' || $mode == 'shipedlist') {
 													IF(LENGTH(GP.gp_img) > 8,GP.gp_img,'/shop/img/no_image.gif') AS gp_img,
 													CL.it_id,
 													CL.it_name,
+													CL.it_memo,
 													CL.it_qty,
 													CL.it_org_price,
 													CL.it_qty * CL.it_org_price AS total_price,
