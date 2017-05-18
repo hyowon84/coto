@@ -38,6 +38,19 @@ $sql = " insert {$g5['g5_shop_group_purchase_table']}
                 $sql_common ";
 sql_query($sql);
 
+
+$reset_sql = "	UPDATE	{$g5['g5_shop_group_purchase_table']}		SET
+													ac_yn = 'N',
+													ac_code = '',
+													ac_enddate = '',
+													ac_qty = 0,
+													ac_startprice = 0,
+													ac_buyprice = 0
+								WHERE		gp_id = '$new_gp_id' ";
+sql_query($reset_sql);
+
+
+
 // 선택/추가 옵션 copy
 $opt_sql = " insert ignore into {$g5['g5_shop_group_purchase_option_table']} ( gp_id, po_num, po_sqty, po_eqty, po_cash_price, po_card_price, po_add_price )
                 select ('$new_gp_id') as gp_id, po_num, po_sqty, po_eqty, po_cash_price, po_card_price, po_add_price
