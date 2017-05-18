@@ -29,7 +29,9 @@ $AND_SQL = "";
 if($mode == 'mblist') {
 	if ($sdate) $기간조건 .= " AND CL.od_date >= '$sdate 00:00:00' ";
 	if ($edate) $기간조건 .= " AND CL.od_date <= '$edate 23:59:59' ";
-	if($keyword) $AND_SQL .= "AND (T.mb_name LIKE '%$keyword%' OR T.hphone LIKE '%$keyword%' OR T.mb_nick LIKE '%$keyword%' )";
+//	if($keyword) $AND_SQL .= "AND (T.mb_name LIKE '%$keyword%' OR T.hphone LIKE '%$keyword%' OR T.mb_nick LIKE '%$keyword%' )";
+	if($keyword) $내부조건 = " AND (CL.name LIKE '%$keyword%' OR CL.hphone LIKE '%$keyword%' OR CL.clay_id LIKE '%$keyword%' OR GI.gpcode_name LIKE '%$keyword%' ) ";
+	
 	/* 주문금액 큰 순서대로 회원목록 추출 */
 	$SELECT_SQL = "	SELECT	T.*
 													,IFNULL(Q1.SUM_QTY,0) AS QCK_SUM_QTY				/*퀵주문건수*/
@@ -45,8 +47,10 @@ if($mode == 'mblist') {
 																		SUM(CL.it_qty) AS SUM_QTY,
 																		SUM(CL.it_qty * CL.it_org_price) AS SUM_TOTAL
 														FROM		clay_order CL
+																		LEFT JOIN gp_info GI ON (GI.gpcode = CL.gpcode)
 														WHERE		CL.stats >= 15
 														$기간조건
+														$내부조건
 														GROUP BY CL.hphone, CL.clay_id
 													) T	/* 전체주문건수, 총액 */
 													LEFT JOIN (
