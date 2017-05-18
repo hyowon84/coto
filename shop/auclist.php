@@ -129,9 +129,9 @@ if ($is_admin)
 			/*상품목록*/
 			$order_by = "T.ac_yn DESC, T.ac_enddate	ASC";
 			$list = new auction_list('list.auc.skin.php', 4, 8, 170, 170, '', '100');
-			$list->set_is_page(true);
+			$list->set_is_page(false);
 			$list->set_order_by($order_by);
-			$list->set_from_record($from_record);
+			$list->set_from_record(1);
 			$list->set_acyn('Y');
 			$list->set_view('gp_img', true);
 			$list->set_view('gp_id', false);
