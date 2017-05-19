@@ -30,7 +30,7 @@ if($mode == 'mblist') {
 	if ($sdate) $기간조건 .= " AND CL.od_date >= '$sdate 00:00:00' ";
 	if ($edate) $기간조건 .= " AND CL.od_date <= '$edate 23:59:59' ";
 //	if($keyword) $AND_SQL .= "AND (T.mb_name LIKE '%$keyword%' OR T.hphone LIKE '%$keyword%' OR T.mb_nick LIKE '%$keyword%' )";
-	if($keyword) $내부조건 = " AND (CL.name LIKE '%$keyword%' OR CL.hphone LIKE '%$keyword%' OR CL.clay_id LIKE '%$keyword%' OR GI.gpcode_name LIKE '%$keyword%' ) ";
+	if($keyword) $내부조건 = " AND (CL.name LIKE '%$keyword%' OR CL.hphone LIKE '%$keyword%' OR CL.clay_id LIKE '%$keyword%' OR ( GI.gpcode_name LIKE '%$keyword%' AND CL.stats <= 39) ) ";
 	
 	/* 주문금액 큰 순서대로 회원목록 추출 */
 	$SELECT_SQL = "	SELECT	T.*
@@ -82,7 +82,6 @@ if($mode == 'mblist') {
 																													FROM		v_invoice_cnt T
 																																	LEFT JOIN v_invoice_cnt40 T40 ON (T40.gpcode = T.gpcode AND T40.iv_it_id = T.iv_it_id)
 																							)	IV ON (IV.gpcode = CL.gpcode AND IV.iv_it_id = CL.it_id)
-																							
 																			WHERE		CL.stats IN (20,22,23,25) /* 결제완료, 통합배송요청, 포장완료, 배송대기중까지만 픽업대기, 직배대기는 배송대상에 포함안함 */
 																			AND			IV.CNT <= IV.CNT_40 
 																			GROUP BY CL.hphone, CL.clay_id
