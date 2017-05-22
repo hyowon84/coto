@@ -33,6 +33,7 @@ if($mode == 'new') {
 															reg_date		= now()
 	";
 	$result = sql_query($sql);
+	db_log($sql,'gp_info',"공동구매 신규입력");
 
 }
 else if ($mode == 'PRICE_UPDATE_ALL') {
@@ -140,6 +141,7 @@ else if($mode == 'mod') {
 								WHERE		gpcode			= '$gpcode'
 	";
 	sql_query($sql);
+	db_log($sql,'gp_info',"공동구매 내용 수정");
 
 	/*주문마감시 공구코드와 관련 공구상품들 공구재고값 초기화 */
 	if($stats == '05') {
