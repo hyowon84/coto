@@ -105,6 +105,20 @@ Ext.define('Ext.combobox.order.smsex', {
 	store: Ext.create('Ext.store.order.smsex')
 });
 
+/* 검색유형 */
+Ext.define('Ext.combobox.order.searchtype', {
+	extend: 'Ext.form.ComboBox',
+	xtype: 'combobox',
+	editable: false,
+	displayField: 'name',
+	valueField: 'value',
+	name: 'searchtype',
+	labelWidth : 60,
+	width : 120,
+	store: Ext.create('Ext.store.order.searchtype')
+});
+
+
 /*결제유형*/
 Ext.define('Ext.combobox.order.paytype', {
 	extend: 'Ext.form.ComboBox',

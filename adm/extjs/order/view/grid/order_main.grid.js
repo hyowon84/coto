@@ -9,7 +9,8 @@ var selModel = {
 function getParams() {
 	var v_params;
 	
-	v_params = {	
+	v_params = {
+		searchtype : Ext.getCmp('combo_searchtype').getValue(),
 		keyword : Ext.getCmp('keyword').getValue(),
 		stats : Ext.getCmp('combo_orderStats').getValue(),
 		sdate : df_sdate.rawValue,
@@ -66,7 +67,7 @@ var combo_orderStats = Ext.create('Ext.combobox.order.stats', {
 	valueField: 'value',
 	name: 'stats',
 	value : '',
-	fieldLabel : '검색',
+	fieldLabel : '주문상태',
 	store: Ext.create('Ext.store.order.stats'),
 	id : 'combo_orderStats',
 	labelWidth : 60,
@@ -98,16 +99,17 @@ var combo_editStats = Ext.create('Ext.combobox.order.stats', {
 var combo_smsStats = Ext.create('Ext.combobox.order.stats', {
 	extend: 'Ext.form.ComboBox',
 	xtype: 'combobox',
-	editable: false,
-	displayField: 'name',
-	valueField: 'value',
 	name: 'stats',
-	value : '',
 	fieldLabel : '변경',
-	store: Ext.create('Ext.store.order.smsex'),
 	id : 'combo_smsStats',
-	labelWidth : 60,
 	width : 190
+});
+
+var combo_searchtype = Ext.create('Ext.combobox.order.searchtype', {
+	extend: 'Ext.form.ComboBox',
+	xtype: 'combobox',
+	value : '',
+	id : 'combo_searchtype'
 });
 
 
@@ -211,7 +213,9 @@ var grid_orderlist = Ext.create('Ext.grid.Panel',{
 						click : setDate
 					}]
 				},
-				{	xtype: 'label',	text: '검색어 : ',		autoWidth:true,	style : 'font-weight:bold;'},
+				
+				{	xtype: 'label',	text: ' 검색 : ',		autoWidth:true,	style : 'font-weight:bold;'},
+				combo_searchtype,
 				{
 					xtype: 'textfield',
 					id : 'keyword',

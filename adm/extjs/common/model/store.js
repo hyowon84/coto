@@ -94,12 +94,6 @@ Ext.define('Ext.store.order.stats',{
 Ext.define('Ext.store.order.smsex',{
 	extend: 'Ext.data.Store',
 	fields:['name','value'],
-	sorters:[
-		{
-			property:'order',
-			direction:'ASC'
-		}
-	],
 	data: [
 		['입금요청','10'],
 		['결제완료','20'],
@@ -110,6 +104,25 @@ Ext.define('Ext.store.order.smsex',{
 		['환불완료','90']
 	]
 });
+
+
+
+/* 검색키워드 유형 */
+Ext.define('Ext.store.order.searchtype',{
+	extend: 'Ext.data.Store',
+	fields:['name','value'],
+	data: [
+		['전체',''],
+		['닉네임','nick'],
+		['이름','name'],
+		['공구명','gpcode_name'],
+		['공구코드','gpcode'],
+		['주문번호','od_id'],
+		['연락처','hphone'],
+		['주소','addr']
+	]
+});
+
 
 //주문관리 관련 end
 /*************************************************************************/

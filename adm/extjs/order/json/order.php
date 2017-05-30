@@ -22,17 +22,57 @@ $조건문 = array();
 
 /* 공구목록 */
 if($mode == 'orderlist') {
-	//주문번호, 상품명, 상품코드, 주문자명, 휴대폰번호, 공구명, 메모, 관리자메모, 현금영수증번호 
-	if ($keyword) $AND_SQL .= "AND ( CL.od_id LIKE '%$keyword%' OR CL.it_id LIKE '%$keyword%' 
-																	OR CL.it_name LIKE '%$keyword%' OR CI.clay_id LIKE '%$keyword%'
-																	OR CI.hphone LIKE '%$keyword%' OR CI.name LIKE '%$keyword%'
-																	OR GI.gpcode_name LIKE '%$keyword%' OR CI.memo LIKE '%$keyword%'
-																	OR CI.receipt_name LIKE '%$keyword%' OR CI.admin_memo LIKE '%$keyword%'
-																	OR CI.cash_receipt_info LIKE '%$keyword%'
-																)";
+	//주문번호, 상품명, 상품코드, 주문자명, 휴대폰번호, 공구명, 메모, 관리자메모, 현금영수증번호
+
+	
+	/*
+	 * ['전체',''],
+		['닉네임','nick'],
+		['이름','name'],
+		['공구명','gpcode_name'],
+		['공구코드','gpcode'],
+		['연락처','hphone'],
+		['주소','addr']
+	 */
+	
+	switch ($searchtype) {
+		case 'nick':
+			if ($keyword) $AND_SQL .= "AND	CI.clay_id LIKE '%$keyword%'	";
+			break;
+		case 'name':
+			if ($keyword) $AND_SQL .= "AND	CI.name LIKE '%$keyword%'	";
+			break;
+		case 'gpcode_name':
+			if ($keyword) $AND_SQL .= "AND	GI.gpcode_name LIKE '%$keyword%'	";
+			break;
+		case 'gpcode':
+			if ($keyword) $AND_SQL .= "AND	GI.gpcode LIKE '%$keyword%'	";
+			break;
+		case 'hphone':
+			if ($keyword) $AND_SQL .= "AND	CI.hphone LIKE '%$keyword%'	";
+			break;
+		case 'od_id':
+			if ($keyword) $AND_SQL .= "AND	CI.od_id LIKE '%$keyword%'	";
+			break;
+		case 'addr':
+			if ($keyword) $AND_SQL .= "AND	CONCAT(CI.addr1,CI.addr1_2,CI.addr2) LIKE '%$keyword%'	";
+			break;
+		default:	
+			if ($keyword) $AND_SQL .= "AND ( CL.od_id LIKE '%$keyword%' OR CL.it_id LIKE '%$keyword%' 
+																		OR CL.it_name LIKE '%$keyword%' OR CI.clay_id LIKE '%$keyword%'
+																		OR CI.hphone LIKE '%$keyword%' OR CI.name LIKE '%$keyword%'
+																		OR GI.gpcode_name LIKE '%$keyword%' OR CI.memo LIKE '%$keyword%'
+																		OR CI.receipt_name LIKE '%$keyword%' OR CI.admin_memo LIKE '%$keyword%'
+																		OR CI.cash_receipt_info LIKE '%$keyword%'
+																	)";
+			break;
+	}
+	
 	if ($stats) $AND_SQL .= " AND CL.stats IN ('$stats') ";
 	if ($sdate) $AND_SQL .= " AND CL.od_date >= '$sdate 00:00:00' ";
 	if ($edate) $AND_SQL .= " AND CL.od_date <= '$edate 23:59:59' ";
+	
+	
 	
 	$조건문SQL = " $AND_SQL ";
 }
