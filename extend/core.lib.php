@@ -559,7 +559,7 @@ function jsonDecode($DATA) {
 /* PC웹/모바일 메인화면 상단 이미지 슬라이드 */
 function makeMainSlideImage() {
 	
-	$slide_sql = "select * from g5_main_slide where status='2' order by no desc ";
+	$slide_sql = "select * from g5_main_slide where status='2' order by no desc LIMIT 20";
 	$main_slide_res = sql_query($slide_sql);
 	$main_slide_num = mysql_num_rows($main_slide_res);
 
