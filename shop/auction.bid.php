@@ -17,6 +17,7 @@ if(!$member[mb_id]) {
 //경매상품 정보
 $sql_auction_item = str_replace('#상품기본조건#', " AND		gp_id = '$gp_id' ", $sql_auction_item);
 $it = sql_fetch($sql_auction_item);
+$상품명 = str_replace("'","\'",$it[gp_name]);
 //echo "<textarea>".$sql_auction_item."</textarea>";
 
 
@@ -79,7 +80,7 @@ if($mode == 'auc_bid') {
 		$auto_sql = "	INSERT INTO		auction_log		SET
 																	ac_code = '$it[ac_code]',							/*경매진행코드*/
 																	it_id = '$it[gp_id]',									/*경매상품코드*/
-																	it_name = '$it[gp_name]',							/*경매상품명*/
+																	it_name = '$상품명',							/*경매상품명*/
 																	mb_id = '$it[MB_ID]',									/*입찰회원계정*/
 																	bid_qty = '$bid_qty',									/*입찰수량*/
 																	bid_price = '$it[MAX_BID_PRICE]',			/*입찰가격*/
@@ -97,7 +98,7 @@ if($mode == 'auc_bid') {
 		$auto_sql = "	INSERT INTO		auction_log		SET
 																ac_code					= '$it[ac_code]',			/*경매진행코드*/
 																it_id						= '$it[gp_id]',				/*경매상품코드*/
-																it_name					= '$it[gp_name]',			/*경매상품명*/
+																it_name					= '$상품명',			/*경매상품명*/
 																mb_id						= '$member[mb_id]',		/*입찰회원계정*/
 																bid_qty					= '$bid_qty',					/*입찰수량*/
 																bid_price				= '$입찰시도금액',			/*입찰가격*/
@@ -150,7 +151,7 @@ if($mode == 'auc_bid') {
 			$auto_sql = "	INSERT INTO		auction_log		SET
 																	ac_code = '$it[ac_code]',							/*경매진행코드*/
 																	it_id = '$it[gp_id]',									/*경매상품코드*/
-																	it_name = '$it[gp_name]',							/*경매상품명*/
+																	it_name = '$상품명',							/*경매상품명*/
 																	mb_id = '$it[MB_ID]',									/*입찰회원계정*/
 																	bid_qty = '1',												/*입찰수량*/
 																	bid_price = '$it[MAX_BID_PRICE]',			/*입찰가격*/
@@ -175,7 +176,7 @@ if($mode == 'auc_bid') {
 			$auto_sql = "	INSERT INTO		auction_log		SET
 																		ac_code					= '$it[ac_code]',			/*경매진행코드*/
 																		it_id						= '$it[gp_id]',				/*경매상품코드*/
-																		it_name					= '$it[gp_name]',			/*경매상품명*/
+																		it_name					= '$상품명',			/*경매상품명*/
 																		mb_id						= '$member[mb_id]',		/*입찰회원계정*/
 																		bid_qty					= '$bid_qty',					/*입찰수량*/
 																		bid_price				= '$입찰시도금액',			/*입찰가격*/
@@ -214,7 +215,7 @@ if($mode == 'auc_bid') {
 	$UPD_SQL = "	INSERT INTO auction_log	SET
 													ac_code					= '$ac_code',				/*경매진행코드*/
 													it_id						= '$it[gp_id]',			/*경매상품코드*/
-													it_name 				= '$it[gp_name]',		/*경매상품명*/
+													it_name 				= '$상품명',		/*경매상품명*/
 													mb_id						= '$member[mb_id]',	/*입찰회원계정*/
 													bid_qty					= '$bid_qty',			
 													bid_price				= '$bid_price',			/*입찰가격*/
