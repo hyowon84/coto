@@ -18,25 +18,6 @@ if ($ca_id == 'GP') {
 }
 
 
-/* 현재 진행중인 경매정보 로딩 */
-$auc_sql = "SELECT	*
-						FROM		g5_shop_group_purchase GP
-						WHERE		GP.ac_yn = 'Y'
-						AND			GP.ac_enddate >= NOW()
-";
-$auc_result = sql_query($auc_sql);
-$경매진행수 = mysql_num_rows($auc_result);
-
-
-/* 진행상황이 마감일경우 경고메시지 띄우고 종료 */
-if(!$경매진행수) {
-	echo "<script>
-			alert('진행중인 경매가 없습니다');
-			location.href='/';
-		</script>";
-	exit;
-}
-
 
 if (G5_IS_MOBILE) {
 	include_once(G5_MSHOP_PATH.'/auclist.php');

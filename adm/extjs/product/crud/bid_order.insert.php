@@ -21,14 +21,15 @@ function process($data) {
 	if($cnt > 0) {
 		return '90';
 	}
-	
+
+	$상품명 = str_replace("'","\'",$data[it_name]);
 	
 	/* 낙찰정보 주문하기 */
 	$ins_sql = "	INSERT	INTO 	clay_order		SET
 																gpcode = 'AUCTION',
 																od_id = '$data[ac_code]',
 																it_id = '$data[it_id]',
-																it_name = '$data[it_name]',
+																it_name = '$상품명',
 																it_qty	=	'1',
 																it_org_price = '$data[bid_last_price]',
 																stats = '00',
