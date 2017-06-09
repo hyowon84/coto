@@ -150,7 +150,7 @@ if ($is_admin)
 		$list->set_is_page(true);
 		$list->set_acyn('Y');
 		$list->set_order_by($order_by);
-		$list->set_from_record(1);
+		$list->set_from_record(0);
 		$list->set_view('gp_img', true);
 		$list->set_view('gp_id', false);
 		$list->set_view('gp_name', true);
