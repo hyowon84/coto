@@ -112,7 +112,7 @@ if ($is_admin)
 			$list = new auction_list('list.auc.skin.php', 4, 8, 170, 170, '', '100');
 			$list->set_is_page(false);
 			$list->set_order_by($order_by);
-			$list->set_from_record(1);
+			$list->set_from_record(0);
 			$list->set_acyn('Y');
 			$list->set_view('gp_img', true);
 			$list->set_view('gp_id', false);
