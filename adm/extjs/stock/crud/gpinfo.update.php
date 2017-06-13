@@ -48,7 +48,7 @@ else if($mode == 'grid') {
 
 	
 	/*주문마감시 공구코드와 관련 공구상품들 공구재고값 초기화 */
-	if($stats == '05') {
+	if($stats == '05' || $stats == '99') {
 
 		$sql = "SELECT	GI.links
 						FROM		gp_info GI
