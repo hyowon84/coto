@@ -282,7 +282,7 @@ if(!defined('G5_IS_ADMIN') && !$is_admin) include_once(G5_PATH.'/analyticstracki
 		</li>
 
 		<li class="store depth1">
-			<span style="color:#56ccc8">코인스투데이</span>
+			<span style="color:#56ccc8" onclick="location.href='<?=G5_SHOP_URL?>/gplist.php?ca_id=CT'">코인스투데이<font color=white>&nbsp;&nbsp;&nbsp;☜ 전체보기</font></span>
 			<ul>
 				<?=getCotoCategory()?>
 			</ul>

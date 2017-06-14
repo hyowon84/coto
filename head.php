@@ -977,7 +977,7 @@ include_once(G5_GOLDSPOT_PATH."/goldspot_search_header.php");
 								<?=createGpCategoryMenu();?>
 								<li id="menu_line"><img src="<?=G5_URL?>/img/menu_line.png"></li>
 
-								<li id="menu_title" style="cursor:pointer" onclick="location.href='<?=G5_SHOP_URL?>/gplist.php?ca_id=CT'">코인스투데이</li>
+								<li id="menu_title" style="cursor:pointer" onclick="location.href='<?=G5_SHOP_URL?>/gplist.php?ca_id=CT'">코인스투데이<font color=white>&nbsp;&nbsp;&nbsp;☜ 전체보기</font></li>
 								<?=getCotoCategory()?>
 
 								<li id="menu_line"><img src="<?=G5_URL?>/img/menu_line.png"></li>
