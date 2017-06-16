@@ -1,6 +1,11 @@
 <?php
 include_once('./_common.php');
 
+//모바일 회원가입 임시금지
+if($접속기기 != '데스크탑')
+	alert("회원가입은 당분간 PC에서만 가입이 가능합니다.","/");
+
+
 // 로그인중인 경우 회원가입 할 수 없습니다.
 if ($is_member) {
     goto_url(G5_URL);
