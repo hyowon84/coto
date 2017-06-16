@@ -44,7 +44,7 @@ if (G5_IS_MOBILE) {
 		alert('이메일주소를 올바로 입력하셔야합니다');
 	}
 	
-	if($mb_hp1 && $mb_hp2 && $mb_hp3) {
+	if(!$mb_hp1 || !$mb_hp2 || !$mb_hp3) {
 		alert("휴대폰번호를 올바로 입력해주세요");
 	}
 	
@@ -56,8 +56,8 @@ if (G5_IS_MOBILE) {
 	if(strlen(escape_trim($_POST['mb_id2'])) < 2) {
 		alert('이메일주소를 올바로 입력하셔야합니다');
 	}
-	
-	if($mb_hp1 && $mb_hp2 && $mb_hp3) {
+
+	if(!$mb_hp1 || !$mb_hp2 || !$mb_hp3) {
 		alert("휴대폰번호를 올바로 입력해주세요");
 	}
 	
