@@ -10,18 +10,19 @@ if ($config['cf_include_index']) {
     return; // 이 코드의 아래는 실행을 하지 않습니다.
 }
 
+
 //사용안함
 if(isset($default['de_root_index_use']) && $default['de_root_index_use']) {
     require_once(G5_SHOP_PATH.'/index.php');
     return;
 }
 
+
 $작동타임 = mktime(13,30,00,6,17,2017);
 $현재타임 = mktime();
 
 if($현재타임 >= $작동타임 || $mode == "jhw") {
-	if($mode == "jhw") echo date("Y-m-d H:i:s");
-	
+
 	if(G5_IS_MOBILE) {
 		include_once(G5_MOBILE_PATH.'/shop/coto_chiwoo.php');
 	}
@@ -33,13 +34,17 @@ if($현재타임 >= $작동타임 || $mode == "jhw") {
 }
 
 
+
+
 //모바일 접속시 사용하는 index.php
 if(G5_IS_MOBILE) {
     $isMain = true;
     include_once(G5_MOBILE_PATH.'/shop/index.php');
     return;
 }
-
+else {
+	
+}
 
 //일반웹 접속
 include_once(G5_PATH.'/_head.php');
