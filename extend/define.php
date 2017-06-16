@@ -205,6 +205,7 @@ function makeProductSql($gpcode) {
 																gp_have_qty,	
 																gp_buy_min_qty,	/*최소구매수량*/
 																gp_buy_max_qty,	/*최대구매수량*/
+																only_member,
 																gp_charge,	/*수수료*/
 																gp_duty,	/*관세*/
 																gp_use,	/*판매유무*/
@@ -653,9 +654,13 @@ $sql_cart_update = "
 														IFNULL(RIV.RIV_QTY,0) AS RIV_QTY,								/*실발주량*/
 														IFNULL(CO.ORDER_QTY,0) AS ORDER_QTY,						/*공구&빠른 총주문량*/
 														
+														GP.gp_buy_min_qty,			/*최소구매수량*/
+														GP.gp_buy_max_qty,			/*최대구매수량*/
+														GP.only_member,					/*회원전용구매*/
+														
 														CT.it_id AS CT_ID,
 														IFNULL(CT.CT_SUM,0) AS CT_SUM										/* 카트담은수량 */
-										
+														
 										FROM		g5_shop_group_purchase GP
 														
 														/*가상발주수량*/
