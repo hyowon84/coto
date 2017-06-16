@@ -293,7 +293,7 @@ if ($w == '') {
                      mb_8 = '{$mb_8}',
                      mb_9 = '{$mb_9}',
                      mb_10 = '{$mb_10}',
-                     mb_from = '$접속기기',
+                     mb_from = '$접속기기'
                      {$sql_certify} ";
                      /* mb_sex = '{$mb_sex}',
 							mb_birth = '{$mb_birth}', 휴대폰본인인증시 중복컬럼 일단 주석처 */
