@@ -48,14 +48,6 @@
 	<li class="slick-slide-img flex-active-slide" style="width: 375px; float: left; display: block;"><a href="http://www.coinstoday.co.kr/shop/grouppurchase.php?gp_id=KOR17_SM1z_CHIWOO"><img class="slick-slide-img" src="/image.php?image=/data/main_img/image 11(1)_1497330369.jpg" draggable="false"></a></li>
 </ul>
 
-<script src='<?=G5_JS_URL?>/imgLiquid.js'></script>
-<script>
-$(document).on('ready', function() {
-	$(".slide").attr('style','display:block;');
-	$('.imgLiquidNoFill').imgLiquid({fill:false});
-});
-</script>
-
 <div>
 <? include_once(G5_MSHOP_PATH . '/tail.php'); ?>
 </div>
