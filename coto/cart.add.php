@@ -50,12 +50,11 @@ if($it_id) {
 	$최소구매수량 = $chk[gp_buy_min_qty];
 	$최대구매수량 = $chk[gp_buy_max_qty];
 	$주문내역수량 = ($sumdata[SUM_QTY]) ? $sumdata[SUM_QTY] : 0;
-	$회원전용여부 = ($chk[only_member] && $mb_id);
+	$회원전용여부 = ($chk[only_member] && !$mb_id);
 
 	
 	
-	
-	if(!$회원전용여부) {
+	if($회원전용여부) {
 		echo "80";
 		exit;
 	}
