@@ -44,9 +44,11 @@
 	/*.slide_contain { width:1100px; }*/
 </style>
 
-<ul>
-	<li class="slick-slide-img flex-active-slide" style="width: 375px; float: left; display: block;"><a href="http://www.coinstoday.co.kr/shop/grouppurchase.php?gp_id=KOR17_SM1z_CHIWOO"><img class="slick-slide-img" src="/image.php?image=/data/main_img/image 11(1)_1497330369.jpg" draggable="false"></a></li>
-</ul>
+<div style="width:100%">
+	<a href="http://www.coinstoday.co.kr/shop/grouppurchase.php?gp_id=KOR17_SM1z_CHIWOO">
+		<img class="slick-slide-img" src="/image.php?image=/data/main_img/image 11(1)_1497330369.jpg" width="100%" draggable="false">
+	</a>
+</div>
 
 <div>
 <? include_once(G5_MSHOP_PATH . '/tail.php'); ?>
