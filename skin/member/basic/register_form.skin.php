@@ -279,7 +279,7 @@ jQuery(function($){
 		<tr>
 			<th scope="row"><label for="reg_mb_birth">생년월일<strong class="sound_only">필수</strong></label></th>
             <td>
-				<input type="text" name="mb_birth" value="<?php echo $birth ?>" readonly="true" id="reg_mb_birth" class="frm_input required" required readonly size=12 maxlength="10"></br>
+				<input type="text" name="mb_birth" value="<?php echo $birth ?>" id="reg_mb_birth" class="frm_input required" required readonly size=12 maxlength="10"></br>
 				<font color="red">* 아이디/비밀번호 분실시 휴대폰 본인인증 확인을 위해 주민등록상의 생년월일을 입력해주세요.</font>
 			</td>
 		</tr>
