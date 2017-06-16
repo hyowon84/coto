@@ -256,8 +256,8 @@ if ($config['cf_cert_use'] && $cert_type && $md5_cert_no) {
 
 if ($w == '') {
 
-    $sql = " insert into {$g5['member_table']}
-                set mb_id = '{$mb_id}',
+    $sql = " INSERT	INTO	{$g5['member_table']}	SET
+ 										mb_id = '{$mb_id}',
                      mb_password = '".sql_password($mb_password)."',
                      mb_name = '{$mb_name}',
                      mb_nick = '{$mb_nick}',
@@ -292,7 +292,8 @@ if ($w == '') {
                      mb_7 = '{$mb_7}',
                      mb_8 = '{$mb_8}',
                      mb_9 = '{$mb_9}',
-                     mb_10 = '{$mb_10}'
+                     mb_10 = '{$mb_10}',
+                     mb_from = '$접속기기',
                      {$sql_certify} ";
                      /* mb_sex = '{$mb_sex}',
 							mb_birth = '{$mb_birth}', 휴대폰본인인증시 중복컬럼 일단 주석처 */

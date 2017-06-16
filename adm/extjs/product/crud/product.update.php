@@ -29,6 +29,8 @@ function process($data) {
 	$gp_spotprice = $data[gp_spotprice];
 	$gp_metal_type = $data[gp_metal_type];
 	$gp_metal_don = $data[gp_metal_don];
+	$gp_buy_max_qty = $data[gp_buy_max_qty];
+	$only_member = $data[only_member];
 	$gp_order = $data[gp_order];
 	$gp_use = $data[gp_use];
 
@@ -69,6 +71,8 @@ function process($data) {
 														gp_usdprice = '$gp_usdprice',
 														gp_price_org = '$gp_price_org',
 														jaego = '$jaego',
+														only_member = '$only_member',
+														gp_buy_max_qty = '$gp_buy_max_qty',
 														gp_price_type = '$gp_price_type',
 														gp_metal_type = '$gp_metal_type',
 														gp_metal_don = '$gp_metal_don',

@@ -93,7 +93,6 @@ else if($mode == 'itemlist') {
 														T.location,
 														T.gp_img,
 														T.gp_name,
-														
 														T.gp_update_time,
 														T.gp_price_type,
 														T.gp_metal_type,
@@ -107,6 +106,8 @@ else if($mode == 'itemlist') {
 														T.gp_usdprice,
 														T.gp_realprice,
 														T.gp_price_org,
+														T.gp_buy_max_qty,
+														T.only_member,
 														
 														/*최초재고값 + 발주수량 - 실주문량*/
 														T.real_jaego,												/*실재고*/
@@ -254,6 +255,10 @@ while($row = mysql_fetch_assoc($result)) {
 	foreach($row as $key => $val) {
 		$row[$key] = 개행문자삭제($val);
 		if($key == 'gp_realprice') $row[$key] = CEIL($val / 100) * 100;
+		if($key == 'gp_img') {
+//			$imgthumb = getThumb($row);
+//			$row['gp_img'] = $imgthumb[src];
+		}
 	}
 	array_push($data, $row);
 }

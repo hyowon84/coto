@@ -20,23 +20,59 @@ if (!$ss_id && !$mb_id)
 //장바구니에 추가할 상품
 if($it_id) {
 
-	$chk_sql = str_replace('!공구코드!',$gpcode,$sql_cart_update);
-	$chk_sql = str_replace('!상품ID!',$it_id,$chk_sql);
-	$chk_sql = str_replace('!WHERE_CART!',$WHERE_CART,$chk_sql);
+	$chk_sql = str_replace('!공구코드!', $gpcode, $sql_cart_update);
+	$chk_sql = str_replace('!상품ID!', $it_id, $chk_sql);
+	$chk_sql = str_replace('!WHERE_CART!', $WHERE_CART, $chk_sql);
 	$chk = mysql_fetch_array(sql_query($chk_sql));
 	
 //	echo $chk_sql;
-
 	//현재재고(상품재고-총주문신청수량)보다 내가담을수량(카트수량 + 내가담을수량)이 현재재고보다 오버되면 못담게 수정
 	//현재재고 = DB의 jaego    APMEX는 정보갱신시 차감, COTO는 누적주문수량을 빼줘야함.
 	$현재재고 = $chk[real_jaego];
-	$담을수량 = ($it_qty + $chk[CT_SUM]);
+	$담을수량 = ($it_qty + $chk[CT_SUM]);	//장바구니 총 담는수량
+
+
+
+
+	$od_sql = "	SELECT	CL.mb_id,
+											CL.it_id,
+											SUM(it_qty) AS SUM_QTY
+							FROM		clay_order CL
+							WHERE		1=1
+							AND			CL.it_id = '$it_id'
+							AND			(CL.mb_id = '$mb_id' OR CL.mb_id = '$ss_id')
+							AND			CL.stats >= '00'
+							AND			CL.stats <= '60'
+							GROUP BY CL.mb_id, CL.it_id
+	";
+	$sumdata = mysql_fetch_array(sql_query($od_sql));
+
+	$최소구매수량 = $chk[gp_buy_min_qty];
+	$최대구매수량 = $chk[gp_buy_max_qty];
+	$주문내역수량 = ($sumdata[SUM_QTY]) ? $sumdata[SUM_QTY] : 0;
+	$회원전용여부 = ($chk[only_member] && $mb_id);
+
+	
+	
+	
+	if(!$회원전용여부) {
+		echo "80";
+		exit;
+	}
+	//최대구매수량초과
+	else if($최대구매수량 < ($담을수량 + $주문내역수량) ) {
+		echo "95";
+		exit;
+	}
 
 	/*초과해서 장바구니 담는경우 에러 리턴*/
-	if( $현재재고 < $담을수량 ) {
+	else if( $현재재고 < $담을수량 ) {
 		echo "90";
 		exit;
 	}
+	
+	
+	
 
 
 	/* 장바구니에 등록된게 있으면 더하기 */

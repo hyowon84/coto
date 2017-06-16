@@ -26,7 +26,9 @@ function auction_start(grid,val) {
 }
 
 
+
 /************* ----------------	1. 상품가격탭 START -------------- ******************/
+	
 	
 //공동구매 목록
 var grid_gplist = Ext.create('Ext.grid.Panel',{
@@ -36,12 +38,12 @@ var grid_gplist = Ext.create('Ext.grid.Panel',{
 	autoLoad : true,
 	height	: 770,
 	columns : [
-		{ text: '공구명', 		width: 210,	dataIndex : 'gpcode_name',	sortable: false		},
-		{ text: '공구코드',	width: 120,	dataIndex : 'gpcode',		hidden:true	},
-		{ text: '등록일',	 	width: 120,	dataIndex : 'reg_date',		sortable: true,		renderer: Ext.util.Format.dateRenderer('Y-m-d'),	field: { xtype: 'datefield' }},
-		{ text: '시작일',	 	width: 120,	dataIndex : 'start_date',	sortable: true,		renderer: Ext.util.Format.dateRenderer('Y-m-d'),	field: { xtype: 'datefield' }},
-		{ text: '종료일',	 	width: 120,	dataIndex : 'end_date',		sortable: true,		renderer: Ext.util.Format.dateRenderer('Y-m-d'),	field: { xtype: 'datefield' }},
-		{ text: '품목수',		width: 120,	dataIndex : 'ITEM_CNT',		style:'text-align:center',	align:'right',	renderer: Ext.util.Format.numberRenderer('0,000') }		
+		{ text: '공구명', 	width: 210,	dataIndex : 'gpcode_name',	sortable: false		},
+		{ text: '공구코드',	width: 120,	dataIndex : 'gpcode',				hidden:true	},
+		{ text: '등록일',	 	width: 120,	dataIndex : 'reg_date',			sortable: true,		renderer: Ext.util.Format.dateRenderer('Y-m-d'),	field: { xtype: 'datefield' }},
+		{ text: '시작일',	 	width: 120,	dataIndex : 'start_date',		sortable: true,		renderer: Ext.util.Format.dateRenderer('Y-m-d'),	field: { xtype: 'datefield' }},
+		{ text: '종료일',	 	width: 120,	dataIndex : 'end_date',			sortable: true,		renderer: Ext.util.Format.dateRenderer('Y-m-d'),	field: { xtype: 'datefield' }},
+		{ text: '품목수',		width: 120,	dataIndex : 'ITEM_CNT',			style:'text-align:center',	align:'right',	renderer: Ext.util.Format.numberRenderer('0,000') }		
 	],
 	store : store_gplist,
 	viewConfig: {
@@ -143,6 +145,8 @@ var grid_itemlist = Ext.create('Ext.grid.Panel',{
 			editor: Ext.create('Ext.combobox.item.yesno'),
 			renderer: rendererCombo
 		},
+		{ groupIndex:'1',		header: '회원전용',			dataIndex: 'only_member',			width: 80,		align:'center',		style:'text-align:center',		xtype: 'checkcolumn',		headerCheckbox: true,		stopSelection: false	},
+		{ groupIndex:'1',		text: '최대구매수량',		dataIndex : 'gp_buy_max_qty',	width: 100,		editor:{allowBlank:true}	},
 		{ groupIndex:'1',		text: 'img',						dataIndex : 'gp_img',					width: 60,		renderer: function(value){	return '<img src="' + value + '" width=40 height=40 />';}			},
 		{ groupIndex:'1',		text: '상품코드',				dataIndex : 'gp_id',					width: 160		},
 		{ groupIndex:'1',		text: '카테고리',				dataIndex : 'ca_id',					width: 100,		editor:{allowBlank:true}	},
@@ -169,9 +173,9 @@ var grid_itemlist = Ext.create('Ext.grid.Panel',{
 			editor: Ext.create('Ext.combobox.item.pricetype'),
 			renderer: rendererCombo
 		},
-		{ groupIndex:'1',		text: '판매가(￦)',			dataIndex : 'gp_price',				width: 140,		editor:{allowBlank:true},		style:'text-align:center',	align:'right',	renderer: Ext.util.Format.numberRenderer('0,000')	},
+		{ groupIndex:'1',		text: '판매가(￦)',				dataIndex : 'gp_price',				width: 140,		editor:{allowBlank:true},		style:'text-align:center',	align:'right',	renderer: Ext.util.Format.numberRenderer('0,000')	},
 		{ groupIndex:'1',		text: '달러가($)',				dataIndex : 'gp_usdprice',		width: 140,		editor:{allowBlank:true},		style:'text-align:center',	align:'right',	renderer: Ext.util.Format.numberRenderer('0,000.00')	},
-		{ groupIndex:'1',		text: '스팟시세가(￦)',	dataIndex : 'gp_realprice',		width: 140,		style:'text-align:center',		align:'right',					renderer: Ext.util.Format.numberRenderer('0,000')	},
+		{ groupIndex:'1',		text: '스팟시세가(￦)',		dataIndex : 'gp_realprice',		width: 140,		style:'text-align:center',		align:'right',					renderer: Ext.util.Format.numberRenderer('0,000')	},
 		{ groupIndex:'1',		text: '매입가($)',				dataIndex : 'gp_price_org',		width: 140,		editor:{allowBlank:true},		style:'text-align:center',	align:'right',	renderer: Ext.util.Format.numberRenderer('0,000.00')	},
 		{
 			xtype: 'gridcolumn',

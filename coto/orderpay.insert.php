@@ -2,6 +2,10 @@
 include_once('./_common.php');
 global $is_admin;
 
+$ss_id = $_SESSION[ss_id];
+$mb_id = $member[mb_id];
+
+
 
 //개별공동구매가 진행중인것만 주문
 
@@ -205,6 +209,19 @@ else if($cart_cnt > 0) {
 	//for ($i=0; $row = mysql_fetch_array($result); $i++) {
 	while($row = mysql_fetch_array($cart_result)) {
 
+
+		$od_sql = "	SELECT	CL.mb_id,
+												CL.it_id,
+												SUM(it_qty) AS SUM_QTY
+								FROM		clay_order CL
+								WHERE		1=1
+								AND			CL.it_id = '$row[it_id]'
+								AND			(CL.mb_id = '$mb_id' OR CL.mb_id = '$ss_id')
+								GROUP BY CL.mb_id, CL.it_id
+		";
+		$sumdata = mysql_fetch_array(sql_query($od_sql));
+		
+		
 		/* 1개 상품 바로주문일경우 재고가 부족하면 back */
 		if($다이렉트주문 && $row[real_jaego] < $_POST[it_qty]) {
 			echo "<script>
@@ -227,7 +244,9 @@ else if($cart_cnt > 0) {
 		$상품판매가 = $row[po_cash_price];
 		$it_id = $row[it_id];
 		$it_name = $row[gp_name];
-		
+		$최대구매수량 = $row[gp_buy_max_qty];
+		$주문내역수량 = $sumdata[SUM_QTY];
+		$누적주문수량 = $신청수량 + $주문내역수량;
 		$현재공구총신청수량 = $row[GP_ORDER_QTY];
 		
 		if($신청수량 == 0) continue;
@@ -257,12 +276,19 @@ else if($cart_cnt > 0) {
 		}
 
 
-		if($신청수량 > $남은수량 && $is_admin != 'super') {
-			$경고메시지 .= "{$row[gp_name]} 상품의 경우 고객님의 신청수량({$신청수량}개)이 남은수량(현재 {$남은수량}개)을 초과하였습니다. 새로고침후 다시 주문해주세요";
+		if( $누적주문수량 > $최대구매수량 ) {
+			$경고메시지 .= "{$row[gp_name]} 상품의 경우 고객님의 누적주문수량({$누적주문수량}개)이 최대구매수량({$최대구매수량}개)을 초과하였습니다. 수량조절후 다시 주문해주세요\\n";
+			$result = false;
+		}
+		else if($신청수량 > $남은수량 && $is_admin != 'super') {
+			$경고메시지 .= "{$row[gp_name]} 상품의 경우 고객님의 신청수량({$신청수량}개)이 남은수량(현재 {$남은수량}개)을 초과하였습니다. 수량조절후 다시 주문해주세요\n";
+			$result = false;
 		}
 		else {
 			$주문금액 += ($신청당시상품가격 * $신청수량);
 
+			$mb_id = ($mb_id) ? $mb_id : $_SESSION[ss_id];
+			
 			$it_name = str_replace('\"', "", $it_name);
 			$hphone = "$hp1-$hp2-$hp3";
 			/* 볼륨가적용일땐 주문신청(00), 볼륨가적용안함일땐 주문금액문자 전송되니 입금요청 상태로 변경*/
@@ -295,6 +321,15 @@ else if($cart_cnt > 0) {
 		}
 	} //while end
 
+	if(!$succ_cnt) {
+		$comment = "$성공메시지 \\n $경고메시지";
+		echo "<script>
+						alert(\"$comment\");
+						location.href = '/';
+					</script>";
+		exit;
+	}
+	
 	/* 현금영수증신청 */
 	if($cash_receipt_yn == 'Y') {
 		if($cash_receipt_type == 'C01') {
@@ -396,8 +431,7 @@ sql_query($ins_sql);
 
 /*다이렉트주문이 아닐경우*/
 if(!$다이렉트주문) {
-	$ss_id = $_SESSION[ss_id];
-	$mb_id = $member[mb_id];
+	
 	$cart_sql = "	UPDATE	coto_cart		SET
 													stats = 60
 								WHERE		(ss_id = '$ssid'	OR	mb_id = '$mb_id')

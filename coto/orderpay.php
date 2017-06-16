@@ -3,6 +3,12 @@ include_once('./_common.php');
 $g5['title'] = '주문서 작성';
 include_once('./_head.php');
 
+
+$ss_id = $_SESSION[ss_id];
+$mb_id = $member[mb_id];
+
+
+
 /* 상품목록에서 바로 주문하기일 경우 */
 if($_GET[it_id]) {
 
@@ -33,6 +39,7 @@ if($_GET[it_id]) {
 												T.gp_have_qty,
 												T.gp_buy_min_qty,
 												T.gp_buy_max_qty,
+												T.only_member,
 												T.gp_charge,
 												T.gp_duty,
 												T.gp_use,
@@ -93,6 +100,7 @@ if($_GET[it_id]) {
 												LEFT JOIN g5_shop_category CT ON (CT.ca_id = T.ca_id)
 	";
 	$result = sql_query($it_sql);
+	
 }
 else {
 	//장바구니 자료 쿼리
@@ -109,6 +117,7 @@ else {
 												T.gp_have_qty,
 												T.gp_buy_min_qty,
 												T.gp_buy_max_qty,
+												T.only_member,
 												T.gp_charge,
 												T.gp_duty,
 												T.gp_use,
@@ -251,26 +260,58 @@ $(document).ready(function() {
 			$i = 0;
 			while($row = mysql_fetch_array($result))
 			{
+				$it_id = ($it_id) ? $it_id : $row[it_id];
+				/*다이렉트 주문일경우 최대구매수량을 초과시 */
+				$od_sql = "	SELECT	CL.mb_id,
+														CL.it_id,
+														SUM(it_qty) AS SUM_QTY
+										FROM		clay_order CL
+										WHERE		1=1
+										AND			CL.it_id = '$it_id'
+										AND			(CL.mb_id = '$mb_id' OR CL.mb_id = '$ss_id')
+										GROUP BY CL.mb_id, CL.it_id
+				";
+				$sumdata = mysql_fetch_array(sql_query($od_sql));
+				
+				$주문내역수량 = ($sumdata[SUM_QTY]) ? $sumdata[SUM_QTY] : 0;
+				$최대구매가능수량 = $row['gp_buy_max_qty'];
+				$누적주문수량 = $it_qty + $row['it_qty']  + $주문내역수량;
+				$주문수량 = ($it_id && $it_qty > 0) ? $it_qty : $row['it_qty'];
+				$회원님의최대구매가능수량 = $최대구매가능수량 - $sumdata['SUM_QTY'];
 
-				/*다이렉트 주문일경우 재고가 부족하면 back */
-				if($it_id && $row[jaego] < $it_qty) {
-					alert("신청수량[$it_qty]이 재고[$row[jaego]]를 초과했습니다. 다시 신청해주세요","/");
-					exit;
-				}
-
-				$주문수량 = ($it_id && $it_qty > 0) ? $it_qty : $row[it_qty];
 				$총무게 += ($row[gp_metal_don] * $주문수량 * 31.1035);
-				$상품명 = $row[gp_name];
+				$상품명 = "<b>[$row[ca_name]][$row[it_id]]</b><br>$row[gp_name]";
 				$이미지 = "<img src='$row[gp_img]' />";
 				$상품판매가 = $row[po_cash_price];
 				$예상재고수량 = $row[jaego];
 				$주문금액 = $주문수량 * $row[po_cash_price];
 				$총상품금액 += $주문금액;
+				
+				
+
+				/*다이렉트 주문일경우 재고가 부족하면 back */
+				if($it_id && $row['only_member'] && !$mb_id) {
+					alert("본 상품은 코인즈투데이 회원만 주문이 가능한 상품입니다. 회원가입후 다시 시도해주세요", $_SERVER["HTTP_REFERER"]);
+					exit;
+				}
+				
+				if($it_id && $최대구매가능수량 < $누적주문수량 ) {
+					alert("누적주문수량[".$누적주문수량."]이 최대구매수량[".$최대구매가능수량."]를 초과했습니다. 다시 신청해주세요", $_SERVER["HTTP_REFERER"]);
+					exit;
+				}
+				
+				/*다이렉트 주문일경우 재고가 부족하면 back */
+				if($it_id && $row[jaego] < $it_qty) {
+					alert("신청수량[$it_qty]이 재고[$row[jaego]]를 초과했습니다. 다시 신청해주세요", $_SERVER["HTTP_REFERER"]);
+					exit;
+				}
+				
+				
 	?>
 			<tr>
 				<td title='이미지' class="sod_img">
 					<div class='imgLiquidNoFill imgLiquid' style='float:left;width:70px;height:70px;padding:0 15px 0 15px;'>
-		 				<a href="<?=G5_SHOP_URL.'/grouppurchase.php?gp_id='.$row['it_id']."&ca_id=".$_GET[ca_id]."\" class=\"sct_a sct_img\""?>><?=$이미지?></a>
+		 				<a href="<?=G5_SHOP_URL.'/grouppurchase.php?gp_id='.$row['it_id']."&ca_id=".$_GET[ca_id]."\" class=\"sct_a sct_img\""?>"><?=$이미지?></a>
 			 		</div>
 				</td>
 
@@ -279,7 +320,7 @@ $(document).ready(function() {
 					<input type="hidden" name="it_name[<?=$i?>]"  value="<?=get_text($row['it_name'])?>">
 					<?=$상품명?>
 					<div style="margin:7px 0 0 0;">
-						<div style="float:left;width:100%; text-align:right;">판매가 <?=number_format($상품판매가)?>원</div>
+						<div style="float:left;width:100%; text-align:right;">회원님의 최대구매가능수량 : <?=$회원님의최대구매가능수량?>, 판매가 <?=number_format($상품판매가)?>원</div>
 					</div>
 				</td>
 

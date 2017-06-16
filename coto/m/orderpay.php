@@ -65,13 +65,26 @@ $send_cost1 = 0;
 $i = 0;
 while($row = mysql_fetch_array($result))
 {
-	/*다이렉트 주문일경우 재고가 부족하면 back */
-	if($it_id && $row[jaego] < $it_qty) {
-		alert("신청수량[$it_qty]이 재고[$row[jaego]]를 초과했습니다. 다시 신청해주세요","/");
-		exit;
-	}
 
-	$주문수량 = ($it_id && $it_qty > 0) ? $it_qty : $row[it_qty];
+	$it_id = ($it_id) ? $it_id : $row[it_id];
+	/*다이렉트 주문일경우 최대구매수량을 초과시 */
+	$od_sql = "	SELECT	CL.mb_id,
+														CL.it_id,
+														SUM(it_qty) AS SUM_QTY
+										FROM		clay_order CL
+										WHERE		1=1
+										AND			CL.it_id = '$it_id'
+										AND			(CL.mb_id = '$mb_id' OR CL.mb_id = '$ss_id')
+										GROUP BY CL.mb_id, CL.it_id
+				";
+	$sumdata = mysql_fetch_array(sql_query($od_sql));
+
+	$주문내역수량 = ($sumdata[SUM_QTY]) ? $sumdata[SUM_QTY] : 0;
+	$최대구매가능수량 = $row['gp_buy_max_qty'];
+	$누적주문수량 = $it_qty + $row['it_qty']  + $주문내역수량;
+	$주문수량 = ($it_id && $it_qty > 0) ? $it_qty : $row['it_qty'];
+	$회원님의최대구매가능수량 = $최대구매가능수량 - $sumdata['SUM_QTY'];
+
 	$총무게 += ($row[gp_metal_don] * $주문수량 * 31.1035);
 	$상품명 = "<b>[$row[ca_name]][$row[it_id]]</b><br>$row[gp_name]";
 	$이미지 = "<img src='$row[gp_img]' />";
@@ -79,6 +92,26 @@ while($row = mysql_fetch_array($result))
 	$예상재고수량 = $row[jaego];
 	$주문금액 = $주문수량 * $row[po_cash_price];
 	$총상품금액 += $주문금액;
+
+
+
+	/*다이렉트 주문일경우 재고가 부족하면 back */
+	if($it_id && $row['only_member'] && !$mb_id) {
+		alert("본 상품은 코인즈투데이 회원만 주문이 가능한 상품입니다. 회원가입후 다시 시도해주세요", $_SERVER["HTTP_REFERER"]);
+		exit;
+	}
+
+	if($it_id && $최대구매가능수량 < $누적주문수량 ) {
+		alert("누적주문수량[".$누적주문수량."]이 최대구매수량[".$최대구매가능수량."]를 초과했습니다. 다시 신청해주세요", $_SERVER["HTTP_REFERER"]);
+		exit;
+	}
+
+	/*다이렉트 주문일경우 재고가 부족하면 back */
+	if($it_id && $row[jaego] < $it_qty) {
+		alert("신청수량[$it_qty]이 재고[$row[jaego]]를 초과했습니다. 다시 신청해주세요", $_SERVER["HTTP_REFERER"]);
+		exit;
+	}
+
 
 
 	/* http 가 들어간건 다이렉트로, 아닌건 get_it_thumb함수로 */
