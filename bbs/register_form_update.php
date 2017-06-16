@@ -24,7 +24,7 @@ if ($w == 'u' && $is_admin == 'super') {
 }
 
 if (!chk_captcha()) {
-    alert('자동등록방지 숫자가 틀렸습니다.');
+	alert('자동등록방지 숫자가 틀렸습니다.');
 }
 
 $path = "../data/member/";
@@ -36,10 +36,31 @@ $mb_hp2 = $_POST['mb_hp2'];
 $mb_hp3 = $_POST['mb_hp3'];
 
 if (G5_IS_MOBILE) {
-    $mb_id          = escape_trim($_POST['mb_id']);
+  $mb_id = escape_trim($_POST['mb_id']);
+	$mb_id_arr = explode("@",$mb_id);
+	
+	//이메일주소 정확히 입력안할경우 
+	if(strlen($mb_id_arr[1]) < 2) {
+		alert('이메일주소를 올바로 입력하셔야합니다');
+	}
+	
+	if($mb_hp1 && $mb_hp2 && $mb_hp3) {
+		alert("휴대폰번호를 올바로 입력해주세요");
+	}
+	
 } else {
-    $mb_id          = escape_trim($_POST['mb_id1']);
-    $mb_id          = $mb_id."@".escape_trim($_POST['mb_id2']);
+  $mb_id = escape_trim($_POST['mb_id1']);
+  $mb_id = $mb_id."@".escape_trim($_POST['mb_id2']);
+
+	//이메일주소 정확히 입력안할경우 
+	if(strlen(escape_trim($_POST['mb_id2'])) < 2) {
+		alert('이메일주소를 올바로 입력하셔야합니다');
+	}
+	
+	if($mb_hp1 && $mb_hp2 && $mb_hp3) {
+		alert("휴대폰번호를 올바로 입력해주세요");
+	}
+	
 }
 $mb_password    = escape_trim($_POST['mb_password']);
 $mb_password_re = escape_trim($_POST['mb_password_re']);
@@ -51,7 +72,7 @@ $mb_birth       = isset($_POST['mb_birth'])         ? escape_trim($_POST['mb_bir
 $mb_homepage    = isset($_POST['mb_homepage'])      ? escape_trim($_POST['mb_homepage'])    : "";
 $mb_tel         = isset($_POST['mb_tel'])           ? escape_trim($_POST['mb_tel'])         : "";
 //$mb_hp          = isset($_POST['mb_hp'])            ? escape_trim($_POST['mb_hp'])          : "";
-$mb_hp			= $mb_hp1."-".$mb_hp2."-".$mb_hp3;
+$mb_hp					= $mb_hp1."-".$mb_hp2."-".$mb_hp3;
 $mb_zip1        = isset($_POST['mb_zip1'])          ? escape_trim($_POST['mb_zip1'])        : "";
 $mb_zip2        = isset($_POST['mb_zip2'])          ? escape_trim($_POST['mb_zip2'])        : "";
 $mb_addr1       = isset($_POST['mb_addr1'])         ? escape_trim($_POST['mb_addr1'])       : "";

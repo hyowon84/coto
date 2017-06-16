@@ -30,8 +30,9 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
                 아직 회원이 아니시라면 회원으로 가입 후 이용해 주십시오.
             </p>
             <div>
-                <a href="<?php echo G5_BBS_URL ?>/password_lost.php" target="_blank" id="login_password_lost" class="btn02">아이디 비밀번호 찾기</a>
-                <a href="./register.php" class="btn01">회원 가입</a>
+              <a href="<?php echo G5_BBS_URL ?>/password_lost.php" target="_blank" id="login_password_lost" class="btn02">아이디 비밀번호 찾기</a>
+                <!--a href="./register.php" class="btn01">회원 가입</a-->
+							<a href="#" class="btn01" onclick="alert('죄송합니다 회원가입은 PC로 접속해서 가입해주세요')">회원 가입</a>
             </div>
         </section>
     </form>
