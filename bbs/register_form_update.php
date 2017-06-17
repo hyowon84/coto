@@ -241,7 +241,7 @@ if ($config['cf_cert_use'] && $cert_type && $md5_cert_no) {
     } else {
 			
         $sql_certify .= " , mb_hp = '{$mb_hp}' ";
-        $sql_certify .= " , mb_certify  = '' ";
+        $sql_certify .= " , mb_certify  = '$cert_type' ";
         $sql_certify .= " , mb_adult = 0 ";
 		$sql_certify .= " , mb_img = '' ";
     }
@@ -249,7 +249,7 @@ if ($config['cf_cert_use'] && $cert_type && $md5_cert_no) {
 	//요 경로 타는중
     if (get_session("ss_reg_mb_name") != $mb_name || get_session("ss_reg_mb_hp") != $mb_hp) {
         $sql_certify .= " , mb_hp = '{$mb_hp}' ";
-        $sql_certify .= " , mb_certify = '' ";
+        $sql_certify .= " , mb_certify = '$cert_type' ";
         $sql_certify .= " , mb_adult = 0 ";
 		$sql_certify .= " , mb_img = '' ";
     }
