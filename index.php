@@ -18,10 +18,11 @@ if(isset($default['de_root_index_use']) && $default['de_root_index_use']) {
 }
 
 
-$작동타임 = mktime(13,30,00,6,17,2017);
+$시작타임 = mktime(13,30,00,6,17,2017);
+$종료타임 = mktime(14,20,00,6,17,2017);
 $현재타임 = mktime();
 
-if($현재타임 >= $작동타임 || $mode == "jhw") {
+if( ($현재타임 >= $시작타임 && $현재타임 <= $종료타임 ) || $mode == "jhw") {
 
 	if(G5_IS_MOBILE) {
 		include_once(G5_MOBILE_PATH.'/shop/coto_chiwoo.php');
