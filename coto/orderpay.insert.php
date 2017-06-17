@@ -409,25 +409,25 @@ else	/* 볼륨가미적용 */
 }
 
 $result = $SMS->Add($mh_hp, $mh_reply, '', '', $mh_send_message, '', 1);
-$result = $SMS->Send();
+//$result = $SMS->Send();
 $SMS->Init(); // 보관하고 있던 결과값을 지웁니다.
 
 /* 로그기록 */
-$ins_sql = "INSERT	INTO 	sms5_write		SET
-													wr_renum = '$wr_renum',
-													od_id			=	'$od_id',							/* 관련 주문번호 */
-													wr_reply = '$mh_reply',						/*보내는사람번호*/
-													wr_target = '$hphone',						/*받는사람번호*/
-													wr_message = '$mh_send_message',	/*메시지내용*/
-													wr_datetime = now(),							/*보낸날짜*/
-													wr_booking = '$wr_booking',				/* 예약전송날짜*/
-													wr_total = '1',
-													wr_re_total = '$wr_re_total',
-													wr_success = '1',
-													wr_failure = '$wr_failure',
-													wr_memo = '$wr_memo'
-";
-sql_query($ins_sql);
+//$ins_sql = "INSERT	INTO 	sms5_write		SET
+//													wr_renum = '$wr_renum',
+//													od_id			=	'$od_id',							/* 관련 주문번호 */
+//													wr_reply = '$mh_reply',						/*보내는사람번호*/
+//													wr_target = '$hphone',						/*받는사람번호*/
+//													wr_message = '$mh_send_message',	/*메시지내용*/
+//													wr_datetime = now(),							/*보낸날짜*/
+//													wr_booking = '$wr_booking',				/* 예약전송날짜*/
+//													wr_total = '1',
+//													wr_re_total = '$wr_re_total',
+//													wr_success = '1',
+//													wr_failure = '$wr_failure',
+//													wr_memo = '$wr_memo'
+//";
+//sql_query($ins_sql);
 
 /*다이렉트주문이 아닐경우*/
 if(!$다이렉트주문) {
