@@ -56,7 +56,7 @@ include_once(G5_PATH.'/_head.php');
 	/*.slide_contain { width:1100px; }*/
 </style>
 <div>
-	<a href="http://www.coinstoday.co.kr/shop/grouppurchase.php?gp_id=KOR17_SM1z_CHIWOO" tabindex="0"><img class="slick-slide-img" src="/image.php?image=/data/main_img/image 11(1)_1497330369.jpg" height="550" title=""></a>
+	<a href="http://www.coinstoday.co.kr/shop/grouppurchase.php?gp_id=KOR17_SM1z_CHIWOO&gpcode=QUICK" tabindex="0"><img class="slick-slide-img" src="/image.php?image=/data/main_img/image 11(1)_1497330369.jpg" height="550" title=""></a>
 </div>
 <script src='<?=G5_JS_URL?>/imgLiquid.js'></script>
 <script>

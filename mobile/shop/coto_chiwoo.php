@@ -45,7 +45,7 @@
 </style>
 
 <div style="width:100%">
-	<a href="http://www.coinstoday.co.kr/shop/grouppurchase.php?gp_id=KOR17_SM1z_CHIWOO">
+	<a href="http://www.coinstoday.co.kr/shop/grouppurchase.php?gp_id=KOR17_SM1z_CHIWOO&gpcode=QUICK">
 		<img class="slick-slide-img" src="/image.php?image=/data/main_img/image 11(1)_1497330369.jpg" width="100%" draggable="false">
 	</a>
 </div>
