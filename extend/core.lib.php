@@ -677,7 +677,7 @@ function makeHtmlGpPrdList() {
 									WHERE		T.real_jaego > 0
 									AND			IF( (T.gp_realprice + T.gp_fixprice + T.gp_price) > 0,TRUE,FALSE)
 									ORDER BY T.gp_update_time DESC
-									LIMIT 4
+									LIMIT 32
 		";
 		$it_result = sql_query($prd_sql);
 		if($_GET[mode] == 'jhw') echo "<textarea>$prd_sql</textarea>";
@@ -811,7 +811,7 @@ function makeHtmlCatePrdList() {
 								AND			T.gp_use = 1
 								AND			IF( (T.gp_realprice + T.gp_fixprice + T.gp_price) > 0,TRUE,FALSE)
 								ORDER BY T.gp_update_time DESC
-								LIMIT 4
+								LIMIT 32
 		";
 		$it_result = sql_query($it_sql);
 		
@@ -942,7 +942,7 @@ function makeHtmlAucPrdList() {
 	//경매상품 정보
 	$sql_auction_item = str_replace('#상품기본조건#', " AND ac_yn = 'Y' AND	ac_enddate > DATE_ADD(NOW(), INTERVAL -18 HOUR)  ", $sql_auction_item);
 	
-	$sql_auction_item.=" ORDER BY T.ac_yn DESC, T.ac_enddate ASC	LIMIT 8	";
+	$sql_auction_item.=" ORDER BY T.ac_yn DESC, T.ac_enddate ASC	LIMIT 32	";
 	$it_result = sql_query($sql_auction_item);
 
 	$item_cnt = 0;
