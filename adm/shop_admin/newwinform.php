@@ -38,7 +38,7 @@ include_once (G5_ADMIN_PATH.'/admin.head.php');
 </div>
 
 <div class="tbl_frm01 tbl_wrap">
-    <table>
+    <table width="100%">
     <caption><?php echo $g5['title']; ?></caption>
     <colgroup>
         <col class="grid_4">
