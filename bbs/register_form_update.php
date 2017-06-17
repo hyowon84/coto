@@ -232,19 +232,21 @@ $cert_type = $_SESSION['ss_cert_type'];
 if ($config['cf_cert_use'] && $cert_type && $md5_cert_no) {
     // 해시값이 같은 경우에만 본인확인 값을 저장한다.
     if ($_SESSION['ss_cert_hash'] == md5($mb_name.$cert_type.$_SESSION['ss_cert_birth'].$md5_cert_no)) {
-        $sql_certify .= " , mb_hp = '{$mb_hp}' ";
-        $sql_certify .= " , mb_certify  = '{$cert_type}' ";
-        $sql_certify .= " , mb_adult = '{$_SESSION['ss_cert_adult']}' ";
-        $sql_certify .= " , mb_birth = '{$_SESSION['ss_cert_birth']}' ";
-        $sql_certify .= " , mb_sex = '{$_SESSION['ss_cert_sex']}' ";
-		$sql_certify .= " , mb_img = '{$imgname}' ";
+      $sql_certify .= " , mb_hp = '{$mb_hp}' ";
+      $sql_certify .= " , mb_certify  = '{$cert_type}' ";
+      $sql_certify .= " , mb_adult = '{$_SESSION['ss_cert_adult']}' ";
+      $sql_certify .= " , mb_birth = '{$_SESSION['ss_cert_birth']}' ";
+      $sql_certify .= " , mb_sex = '{$_SESSION['ss_cert_sex']}' ";
+			$sql_certify .= " , mb_img = '{$imgname}' ";
     } else {
+			
         $sql_certify .= " , mb_hp = '{$mb_hp}' ";
         $sql_certify .= " , mb_certify  = '' ";
         $sql_certify .= " , mb_adult = 0 ";
 		$sql_certify .= " , mb_img = '' ";
     }
 } else {
+	//요 경로 타는중
     if (get_session("ss_reg_mb_name") != $mb_name || get_session("ss_reg_mb_hp") != $mb_hp) {
         $sql_certify .= " , mb_hp = '{$mb_hp}' ";
         $sql_certify .= " , mb_certify = '' ";
@@ -258,44 +260,46 @@ if ($w == '') {
 
     $sql = " INSERT	INTO	{$g5['member_table']}	SET
  										mb_id = '{$mb_id}',
-                     mb_password = '".sql_password($mb_password)."',
-                     mb_name = '{$mb_name}',
-                     mb_nick = '{$mb_nick}',
-                     mb_nick_date = '".G5_TIME_YMD."',
-                     mb_email = '{$mb_email}',
-                     mb_homepage = '{$mb_homepage}',
-                     mb_tel = '{$mb_tel}',
-                     mb_zip1 = '{$mb_zip1}',
-                     mb_zip2 = '{$mb_zip2}',
-                     mb_addr1 = '{$mb_addr1}',
-                     mb_addr2 = '{$mb_addr2}',
-                     mb_addr3 = '{$mb_addr3}',
-                     mb_addr_jibeon = '{$mb_addr_jibeon}',
-                     mb_signature = '{$mb_signature}',
-                     mb_profile = '{$mb_profile}',
-                     mb_today_login = '".G5_TIME_YMDHIS."',
-                     mb_datetime = '".G5_TIME_YMDHIS."',
-                     mb_ip = '{$_SERVER['REMOTE_ADDR']}',
-                     mb_level = '{$config['cf_register_level']}',
-                     mb_recommend = '{$mb_recommend}',
-                     mb_login_ip = '{$_SERVER['REMOTE_ADDR']}',
-                     mb_mailling = '{$mb_mailling}',
-                     mb_sms = '{$mb_sms}',
-                     mb_open = '{$mb_open}',
-                     mb_open_date = '".G5_TIME_YMD."',
-                     mb_1 = '{$mb_1}',
-                     mb_2 = '{$mb_2}',
-                     mb_3 = '{$mb_3}',
-                     mb_4 = '{$mb_4}',
-                     mb_5 = '{$mb_5}',
-                     mb_6 = '{$mb_6}',
-                     mb_7 = '{$mb_7}',
-                     mb_8 = '{$mb_8}',
-                     mb_9 = '{$mb_9}',
-                     mb_10 = '{$mb_10}',
-                     mb_from = '$접속기기'
-                     {$sql_certify} ";
-                     /* mb_sex = '{$mb_sex}',
+                    mb_password = '".sql_password($mb_password)."',
+                    mb_name = '{$mb_name}',
+                    mb_nick = '{$mb_nick}',
+                    mb_nick_date = '".G5_TIME_YMD."',
+                    mb_birth = '{$mb_birth}',
+      							mb_sex = '{$mb_sex}',
+                    mb_email = '{$mb_email}',
+                    mb_homepage = '{$mb_homepage}',
+                    mb_tel = '{$mb_tel}',
+                    mb_zip1 = '{$mb_zip1}',
+                    mb_zip2 = '{$mb_zip2}',
+                    mb_addr1 = '{$mb_addr1}',
+                    mb_addr2 = '{$mb_addr2}',
+                    mb_addr3 = '{$mb_addr3}',
+                    mb_addr_jibeon = '{$mb_addr_jibeon}',
+                    mb_signature = '{$mb_signature}',
+                    mb_profile = '{$mb_profile}',
+                    mb_today_login = '".G5_TIME_YMDHIS."',
+                    mb_datetime = '".G5_TIME_YMDHIS."',
+                    mb_ip = '{$_SERVER['REMOTE_ADDR']}',
+                    mb_level = '{$config['cf_register_level']}',
+                    mb_recommend = '{$mb_recommend}',
+                    mb_login_ip = '{$_SERVER['REMOTE_ADDR']}',
+                    mb_mailling = '{$mb_mailling}',
+                    mb_sms = '{$mb_sms}',
+                    mb_open = '{$mb_open}',
+                    mb_open_date = '".G5_TIME_YMD."',
+                    mb_1 = '{$mb_1}',
+                    mb_2 = '{$mb_2}',
+                    mb_3 = '{$mb_3}',
+                    mb_4 = '{$mb_4}',
+                    mb_5 = '{$mb_5}',
+                    mb_6 = '{$mb_6}',
+                    mb_7 = '{$mb_7}',
+                    mb_8 = '{$mb_8}',
+                    mb_9 = '{$mb_9}',
+                    mb_10 = '{$mb_10}',
+                    mb_from = '$접속기기'
+                    {$sql_certify} ";
+                    /* mb_sex = '{$mb_sex}',
 							mb_birth = '{$mb_birth}', 휴대폰본인인증시 중복컬럼 일단 주석처 */
 
     // 이메일 인증을 사용하지 않는다면 이메일 인증시간을 바로 넣는다
