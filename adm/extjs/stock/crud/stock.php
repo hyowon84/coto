@@ -684,7 +684,7 @@ else if($mode == 'invoice_item') {
 																							it_org_price,
 																							SUM(it_qty) AS GP_ORDER_QTY
 																			FROM		clay_order
-																			WHERE		stats <= 20		/* 취소건 제외, 모든 신청수량 */
+																			WHERE		stats <= 22		/* 취소건 제외, 모든 신청수량 */
 																			GROUP BY gpcode, it_id
 													) GPO ON (GPO.gpcode = IV.gpcode AND GPO.it_id = IV.iv_it_id)
 													LEFT JOIN (	SELECT	iv_id,
