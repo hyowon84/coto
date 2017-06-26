@@ -174,6 +174,7 @@ Ext.define('Ext.store.item.gpstats',{
 	data:[
 		{	name:'공구접수',			value:'00'	},
 		{	name:'주문마감',			value:'05'	},
+		{	name:'미발주포함',		value:'07'	},
 		{	name:'발주신청',			value:'10'	},
 		{	name:'송금완료',			value:'20'	},
 		{	name:'통관완료',			value:'30'	},
