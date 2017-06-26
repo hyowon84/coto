@@ -234,8 +234,8 @@ var grid_itemlist = Ext.create('Ext.grid.Panel',{
 		{ groupIndex:'2',		text: '경매마감일',	 			dataIndex : 'ac_enddate',			width: 160,			sortable: true,							field: { xtype: 'datefield',	format:'Y-m-d H:i:s' }},
 		{ groupIndex:'2',		text: '경매수량',					dataIndex : 'ac_qty',					width: 120,			editor:{allowBlank:true},		style:'text-align:center',	align:'right',	renderer: Ext.util.Format.numberRenderer('0,000')	},
 		{ groupIndex:'2',		text: '경매시작가',				dataIndex : 'ac_startprice',	width: 140,			editor:{allowBlank:true},		style:'text-align:center',	align:'right',	renderer: Ext.util.Format.numberRenderer('0,000')	},
-		
-		{ text: ' ',	 							dataIndex : ' ',							width: 60,			sortable: false	}
+		{ groupIndex:'',		text: 'EBAY_IT_ID',				dataIndex : 'ebay_id',				width: 140,			editor:{allowBlank:true},		style:'text-align:center',	align:'center'	},
+		{ groupIndex:'',		text: ' ',	 							dataIndex : ' ',							width: 60,			sortable: false	}
 	],
 	tbar : [
 				{	xtype: 'label',	text: '검색어 : ',		autoWidth:true,	style : 'font-weight:bold;'},

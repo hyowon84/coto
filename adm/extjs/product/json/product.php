@@ -120,7 +120,8 @@ else if($mode == 'itemlist') {
 														T.ac_qty,								/*경매진행수량*/
 														T.ac_enddate,						/*경매종료일자*/
 														T.ac_startprice,				/*경매 시작가*/
-														T.ac_buyprice						/*경매 즉시구매가*/
+														T.ac_buyprice,						/*경매 즉시구매가*/
+														T.ebay_id
 										FROM		$sql_admin_product
 										WHERE		1=1
 										$AND_SQL
@@ -170,7 +171,8 @@ else if($mode == 'itemlist') {
 														T.ac_qty,								/*경매진행수량*/
 														T.ac_enddate,						/*경매종료일자*/
 														T.ac_startprice,				/*경매 시작가*/
-														T.ac_buyprice						/*경매 즉시구매가*/
+														T.ac_buyprice,						/*경매 즉시구매가*/
+														T.ebay_id
 										FROM		$sql_admin_product
 										WHERE		1=1
 										AND			ac_yn = 'Y'

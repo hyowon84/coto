@@ -33,7 +33,7 @@ function process($data) {
 	$only_member = $data[only_member];
 	$gp_order = $data[gp_order];
 	$gp_use = $data[gp_use];
-
+	$ebay_id = trim($data[ebay_id]);
 
 
 	$prev_sql = "	SELECT	*	FROM	g5_shop_group_purchase WHERE	gp_id = '$gp_id'";
@@ -85,6 +85,7 @@ function process($data) {
 														ac_enddate = '$ac_enddate',					/*경매종료일자*/
 														ac_startprice = '$ac_startprice',		/*경매 시작가*/
 														ac_buyprice = '$ac_buyprice',				/*경매 즉시구매가*/
+														ebay_id = '$ebay_id',														
 														gp_update_time = now()
 									WHERE		gp_id = '$gp_id'
 	";
