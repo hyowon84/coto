@@ -41,12 +41,115 @@ var selModel = {
 
 
 var df_sdate = Ext.create('Ext.dateField.common');		var df_edate = Ext.create('Ext.dateField.common');
-df_sdate.id = 'sdate';	df_sdate.name = 'sdate';	df_sdate.fieldLabel = '시작일';
-df_edate.id = 'edate';	df_edate.name = 'edate';	df_edate.fieldLabel = '종료일';
+df_sdate.id = 'sdate';	df_sdate.name = 'sdate';	df_sdate.fieldLabel = 'S:';	df_sdate.labelWidth = 20;	df_sdate.width = 120;
+df_edate.id = 'edate';	df_edate.name = 'edate';	df_edate.fieldLabel = 'E:';	df_edate.labelWidth = 20;	df_edate.width = 120;
 
 
 
 /************* ----------------  그리드 START -------------- ******************/
+/* 좌측 공구코드 */
+var grid_gpinfo = Ext.create('Ext.grid.Panel',{
+	plugins	: Ext.create('Ext.grid.plugin.CellEditing',{clicksToEdit: 1}),
+	selModel: Ext.create('Ext.selection.CheckboxModel'),
+	remoteSort: true,
+	autoLoad : true,
+	autoWidth : true,
+	height : 1000,
+	viewConfig: {
+		stripeRows: true,
+		getRowClass: gpinfoStatsColorSetting,
+		enableTextSelection: true
+	},
+	columns : [
+		{ text : '공구코드',		width : 120,	dataIndex : 'gpcode',				hidden:true	},
+		{ text : '날짜',				width : 120,	dataIndex : 'reg_date',			hidden:true	},
+		{ text : '공구명', 		width : 250,	dataIndex : 'gpcode_name',	sortable: false	},
+		{
+			xtype: 'gridcolumn',
+			dataIndex: 'stats',
+			text: '현황',
+			style:'text-align:center',
+			align:'center',
+			allowBlank: true,
+			editor: Ext.create('Ext.combobox.item.gpstats'),
+			value : '00',
+			renderer: rendererCombo
+		},
+		{ text : '발주',				width : 70,		dataIndex : 'SUM_IV_QTY',		style:'text-align:center',	align:'right',	renderer: Ext.util.Format.numberRenderer('0,000') },
+		{ text : '주문',				width : 70,		dataIndex : 'SUM_QTY',			style:'text-align:center',	align:'right',	renderer: Ext.util.Format.numberRenderer('0,000') },
+		{ text : '미발주',			width : 80,		dataIndex : 'NEED_IV_QTY',	style:'text-align:center',	align:'right',	renderer: Ext.util.Format.numberRenderer('0,000') },
+		{ text : '주문총액',		width : 120,	dataIndex : 'SUM_PAY',			style:'text-align:center',	align:'right',	renderer: Ext.util.Format.numberRenderer('0,000') },
+		{ text : '메모',				width : 120,	dataIndex : 'memo'	},
+		{ text : '품목(GP)',		width : 90,		dataIndex : 'ITC_CNT',			style:'text-align:center',	align:'right',	renderer: Ext.util.Format.numberRenderer('0,000') },
+		{ text : '품목(IV)',		width : 90,		dataIndex : 'IVC_CNT',			style:'text-align:center',	align:'right',	renderer: Ext.util.Format.numberRenderer('0,000') },
+		{ text : ' ',						width : 50,		dataIndex : 'NULL'	}
+	],
+	store : store_gpinfo,
+	tbar: [
+		{	xtype: 'label',	text: '검색어 : ',		autoWidth:true,	style : 'font-weight:bold;'},
+		{
+			xtype: 'textfield',
+			id : 'gp_keyword',
+			name: 'gp_keyword',
+			width : 170,
+			style: 'padding:0px;',
+			enableKeyEvents: true,
+			listeners:{
+				keydown:function(t,e){
+					if(e.keyCode == 13){
+						var params = {
+							keyword : this.getValue()
+						}
+
+						grid_gpinfo.store.loadData([],false);
+						Ext.apply(grid_gpinfo.store.getProxy().extraParams, params);
+						Ext.getCmp('ptb_gpinfo').moveFirst();
+					}
+				}}
+		}
+	],
+	bbar : {
+		plugins: new Ext.ux.SlidingPager(),
+		xtype : 'pagingtoolbar',
+		id : 'ptb_gpinfo',
+		store : store_gpinfo,
+		displayInfo : true,
+		displayMsg : '{0}/{1} Total - {2}',
+		emptyMsg : 'No Data'
+	},
+	listeners : {
+		selectionchange: function(view, records) {
+
+			store_mblist.loadData([],false);
+			store_orderlist.loadData([],false);
+			store_shiped_list.loadData([],false);
+
+			/* 공구목록 선택된 레코드 */
+			var sm = grid_gpinfo.getSelectionModel().getSelection();
+
+			if(sm) {
+				var v_gpcode = '';
+				for(var i = 0; i < sm.length; i++) {	//sm[i].data
+					v_gpcode += "'"+sm[i].data.gpcode + "',";
+				}
+				v_gpcode = v_gpcode.substr(0,v_gpcode.length-1);
+				
+				var params = {
+					gpcode : v_gpcode
+				}
+				
+				/* >>회원정보 리프레시 */
+				Ext.apply(store_mblist.getProxy().extraParams, params);
+				store_mblist.load();
+			}
+			
+			
+		},		
+		afterrender: listenerAfterRendererFunc
+	}
+});
+
+
 
 /* 좌측 회원 */
 var grid_mblist = Ext.create('Ext.grid.Panel',{
@@ -55,9 +158,7 @@ var grid_mblist = Ext.create('Ext.grid.Panel',{
 	selModel: Ext.create('Ext.selection.CheckboxModel'),
 	remoteSort: true,
 	autoLoad : false,
-	//autoWidth : true,
-	//autoHeight : true,
-	width : '100%',
+	autoWidth : true,
 	height : 1000,
 	store : store_mblist,
 	viewConfig: {
@@ -102,6 +203,7 @@ var grid_mblist = Ext.create('Ext.grid.Panel',{
 						xtype: 'textfield',
 						id : 'keyword',
 						name: 'keyword',
+						width : 100,
 						style: 'padding:0px;',
 						enableKeyEvents: true,
 						listeners:{
@@ -179,7 +281,7 @@ var grid_orderlist = Ext.create('Ext.grid.Panel',{
 	id : 'grid_orderlist',
 	headerPosition: 'left',
 	title : '배송예정 목록',
-	multiColumnSort: true,
+	multiColumnSort: false,
 	plugins: ['clipboard',Ext.create('Ext.grid.plugin.CellEditing',{clicksToEdit: 1})],
 	viewConfig: {
 		stripeRows: true,
@@ -336,7 +438,7 @@ var grid_shiped_list = Ext.create('Ext.grid.Panel',{
 	id : 'grid_shiped_list',
 	headerPosition: 'left',
 	title : '배송완료 목록',
-	multiColumnSort: true,
+	multiColumnSort: false,
 	plugins: ['clipboard'],
 	height: 355,
 	requires: [
@@ -532,7 +634,8 @@ var grid_window_baesong = Ext.create('Ext.grid.Panel',{
 	],
 	columns : [
 		{ text : '주문자',			dataIndex : 'buyer',			width:120	},
-		{	header : 'IMG',			dataIndex : 'gp_img',			width:60,			renderer: function(value){	return '<img src="' + value + '" width=40 height=40 />';}			},		
+		{	header : 'IMG',				dataIndex : 'gp_img',			width:60,			renderer: function(value){	return '<img src="' + value + '" width=40 height=40 />';}			},
+		{ text : '상품코드',		dataIndex : 'it_id',			width:120	},
 		{
 			text: '품목',
 			flex: 1,

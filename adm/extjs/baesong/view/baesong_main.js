@@ -41,10 +41,10 @@ Ext.onReady(function(){
 				title: '<b>회원목록</b>',
 				region: 'west', 
 				width: '50%',
-				autoHeight : true,
+				height: 1040,
 				collapsible: true,
 				style : 'float:left; margin:0px; padding:0px;',
-				items	: [grid_mblist]
+				items	: [panel_gpmb]
 			},
 			{
 				//top 
@@ -52,7 +52,7 @@ Ext.onReady(function(){
 				region: 'center',
 				collapsible: false,
 				width: '40%',
-				autoHeight : true,
+				height: 1040,
 				style : 'float:left; margin:0px; padding:0px;',
 				items : [panel_order]		//panel_grid
 			}

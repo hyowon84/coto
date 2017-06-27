@@ -114,6 +114,51 @@ var store_shiped_list = Ext.create('Ext.data.Store',{
 });
 
 
+/* 공구목록 */
+var store_gpinfo = Ext.create('Ext.data.Store',{
+	pageSize : 50,
+	remoteFilter:true,
+	remoteSort:true,
+	autoSync : true,
+	fields : [
+		'gpcode_name',
+		'gpcode',
+		{name: 'SUM_PAY',			sortDir: 'DESC', sortType: 'asInt', mapping: 'SUM_PAY',			type: 'int'},
+		{name: 'SUM_QTY',			sortDir: 'DESC', sortType: 'asInt', mapping: 'SUM_QTY',			type: 'int'},
+		{name: 'SUM_IV_QTY',	sortDir: 'DESC', sortType: 'asInt', mapping: 'SUM_IV_QTY',	type: 'int'},
+		{name: 'NEED_IV_QTY',	sortDir: 'DESC', sortType: 'asInt', mapping: 'NEED_IV_QTY',	type: 'int'},
+		{name: 'ITC_CNT',			sortDir: 'DESC', sortType: 'asInt', mapping: 'ITC_CNT',			type: 'int'},
+		{name: 'IVC_CNT',			sortDir: 'DESC', sortType: 'asInt', mapping: 'IVC_CNT',			type: 'int'},
+		{name: 'stats',				type: 'string'},
+		{name: 'memo',				type: 'string'},
+	],
+	sorters:[
+		{
+			property:'GI.reg_date',
+			direction:'DESC'
+		}
+	],
+	proxy : {
+		type : 'ajax',
+		extraParams : {
+		},
+		api : {
+			read : '/adm/extjs/stock/crud/stock.php?mode=gpinfo',
+			update : '/adm/extjs/stock/crud/gpinfo.update.php?mode=grid'
+		},
+		reader : {
+			rootProperty : 'data',
+			totalProperty : 'total'
+		},
+		writer : {
+			type : 'json',
+			writeAllFields : true,
+			encode : true,
+			rootProperty : 'data'
+		}
+	}
+});
+
 
 /* 주문정보 목록  */
 var store_orderlist = Ext.create('Ext.data.Store',{
