@@ -149,6 +149,7 @@ var grid_itemlist = Ext.create('Ext.grid.Panel',{
 		{ groupIndex:'1',		text: '최대구매수량',		dataIndex : 'gp_buy_max_qty',	width: 100,		editor:{allowBlank:true}	},
 		{ groupIndex:'1',		text: 'img',						dataIndex : 'gp_img',					width: 60,		renderer: function(value){	return '<img src="' + value + '" width=40 height=40 />';}			},
 		{ groupIndex:'1',		text: '상품코드',				dataIndex : 'gp_id',					width: 160		},
+		{ groupIndex:'',		text: 'EBAY_IT_ID',			dataIndex : 'ebay_id',				width: 140,		editor:{allowBlank:true},		style:'text-align:center',	align:'center',		hidden:true	},
 		{ groupIndex:'1',		text: '카테고리',				dataIndex : 'ca_id',					width: 100,		editor:{allowBlank:true}	},
 		{ groupIndex:'1',		text: '재고위치',				dataIndex : 'location',				width: 100,		editor:{allowBlank:true}	},		
 		{ groupIndex:'1',		text: '품목명',					dataIndex : 'gp_name',				width: 350,		editor:{allowBlank:false}	},
@@ -234,7 +235,6 @@ var grid_itemlist = Ext.create('Ext.grid.Panel',{
 		{ groupIndex:'2',		text: '경매마감일',	 			dataIndex : 'ac_enddate',			width: 160,			sortable: true,							field: { xtype: 'datefield',	format:'Y-m-d H:i:s' }},
 		{ groupIndex:'2',		text: '경매수량',					dataIndex : 'ac_qty',					width: 120,			editor:{allowBlank:true},		style:'text-align:center',	align:'right',	renderer: Ext.util.Format.numberRenderer('0,000')	},
 		{ groupIndex:'2',		text: '경매시작가',				dataIndex : 'ac_startprice',	width: 140,			editor:{allowBlank:true},		style:'text-align:center',	align:'right',	renderer: Ext.util.Format.numberRenderer('0,000')	},
-		{ groupIndex:'',		text: 'EBAY_IT_ID',				dataIndex : 'ebay_id',				width: 140,			editor:{allowBlank:true},		style:'text-align:center',	align:'center'	},
 		{ groupIndex:'',		text: ' ',	 							dataIndex : ' ',							width: 60,			sortable: false	}
 	],
 	tbar : [
