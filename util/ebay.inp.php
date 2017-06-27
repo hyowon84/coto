@@ -107,6 +107,7 @@ for($z = 1; $z <= 1; $z++) {
 			
 			
 			//주문ID 생성, 마이크로타임까지 계산
+			$시퀀스명 = "EB";
 			include G5_PATH."/inc/makeOrderId.php";				
 			
 			
