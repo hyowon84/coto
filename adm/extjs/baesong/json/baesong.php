@@ -27,7 +27,7 @@ $AND_SQL = "";
 
 /* 회원목록 */
 if($mode == 'mblist') {
-	if($gpcode) $공구코드조건 .=" AND ( CL.gpcode IN (".str_replace("\'","'",$gpcode).")	AND CL.stats <= 23 ) ";	
+	if($gpcode) $공구코드조건 .=" AND ( CL.gpcode IN (".str_replace("\'","'",$gpcode).")	AND CL.stats <= 35 ) ";	
 	if ($sdate) $기간조건 .= " AND CL.od_date >= '$sdate 00:00:00' ";
 	if ($edate) $기간조건 .= " AND CL.od_date <= '$edate 23:59:59' ";
 //	if($keyword) $AND_SQL .= "AND (T.mb_name LIKE '%$keyword%' OR T.hphone LIKE '%$keyword%' OR T.mb_nick LIKE '%$keyword%' )";
