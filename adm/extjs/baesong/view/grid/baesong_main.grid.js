@@ -26,6 +26,23 @@ function setDate(v) {
 	df_edate.setValue(edate);
 }
 
+//공구선택 초기화
+function resetGpinfo() {
+
+	var sm = grid_gpinfo.getSelectionModel();
+	sm.deselectAll();
+	
+	/*
+	var params = {
+		gpcode : ''
+	}
+
+	// >>회원정보 리프레시
+	Ext.apply(store_mblist.getProxy().extraParams, params);
+	store_mblist.load();
+	*/
+	
+}
 
 
 var pg_CellEdit = Ext.create('Ext.grid.plugin.CellEditing',{clicksToEdit: 2});
@@ -86,12 +103,19 @@ var grid_gpinfo = Ext.create('Ext.grid.Panel',{
 	],
 	store : store_gpinfo,
 	tbar: [
+		{
+			xtype: 'button',
+			text: '선택초기화',
+			listeners : [{
+				click : resetGpinfo
+			}]
+		},
 		{	xtype: 'label',	text: '검색어 : ',		autoWidth:true,	style : 'font-weight:bold;'},
 		{
 			xtype: 'textfield',
 			id : 'gp_keyword',
 			name: 'gp_keyword',
-			width : 170,
+			width : 100,
 			style: 'padding:0px;',
 			enableKeyEvents: true,
 			listeners:{
@@ -106,7 +130,7 @@ var grid_gpinfo = Ext.create('Ext.grid.Panel',{
 						Ext.getCmp('ptb_gpinfo').moveFirst();
 					}
 				}}
-		}
+		}		
 	],
 	bbar : {
 		plugins: new Ext.ux.SlidingPager(),
