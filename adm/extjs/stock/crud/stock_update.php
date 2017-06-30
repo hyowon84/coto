@@ -36,6 +36,7 @@ $common_sql = "	invoice_info	SET
 								iv_dealer				= '$iv_dealer',				/*인보이스 딜러업체*/
 								iv_order_no			= '$iv_order_no',			/*인보이스 주문번호*/
 								money_type			=	'$money_type',			/*통화유형*/
+								od_exch_rate		= '$od_exch_rate',		/*환율*/
 								iv_receipt_link	= '$iv_receipt_link',	/*해외송금 입출금내역 링크*/
 								iv_date					= '$iv_date',					/*인보이스 날짜*/
 								iv_shippingfee	=	'$iv_shippingfee',	/*배송비*/

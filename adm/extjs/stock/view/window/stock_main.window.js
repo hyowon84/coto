@@ -118,7 +118,7 @@ var winInvoice = Ext.create('widget.window', {
 	animateTarget: 'write_invoice',
 	width: 1400,
 	minWidth: 350,
-	height: 390,
+	height: 460,
 	border : 0,
 	layout: {
 		type: 'border',
@@ -132,7 +132,7 @@ var winInvoice = Ext.create('widget.window', {
 			layout: {type: 'column'},
 			region: 'west',
 			width: 1394,
-			height: 320,
+			height: 390,
 			border : 0,
 			split: false,
 			items:[
@@ -218,6 +218,11 @@ var winInvoice = Ext.create('widget.window', {
 									}
 								},
 								{
+									fieldLabel: '환율',
+									emptyText: '0',
+									name: 'od_exch_rate'
+								},
+								{
 									fieldLabel: 'TAX',
 									emptyText: '0',
 									name: 'iv_tax'
@@ -246,7 +251,7 @@ var winInvoice = Ext.create('widget.window', {
 					items:[
 						{
 							autoWidth : true,
-							height: 320,
+							height: 390,
 							border : 1,
 							items : [grid_window_invoice]
 						}

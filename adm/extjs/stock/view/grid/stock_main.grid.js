@@ -741,7 +741,6 @@ var grid_invoiceTodoWire = Ext.create('Ext.grid.Panel',{
 			value : 'USD',
 			renderer: rendererCombo
 		},
-		{ text : '환율(주문)',				dataIndex : 'wr_exch_rate',			width:90,			editor: { allowBlank : false }	},
 		{ text : '담당자',						dataIndex : 'admin_name',				width:120	},
 		{ text : '입출금링크',				dataIndex : 'iv_receipt_link',	width:120	}
 	],
@@ -959,7 +958,7 @@ var grid_invoiceEndWire = Ext.create('Ext.grid.Panel',{
 		{ text : 'DC.FEE',						dataIndex : 'iv_discountfee',		width:100,		style:'text-align:center',		align:'right',		renderer: Ext.util.Format.numberRenderer('0,000.00'), 	summaryType : 'sum',		summaryRenderer : rendererSummaryFormat },
 		{ text : 'TAX',								dataIndex : 'iv_tax',						width:100,		style:'text-align:center',		align:'right',		renderer: Ext.util.Format.numberRenderer('0,000.00'), 	summaryType : 'sum',		summaryRenderer : rendererSummaryFormat },
 		{ text : 'SHIP.FEE',					dataIndex : 'iv_shippingfee',		width:120,		style:'text-align:center',		align:'right',		renderer: Ext.util.Format.numberRenderer('0,000.00'), 	summaryType : 'sum',		summaryRenderer : rendererSummaryFormat },
-		{ text : '환율(송금)',					dataIndex : 'wr_exch_rate',			width:100,		style:'text-align:center',		align:'right',		editor: { allowBlank : false }	},
+		{ text : '환율(송금)',					dataIndex : 'wr_exchrate',			width:100,		style:'text-align:center',		align:'right',		editor: { allowBlank : false }	},
 		{ text : '딜러',								dataIndex : 'iv_dealer',				width:120	},
 		{ text : '인보이스번호',				dataIndex : 'iv_order_no',			width:120	},
 		{ text : '인보이스날짜',				dataIndex : 'iv_date',					sortable: true,	summaryType: 'min',		renderer: Ext.util.Format.dateRenderer('Y-m-d'),	summaryRenderer: Ext.util.Format.dateRenderer('Y-m-d'),		field: { xtype: 'datefield' }	},

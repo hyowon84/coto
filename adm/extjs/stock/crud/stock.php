@@ -364,7 +364,6 @@ else if($mode == 'invoiceTodoWire') {
 													II.iv_receipt_link,		/*해외송금 입출금내역 링크*/
 													II.iv_date,						/*인보이스 날짜*/
 													II.iv_name,
-													II.od_exch_rate,			/*주문기준 환율*/
 													II.money_type,				/*통화유형*/
 													II.iv_discountfee,		/*할인금액*/
 													II.iv_tax,						/*관세*/
@@ -436,7 +435,8 @@ else if($mode == 'invoiceEndWire') {
 													II.iv_memo,									/*내용*/
 													II.admin_id,
 													MB.mb_name AS admin_name,		/* 담당자명 */
-													II.reg_date
+													II.reg_date,
+													WR.wr_exchrate
 									FROM		invoice_info II
 													LEFT JOIN wire_info WR ON (WR.wr_id = II.wr_id)
 													LEFT JOIN comcode CCWR ON (CCWR.ctype = 'wire' AND CCWR.col = 'wr_type' AND CCWR.code = WR.wr_type)
