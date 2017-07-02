@@ -238,7 +238,7 @@ else if($mode == 'itemlist') {
 										WHERE		1=1
 										$AND_SQL
 		";
-		echo $SELECT_SQL;
+//		echo $SELECT_SQL;
 	}
 
 }
