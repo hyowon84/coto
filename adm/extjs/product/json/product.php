@@ -159,6 +159,7 @@ else if($mode == 'itemlist') {
 														T.gp_usdprice,
 														T.gp_realprice,
 														T.gp_price_org,
+														T.gp_buy_max_qty,
 														
 														/*최초재고값 + 발주수량 - 실주문량*/
 														T.real_jaego,												/*실재고*/
@@ -203,6 +204,7 @@ else if($mode == 'itemlist') {
 														T.gp_usdprice,
 														T.gp_realprice,
 														T.gp_price_org,
+														T.gp_buy_max_qty,
 														
 														/*최초재고값 + 발주수량 - 실주문량*/
 														T.real_jaego,												/*실재고*/
@@ -236,7 +238,7 @@ else if($mode == 'itemlist') {
 										WHERE		1=1
 										$AND_SQL
 		";
-//		echo $SELECT_SQL;
+		echo $SELECT_SQL;
 	}
 
 }
