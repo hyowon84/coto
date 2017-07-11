@@ -133,8 +133,6 @@ function updateOrderStats($vo) {
 
 
 
-
-
 //2개 이상일경우
 if( !strlen($arr[number]) && count($arr) > 1) {
 
@@ -149,6 +147,7 @@ if( !strlen($arr[number]) && count($arr) > 1) {
 															tax_type		= '$vo[tax_type]',		/*세금관련 처리유형*/
 															tax_no 			= '$vo[tax_no]',			/*세금관련 처리번호*/
 															tax_refno 	= '$vo[tax_refno]',		/*세금관련 처리번호*/
+															cash_memo		= '$vo[cash_memo]',		/*현금영수증 관련*/
 															admin_link	= '$vo[admin_link]',	/*연결된 주문번호들*/
 															admin_memo	= '$관리자메모'				/*관리자 메모*/
 										WHERE		number		= '$vo[number]'
@@ -168,6 +167,7 @@ if( !strlen($arr[number]) && count($arr) > 1) {
 															tax_type		= '$vo[tax_type]',		/*세금관련 처리유형*/
 															tax_no 			= '$vo[tax_no]',			/*세금관련 처리번호*/
 															tax_refno 	= '$vo[tax_refno]',		/*세금관련 처리번호*/
+															cash_memo		= '$vo[cash_memo]',		/*현금영수증 관련*/
 															admin_link	= '$vo[admin_link]',	/*연결된 주문번호들*/
 															admin_memo	= '$관리자메모'				/*관리자 메모*/
 									WHERE		number		= '$vo[number]'

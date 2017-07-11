@@ -134,19 +134,20 @@ var grid_banklist = Ext.create('Ext.grid.Panel',{
 	height	: 400,
 	store : store_banklist,
 	columns : [
-		{ text : '통장',		 				width : 90,		dataIndex : 'account_name',		style:'text-align:center',	align:'center',	hidden:true	},
-		{ text : '거래일시', 			width : 140,	dataIndex : 'tr_date',				style:'text-align:center',	align:'center',	renderer: Ext.util.Format.dateRenderer('Y-m-d H:i:s') },
-		{ text : '거래수단',			 	width : 70,		dataIndex : 'tr_type',				style:'text-align:center',	hidden:true	},
+		{ text : '통장',		 				width : 90,		dataIndex : 'account_name',		style:'text-align:center',				align:'center',	hidden:true	},
+		{ text : '거래일시', 				width : 140,	dataIndex : 'tr_date',				style:'text-align:center',				align:'center',	renderer: Ext.util.Format.dateRenderer('Y-m-d H:i:s') },
+		{ text : '거래수단',			 	width : 70,		dataIndex : 'tr_type',				style:'text-align:center',				hidden:true	},
 		{ text : '출금액',					width : 100,	dataIndex : 'output_price',		style:'text-align:center',				align:'right',	renderer: Ext.util.Format.numberRenderer('0,000') },
 		{ text : '입금액',					width : 100,	dataIndex : 'input_price',		style:'text-align:center',				align:'right',	renderer: Ext.util.Format.numberRenderer('0,000') },
 		{ text : '거래자명',	 			width : 120,	dataIndex : 'trader_name',		style:'text-align:center'		},
-		{ text : '입출금유형', 		width: 120,		dataIndex : 'bank_type',			editor: Ext.create('Ext.combobox.bank.banktype'),		renderer: rendererCombo	},
-		{ text : '연결된 주문',	 	width : 250,	dataIndex : 'admin_link',			editor: { allowBlank : false },							style:'text-align:center'		},
-		{ text : '관리자 메모',	 	width : 200,	dataIndex : 'admin_memo',			editor: { allowBlank : false },							style:'text-align:center'		},
-		{ text : '세금처리유형', 	width: 120,		dataIndex : 'tax_type',				editor: Ext.create('Ext.combobox.bank.taxtype'),		renderer: rendererCombo	},
-		{ text : '입력번호',	 			width : 120,	dataIndex : 'tax_no',					editor: { allowBlank : false },							style:'text-align:center'		},
-		{ text : '후처리번호',			width : 120,	dataIndex : 'tax_refno',			editor: { allowBlank : false },							style:'text-align:center'		},
-		{ text : '  ',						width : 100,	dataIndex : ''	}
+		{ text : '입출금유형', 			width: 120,		dataIndex : 'bank_type',			editor: Ext.create('Ext.combobox.bank.banktype'),		renderer: rendererCombo	},
+		{ text : '연결된 주문',	 		width : 250,	dataIndex : 'admin_link',			editor: { allowBlank : true },		style:'text-align:center'		},
+		{ text : '현금영수증 메모',	width : 200,	dataIndex : 'cash_memo',			editor: { allowBlank : true },		style:'text-align:center'		},
+		{ text : '관리자 메모',	 		width : 200,	dataIndex : 'admin_memo',			editor: { allowBlank : true },		style:'text-align:center'		},
+		{ text : '세금처리유형', 		width: 120,		dataIndex : 'tax_type',				editor: Ext.create('Ext.combobox.bank.taxtype'),		renderer: rendererCombo	},
+		{ text : '입력번호',	 			width : 120,	dataIndex : 'tax_no',					editor: { allowBlank : true },		style:'text-align:center'		},
+		{ text : '후처리번호',			width : 120,	dataIndex : 'tax_refno',			editor: { allowBlank : true },		style:'text-align:center'		},
+		{ text : '  ',							width : 100,	dataIndex : ''	}
 		
 	],
 	dockedItems: [

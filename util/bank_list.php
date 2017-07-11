@@ -62,10 +62,7 @@ global $is_admin;
 		<th>(구)공구통장</th>
 		<td><input type='file' name='excelfile1' /></td>
 	</tr>
-	
-	
-	
-	
+		
 	<tr>
 		<td colspan='2' height='40' align='center'>
 			<input type="submit" value="입력" />
