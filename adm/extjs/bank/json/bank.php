@@ -75,6 +75,7 @@ if($mode == 'banklist') {
 													BD.tax_refno,			/*세금관련 후처리번호*/
 													BD.admin_link,		/*연결된 주문번호들*/
 													BD.admin_memo,		/*관리자 메모*/
+													BD.cash_memo,			/*현금영수증 관련 메모*/
 													CC.bgcolor
 									FROM		bank_db BD
 													LEFT JOIN comcode CC ON (CC.ctype = 'bankdb' AND CC.col = 'bank_type' AND CC.code = BD.bank_type)
