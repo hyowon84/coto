@@ -142,11 +142,11 @@ var grid_banklist = Ext.create('Ext.grid.Panel',{
 		{ text : '거래자명',	 			width : 120,	dataIndex : 'trader_name',		style:'text-align:center'		},
 		{ text : '입출금유형', 			width: 120,		dataIndex : 'bank_type',			editor: Ext.create('Ext.combobox.bank.banktype'),		renderer: rendererCombo	},
 		{ text : '연결된 주문',	 		width : 250,	dataIndex : 'admin_link',			editor: { allowBlank : true },		style:'text-align:center'		},
-		{ text : '현금영수증 메모',	width : 200,	dataIndex : 'cash_memo',			editor: { allowBlank : true },		style:'text-align:center'		},
 		{ text : '관리자 메모',	 		width : 200,	dataIndex : 'admin_memo',			editor: { allowBlank : true },		style:'text-align:center'		},
 		{ text : '세금처리유형', 		width: 120,		dataIndex : 'tax_type',				editor: Ext.create('Ext.combobox.bank.taxtype'),		renderer: rendererCombo	},
 		{ text : '입력번호',	 			width : 120,	dataIndex : 'tax_no',					editor: { allowBlank : true },		style:'text-align:center'		},
 		{ text : '후처리번호',			width : 120,	dataIndex : 'tax_refno',			editor: { allowBlank : true },		style:'text-align:center'		},
+		{ text : '현금영수증 메모',	width : 200,	dataIndex : 'cash_memo',			editor: { allowBlank : true },		style:'text-align:center'		},
 		{ text : '  ',							width : 100,	dataIndex : ''	}
 		
 	],
