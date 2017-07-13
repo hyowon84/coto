@@ -212,7 +212,7 @@ var grid_navi_invoice_dtl = Ext.create('Ext.grid.Panel',{
 	bbar : {
 		plugins: new Ext.ux.SlidingPager(),
 		xtype : 'pagingtoolbar',
-		store : store_wire_dtl,
+		store : store_navi_invoice_dtl,
 		displayInfo : true,
 		displayMsg : '{0}/{1} Total - {2}',
 		emptyMsg : 'No Data'
