@@ -130,7 +130,48 @@ var grid_gpinfo = Ext.create('Ext.grid.Panel',{
 						Ext.getCmp('ptb_gpinfo').moveFirst();
 					}
 				}}
-		}		
+		},
+		{
+			xtype: 'button',
+			text: '조회',
+			listeners : [{
+				click : function(){
+					//store_mblist.loadData([],false);
+					store_orderlist.loadData([],false);
+					store_shiped_list.loadData([],false);
+
+					/* 공구목록 선택된 레코드 */
+					var sm = grid_gpinfo.getSelectionModel().getSelection();
+
+					if(sm) {
+						var v_gpcode = '';
+						var v_gpcode_name = '';
+
+						for(var i = 0; i < sm.length; i++) {	//sm[i].data
+							v_gpcode += "'"+sm[i].data.gpcode + "',";
+							v_gpcode_name += "'"+sm[i].data.gpcode_name + "',";
+						}
+						v_gpcode = v_gpcode.substr(0,v_gpcode.length-1);
+						v_gpcode_name = v_gpcode_name.substr(0,v_gpcode_name.length-1);
+
+						var params = {
+							gpcode : v_gpcode
+						}
+
+						Ext.getCmp('grid_orderlist').setTitle('> "' + v_gpcode_name + ' 배송예정목록');
+						Ext.getCmp('grid_shiped_list').setTitle('> "' + v_gpcode_name + ' 배송완료목록');
+						//Ext.getCmp('hf_hphone').setValue(sm.get('hphone'));
+
+						/* >>주문내역 리프레시 */
+						Ext.apply(store_shiped_list.getProxy().extraParams, params);
+						Ext.apply(store_orderlist.getProxy().extraParams, params);
+
+						store_orderlist.load();
+						store_shiped_list.load();
+					}
+				}
+			}]
+		}
 	],
 	bbar : {
 		plugins: new Ext.ux.SlidingPager(),
@@ -144,40 +185,6 @@ var grid_gpinfo = Ext.create('Ext.grid.Panel',{
 	listeners : {
 		selectionchange: function(view, records) {
 
-			//store_mblist.loadData([],false);
-			store_orderlist.loadData([],false);
-			store_shiped_list.loadData([],false);
-
-			/* 공구목록 선택된 레코드 */
-			var sm = grid_gpinfo.getSelectionModel().getSelection();
-
-			if(sm) {
-				
-				var v_gpcode = '';
-				var v_gpcode_name = '';
-				
-				for(var i = 0; i < sm.length; i++) {	//sm[i].data
-					v_gpcode += "'"+sm[i].data.gpcode + "',";
-					v_gpcode_name += "'"+sm[i].data.gpcode_name + "',";
-				}
-				v_gpcode = v_gpcode.substr(0,v_gpcode.length-1);
-				v_gpcode_name = v_gpcode_name.substr(0,v_gpcode_name.length-1);
-				
-				var params = {
-					gpcode : v_gpcode
-				}
-				
-				Ext.getCmp('grid_orderlist').setTitle('> "' + v_gpcode_name + ' 배송예정목록');
-				Ext.getCmp('grid_shiped_list').setTitle('> "' + v_gpcode_name + ' 배송완료목록');
-				//Ext.getCmp('hf_hphone').setValue(sm.get('hphone'));
-
-				/* >>주문내역 리프레시 */
-				Ext.apply(store_shiped_list.getProxy().extraParams, params);
-				Ext.apply(store_orderlist.getProxy().extraParams, params);
-
-				store_orderlist.load();
-				store_shiped_list.load();
-			}
 			
 		},		
 		afterrender: listenerAfterRendererFunc
