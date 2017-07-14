@@ -255,14 +255,18 @@ else if($mode == 'orderlist' || $mode == 'shipedlist') {
 																							II.iv_qty,
 																							( GP.jaego + IFNULL(II.iv_qty,0) - IFNULL(CL.od_qty,0)) AS qk_jaego,	/*빠른상품 재고산출*/
 																							( IFNULL(II.iv_qty,0) - IFNULL(CL.od_qty,0)) AS real_jaego						/*공구 재고산출*/
-																			FROM		(	SELECT	it_id,
-																												SUM(it_qty) AS od_qty
-																								FROM		clay_order
-																								WHERE		stats >= 00
-																								AND			stats <= 60
-																								$공구코드조건
-																								$내부조건
-																								GROUP BY it_id
+																			FROM		(	SELECT	I.it_id,
+																												SUM(I.it_qty) AS od_qty
+																								FROM		(	SELECT	*
+																													FROM		clay_order
+																													WHERE		1=1
+																													AND			stats >= 00
+																													AND			stats <= 60
+																													$공구코드조건
+																													$내부조건
+																												) I
+																								WHERE		1=1
+																								GROUP BY I.it_id
 																							) CL
 																							LEFT JOIN g5_shop_group_purchase GP ON (GP.gp_id = CL.it_id)
 																							LEFT JOIN (	SELECT	iv_it_id,
