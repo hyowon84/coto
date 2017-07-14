@@ -622,8 +622,17 @@ $나누기값 = (G5_IS_MOBILE) ? 2 : 4;
 function makeHtmlGpPrdList() {
 	global $상품노출개수, $is_admin;
 	
-	$height = (G5_IS_MOBILE) ? '140px' : '230px';
-	$margin = (G5_IS_MOBILE) ? '5px' : '15px';
+	$height = '230px';
+	$margin = '15px';
+	$LIMIT = " LIMIT 32 ";
+
+	if(G5_IS_MOBILE) {
+		$height = '140px';
+		$margin = '5px';
+		$LIMIT = " LIMIT 8 ";
+	}
+	
+	
 	
 	/* 진행중인 공동구매 정보 가져오기*/
 	$gp_sql = "	SELECT	*
@@ -677,7 +686,7 @@ function makeHtmlGpPrdList() {
 									WHERE		T.real_jaego > 0
 									AND			IF( (T.gp_realprice + T.gp_fixprice + T.gp_price) > 0,TRUE,FALSE)
 									ORDER BY T.gp_update_time DESC
-									LIMIT 32
+									$LIMIT
 		";
 		$it_result = sql_query($prd_sql);
 		if($_GET[mode] == 'jhw') echo "<textarea>$prd_sql</textarea>";
@@ -766,10 +775,17 @@ function makeHtmlGpPrdList() {
 /* 노출여부 설정된 카테고리의 상품목록 HTML 생성코드 */
 function makeHtmlCatePrdList() {
 	global $is_admin, $sql_product, $상품노출개수;
-	
-	$height = (G5_IS_MOBILE) ? '140px' : '230px';
-	$margin = (G5_IS_MOBILE) ? '5px' : '15px';
 
+	$height = '230px';
+	$margin = '15px';
+	$LIMIT = " LIMIT 32 ";
+	
+	if(G5_IS_MOBILE) {
+		$height = '140px';
+		$margin = '5px';
+		$LIMIT = " LIMIT 8 ";
+	}
+	
 	$ca_sql = "	SELECT	*
 							FROM		g5_shop_category
 							WHERE		ca_id	LIKE 'CT%'
@@ -811,7 +827,7 @@ function makeHtmlCatePrdList() {
 								AND			T.gp_use = 1
 								AND			IF( (T.gp_realprice + T.gp_fixprice + T.gp_price) > 0,TRUE,FALSE)
 								ORDER BY T.gp_update_time DESC
-								LIMIT 32
+								$LIMIT
 		";
 		$it_result = sql_query($it_sql);
 		

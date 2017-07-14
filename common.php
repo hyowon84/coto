@@ -169,6 +169,8 @@ if( !(strlen($_SESSION[ss_id]) > 3) ) {
 	$_SESSION[ss_id] = $랜덤세션;
 }
 
+$sqli = new mysqli(G5_MYSQL_HOST, G5_MYSQL_USER, G5_MYSQL_PASSWORD, G5_MYSQL_DB);
+
 
 //==============================================================================
 
@@ -418,7 +420,7 @@ if ($member['mb_id']) {
 	$member['mb_level'] = 1; // 비회원의 경우 회원레벨을 가장 낮게 설정
 }
 
-if($member['mb_id'] == 'admin' || $member['mb_id'] == 'lucael@naver.com') $개발자 = true;
+if($member['mb_id'] == 'admin' || $member['mb_id'] == 'lucael@nateasd.com') $개발자 = true;
 
 
 if ($is_admin != 'super') {
