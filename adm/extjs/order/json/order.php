@@ -239,4 +239,7 @@ if($total_count > 0) {
 
 $json_data = json_encode_unicode($json);
 echo $json_data;
+
+
+mysql_close($connect_db);
 ?>
