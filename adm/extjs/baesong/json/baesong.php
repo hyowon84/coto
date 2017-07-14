@@ -259,7 +259,9 @@ else if($mode == 'orderlist' || $mode == 'shipedlist') {
 																												SUM(it_qty) AS od_qty
 																								FROM		clay_order
 																								WHERE		stats >= 00
-																								AND			stats <= 60	
+																								AND			stats <= 60
+																								$공구코드조건
+																								$내부조건
 																								GROUP BY it_id
 																							) CL
 																							LEFT JOIN g5_shop_group_purchase GP ON (GP.gp_id = CL.it_id)
