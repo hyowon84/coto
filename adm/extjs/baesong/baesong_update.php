@@ -143,8 +143,9 @@ else if($mode == 'deliveryUpdate') {
 	$co = mysql_fetch_array(sql_query($od_sql));
 
 	$receive_number = get_hp($co['hphone'], 0);
-	$send_number = preg_replace('/-/','',$member['mb_hp']);	//발신자번호
-
+//	$send_number = preg_replace('/-/','',$member['mb_hp']);	//발신자번호
+	$send_number = '0220886657';
+		
 	$mh_send_message = $v_sms['400'];
 	$mh_send_message = preg_replace("/{운송장번호}/", $delivery_invoice, $mh_send_message);
 
