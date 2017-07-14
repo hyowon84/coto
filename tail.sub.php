@@ -44,5 +44,7 @@ $("input[type=tel]").bind("keydown",function(){
 </html>
 <?php echo html_end(); // HTML 마지막 처리 함수 : 반드시 넣어주시기 바랍니다. 
 //$sqli->close();
+
+//여기에 놓으면 안됨
 //mysql_close($connect_db);
 ?>
