@@ -38,20 +38,20 @@ Ext.onReady(function(){
 			{ 
 				//left 
 				id : 'navi_west',
-				title: '<b>회원목록</b>',
+				title: '<b>공동구매 목록</b>',
 				region: 'west', 
-				width: '50%',
+				width: '30%',
 				height: 1040,
 				collapsible: true,
 				style : 'float:left; margin:0px; padding:0px;',
-				items	: [panel_gpmb]
+				items	: [grid_gpinfo]
 			},
 			{
 				//top 
 				id : 'navi_center',
 				region: 'center',
 				collapsible: false,
-				width: '40%',
+				width: '70%',
 				height: 1040,
 				style : 'float:left; margin:0px; padding:0px;',
 				items : [panel_order]		//panel_grid

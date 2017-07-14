@@ -78,10 +78,12 @@ var store_mblist = Ext.create('Ext.data.Store',{
 		//data : [['1-1','1-2','1-3'],['2-1','2-2','2-3'],['3-1','3-2','3-3']]
 });
 
+
 /* 배송완료목록  */
 var store_shiped_list = Ext.create('Ext.data.Store',{
 	pageSize : 100,
 	model	:	'model_orderlist',
+	groupField: 'Group',
 	//remoteSort: true,
 	//remoteFilter: true,
 	autoLoad : false,
@@ -116,7 +118,7 @@ var store_shiped_list = Ext.create('Ext.data.Store',{
 
 /* 공구목록 */
 var store_gpinfo = Ext.create('Ext.data.Store',{
-	pageSize : 50,
+	pageSize : 100,
 	remoteFilter:true,
 	remoteSort:true,
 	autoSync : true,
@@ -164,6 +166,7 @@ var store_gpinfo = Ext.create('Ext.data.Store',{
 var store_orderlist = Ext.create('Ext.data.Store',{
 	pageSize : 100,
 	model	:	'model_orderlist',
+	groupField: 'mbgroup',
 	//remoteSort: true,
 	//remoteFilter: true,
 	autoSync : true,
@@ -171,12 +174,8 @@ var store_orderlist = Ext.create('Ext.data.Store',{
 	remoteSort: true,
 	sorters:[
 		{
-			property:'IV_STATS_NAME',		
-			direction:'DESC'
-		},
-		{
-			property:'od_date',
-			direction:'DESC'
+			property: "mbgroup",		
+			direction:'ASC'
 		}
 	],
 	proxy : {

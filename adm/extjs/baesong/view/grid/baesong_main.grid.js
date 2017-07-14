@@ -144,7 +144,7 @@ var grid_gpinfo = Ext.create('Ext.grid.Panel',{
 	listeners : {
 		selectionchange: function(view, records) {
 
-			store_mblist.loadData([],false);
+			//store_mblist.loadData([],false);
 			store_orderlist.loadData([],false);
 			store_shiped_list.loadData([],false);
 
@@ -152,21 +152,32 @@ var grid_gpinfo = Ext.create('Ext.grid.Panel',{
 			var sm = grid_gpinfo.getSelectionModel().getSelection();
 
 			if(sm) {
+				
 				var v_gpcode = '';
+				var v_gpcode_name = '';
+				
 				for(var i = 0; i < sm.length; i++) {	//sm[i].data
 					v_gpcode += "'"+sm[i].data.gpcode + "',";
+					v_gpcode_name += "'"+sm[i].data.gpcode_name + "',";
 				}
 				v_gpcode = v_gpcode.substr(0,v_gpcode.length-1);
+				v_gpcode_name = v_gpcode_name.substr(0,v_gpcode_name.length-1);
 				
 				var params = {
 					gpcode : v_gpcode
 				}
 				
-				/* >>회원정보 리프레시 */
-				Ext.apply(store_mblist.getProxy().extraParams, params);
-				store_mblist.load();
+				Ext.getCmp('grid_orderlist').setTitle('> "' + v_gpcode_name + ' 배송예정목록');
+				Ext.getCmp('grid_shiped_list').setTitle('> "' + v_gpcode_name + ' 배송완료목록');
+				//Ext.getCmp('hf_hphone').setValue(sm.get('hphone'));
+
+				/* >>주문내역 리프레시 */
+				Ext.apply(store_shiped_list.getProxy().extraParams, params);
+				Ext.apply(store_orderlist.getProxy().extraParams, params);
+
+				store_orderlist.load();
+				store_shiped_list.load();
 			}
-			
 			
 		},		
 		afterrender: listenerAfterRendererFunc
@@ -307,6 +318,15 @@ var grid_orderlist = Ext.create('Ext.grid.Panel',{
 	title : '배송예정 목록',
 	multiColumnSort: false,
 	plugins: ['clipboard',Ext.create('Ext.grid.plugin.CellEditing',{clicksToEdit: 1})],
+	features: [
+		{
+			ftype : 'groupingsummary',
+			groupHeaderTpl: '{name}',
+			hideGroupedHeader: true,
+			enableGroupingMenu: true,
+			collapsible : false
+		}
+	],
 	viewConfig: {
 		stripeRows: true,
 		enableTextSelection: true,
@@ -325,11 +345,12 @@ var grid_orderlist = Ext.create('Ext.grid.Panel',{
 	height	: 680,
 	store : store_orderlist,
 	columns : [
+		{ text : 'project',			dataIndex : 'project',				hidden:true,	 sortable: true	},
 		{ text : 'projectId',		dataIndex : 'projectId',			hidden:true	},
 		{ text : 'taskId',			dataIndex : 'taskId',					hidden:true	},
-		{ text : 'project',			dataIndex : 'project',				hidden:true,	 sortable: true },
+		{ text : 'project',			dataIndex : 'project',				hidden:true },
 		{ text : '주문자',			dataIndex : 'buyer',					width:120	},
-		{ text : '주문일시',		dataIndex : 'od_date',				sortable: true	},
+		{ text : '주문일시',		dataIndex : 'od_date'				},
 		{ text : '공구코드',		dataIndex : 'gpcode',					hidden:true	},		
 		{ text : '공구명',			dataIndex : 'gpcode_name',		style:'text-align:center',	width:220	},
 		{ text : '상태코드',		dataIndex : 'IV_STATS',				width:70,	hidden:true	},
@@ -378,10 +399,10 @@ var grid_orderlist = Ext.create('Ext.grid.Panel',{
 			iconCls	: 'icon-table_print_add',
 			handler : function() {
 				
-				if( grid_mblist.getSelectionModel().getSelection() == '' ) {
-					Ext.Msg.alert('알림','좌측 회원목록에서 회원을 선택하세요');
-					return false;
-				}
+				//if( grid_mblist.getSelectionModel().getSelection() == '' ) {
+				//	Ext.Msg.alert('알림','좌측 회원목록에서 회원을 선택하세요');
+				//	return false;
+				//}
 				
 				var sm = grid_orderlist.getSelection();
 				if( sm == '' ) {
@@ -389,8 +410,8 @@ var grid_orderlist = Ext.create('Ext.grid.Panel',{
 					return false;
 				}
 
-				var mblist_sm = grid_mblist.getSelectionModel().getSelection()[0];
-				winInvoice.setTitle(mblist_sm.get('mb_nick')+'('+mblist_sm.get('mb_name')+')님의 배송예정 목록');
+				var mblist_sm = grid_orderlist.getSelectionModel().getSelection()[0];
+				winInvoice.setTitle(mblist_sm.get('clay_id')+'('+mblist_sm.get('name')+')님의 배송예정 목록');
 				
 				
 				store_window_baesong.loadData([],false);
@@ -467,6 +488,15 @@ var grid_shiped_list = Ext.create('Ext.grid.Panel',{
 	height: 355,
 	requires: [
 		'Ext.grid.plugin.Clipboard'	//,'Ext.grid.selection.SpreadsheetModel'
+	],
+	features: [
+		{
+			ftype : 'groupingsummary',
+			groupHeaderTpl: '{name}',
+			hideGroupedHeader: true,
+			enableGroupingMenu: true,
+			collapsible : false
+		}
 	],
 	viewConfig: {
 		stripeRows: true,
@@ -659,7 +689,7 @@ var grid_window_baesong = Ext.create('Ext.grid.Panel',{
 	columns : [
 		{ text : '주문자',			dataIndex : 'buyer',			width:120	},
 		{	header : 'IMG',				dataIndex : 'gp_img',			width:60,			renderer: function(value){	return '<img src="' + value + '" width=40 height=40 />';}			},
-		{ text : '상품코드',		dataIndex : 'it_id',			width:120	},
+		{ text : '상품코드',		dataIndex : 'it_id',			width:120,		hidden:true	},
 		{
 			text: '품목',
 			flex: 1,

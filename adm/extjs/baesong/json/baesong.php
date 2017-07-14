@@ -40,7 +40,7 @@ if($mode == 'mblist') {
 													,IFNULL(S1.SUM_QTY,0) AS S40_SUM_QTY				/*발송예정건수*/
 													,IFNULL(S1.SUM_TOTAL,0) AS S40_SUM_TOTAL
 													,IFNULL(S2.SUM_QTY,0) AS NS40_SUM_QTY				/*발송불가건수*/
-													,IFNULL(S2.SUM_TOTAL,0) AS NS40_SUM_TOTAL		
+													,IFNULL(S2.SUM_TOTAL,0) AS NS40_SUM_TOTAL
 									FROM		(
 														SELECT	CL.clay_id AS mb_nick,
 																		CL.name AS mb_name,
@@ -114,6 +114,19 @@ if($mode == 'mblist') {
 
 /* 주문상세내역 */
 else if($mode == 'orderlist' || $mode == 'shipedlist') {
+
+	if($gpcode && $mode == 'orderlist') {
+		$공구코드조건 .=" AND gpcode IN (".str_replace("\'","'",$gpcode).") ";
+		$공구코드조건2 .=" AND T.gpcode IN (".str_replace("\'","'",$gpcode).") ";
+		$주문상태조건 .= " AND stats >= 20	AND stats <= 39 ";
+		$AND_SQL .= "	AND CL.stats <= 39 ";
+	}
+	if($gpcode && $mode == 'shipedlist') {
+		$공구코드조건 .=" AND gpcode IN (".str_replace("\'","'",$gpcode).") ";
+		$공구코드조건2 .=" AND T.gpcode IN (".str_replace("\'","'",$gpcode).") ";
+		$주문상태조건 .= "	AND stats >= 40 	AND stats <= 60	 ";
+		$AND_SQL .= "	AND CL.stats >= 40 	AND CL.stats <= 60	 ";
+	}
 	
 	if($hphone) $AND_SQL.=" AND CL.hphone = '$hphone' ";
 	if($mb_nick) $AND_SQL.=" AND CL.clay_id = '$mb_nick' ";
@@ -129,9 +142,10 @@ else if($mode == 'orderlist' || $mode == 'shipedlist') {
 
 	//문제가 생길경우 주석처리한 부분 해제, v_invoice_cnt 테이블조인 제거
 	/* 선택된 회원의 주문목록 가져오기 */
-	$SELECT_SQL = "	SELECT	CL.number AS taskId,
-													SUBSTR(CL.od_id,3,12) AS projectId,
+	$SELECT_SQL = "	SELECT	CONCAT(CL.clay_id, '(', CL.hphone, '), 총 ' ,IFNULL(CLS.CNT,0),'건(취소제외)') AS 'mbgroup',
 													CONCAT('[', GI.gpcode_name, '] ', CL.od_id, ' - 배송비(', IFNULL(DN.value,'미설정'), ') ', IFNULL(CI.delivery_price,'') , '원') AS project,
+													CL.number AS taskId,
+													SUBSTR(CL.od_id,3,12) AS projectId,
 													CL.number,
 													CL.gpcode,
 													CL.od_id,
@@ -188,9 +202,29 @@ else if($mode == 'orderlist' || $mode == 'shipedlist') {
 													IV.CNT_40,
 													IF( CL.gpcode = 'QUICK' && CL.gpcode = 'AUCTION', RJ.qk_jaego, RJ.real_jaego) AS real_jaego,
 													GPQTY.GP_QTY
-									FROM		clay_order CL
-													LEFT JOIN clay_order_info CI ON (CI.od_id = CL.od_id)
-													LEFT JOIN gp_info GI ON (GI.gpcode = CL.gpcode)
+									FROM		(	SELECT	*
+														FROM		clay_order
+														WHERE		1=1
+														$공구코드조건
+													) CL
+													LEFT JOIN (	SELECT	hphone,
+																							COUNT(*) AS CNT
+																			FROM		clay_order
+																			WHERE		1=1
+																			$공구코드조건
+																			$주문상태조건
+																			GROUP BY hphone
+													) CLS ON (CLS.hphone = CL.hphone)
+													LEFT JOIN (	SELECT	*
+																			FROM		clay_order_info
+																			WHERE		1=1
+																			$공구코드조건
+													) CI ON (CI.od_id = CL.od_id)
+													LEFT JOIN (	SELECT	*
+																			FROM		gp_info
+																			WHERE		1=1
+																			$공구코드조건
+													) GI ON (GI.gpcode = CL.gpcode)
 													LEFT JOIN g5_shop_group_purchase GP ON (GP.gp_id = CL.it_id)
 													LEFT JOIN comcode SN ON (SN.ctype = 'clayorder' AND SN.col = 'stats' AND SN.code = CL.stats)
 													LEFT JOIN comcode GN ON (GN.ctype = 'gpinfo' AND GN.col = 'stats' AND GN.code = GI.stats)
@@ -203,12 +237,14 @@ else if($mode == 'orderlist' || $mode == 'shipedlist') {
 																			FROM		v_invoice_cnt T
 																							LEFT JOIN v_invoice_cnt40 T40 ON (T40.gpcode = T.gpcode AND T40.iv_it_id = T.iv_it_id)
 																			WHERE		T.CNT <= T40.CNT_40		/*정상발주수량부터 과발주수량까지 배송가능으로 출력*/
+																			$공구코드조건2																			
 													)	IV ON (IV.gpcode = CL.gpcode AND IV.iv_it_id = CL.it_id)
 													LEFT JOIN (	SELECT	gpcode,
 																							it_id,
 																							SUM(it_qty) AS GP_QTY
 																			FROM		clay_order
 																			WHERE		stats <= 60
+																			$공구코드조건
 																			GROUP BY gpcode, it_id
 													) GPQTY ON (GPQTY.gpcode = CL.gpcode AND GPQTY.it_id = CL.it_id)
 													LEFT JOIN (	SELECT	CL.it_id,
@@ -235,7 +271,7 @@ else if($mode == 'orderlist' || $mode == 'shipedlist') {
 													) RJ ON (RJ.it_id = CL.it_id)
 									WHERE		1=1
 									AND			CL.stats IN ($상태조건)
-									$AND_SQL
+									$AND_SQL									
 	";
 //	echo $SELECT_SQL;
 	
