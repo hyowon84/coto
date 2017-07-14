@@ -330,7 +330,6 @@ var grid_orderlist = Ext.create('Ext.grid.Panel',{
 		{ text : 'project',			dataIndex : 'project',				hidden:true,	 sortable: true	},
 		{ text : 'projectId',		dataIndex : 'projectId',			hidden:true	},
 		{ text : 'taskId',			dataIndex : 'taskId',					hidden:true	},
-		{ text : 'project',			dataIndex : 'project',				hidden:true },
 		{ text : '주문자',			dataIndex : 'buyer',					width:120	},
 		{ text : '주문일시',		dataIndex : 'od_date'				},
 		{ text : '공구코드',		dataIndex : 'gpcode',					hidden:true	},		

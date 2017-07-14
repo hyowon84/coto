@@ -207,6 +207,7 @@ else if($mode == 'orderlist' || $mode == 'shipedlist') {
 														FROM		clay_order
 														WHERE		1=1
 														$공구코드조건
+														$주문상태조건
 														$내부조건
 													) CL
 													LEFT JOIN (	SELECT	hphone,
