@@ -114,7 +114,8 @@ if($mode == 'mblist') {
 
 /* 주문상세내역 */
 else if($mode == 'orderlist' || $mode == 'shipedlist') {
-
+	if($keyword) $내부조건 = " AND ( name LIKE '%$keyword%' OR hphone LIKE '%$keyword%' OR clay_id LIKE '%$keyword%' ) ";
+	
 	if($gpcode && $mode == 'orderlist') {
 		$공구코드조건 .=" AND gpcode IN (".str_replace("\'","'",$gpcode).") ";
 		$공구코드조건2 .=" AND T.gpcode IN (".str_replace("\'","'",$gpcode).") ";
@@ -206,6 +207,7 @@ else if($mode == 'orderlist' || $mode == 'shipedlist') {
 														FROM		clay_order
 														WHERE		1=1
 														$공구코드조건
+														$내부조건
 													) CL
 													LEFT JOIN (	SELECT	hphone,
 																							COUNT(*) AS CNT

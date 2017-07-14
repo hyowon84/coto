@@ -232,31 +232,6 @@ var grid_mblist = Ext.create('Ext.grid.Panel',{
 						listeners : [{
 							click : setDate
 						}]
-					},			
-					{	xtype: 'label',	text: '검색어 : ',		autoWidth:true,	style : 'font-weight:bold;'},
-					{
-						xtype: 'textfield',
-						id : 'keyword',
-						name: 'keyword',
-						width : 100,
-						style: 'padding:0px;',
-						enableKeyEvents: true,
-						listeners:{
-							keydown:function(t,e){
-							if(e.keyCode == 13){
-								
-								var params = {	
-									keyword : this.getValue(),
-									sdate : df_sdate.rawValue,
-									edate : df_edate.rawValue
-								}
-								
-								grid_mblist.store.loadData([],false);
-								Ext.apply(grid_mblist.store.getProxy().extraParams, params);
-								Ext.getCmp('ptb_mblist').moveFirst();
-								
-							}
-						}}
 					}
 	],
 	columns : [
@@ -359,7 +334,7 @@ var grid_orderlist = Ext.create('Ext.grid.Panel',{
 		{ text : '주문상태',		dataIndex : 'stats_name',			width:100	},
 		{ text : 'img',					dataIndex : 'gp_img',					width:60,			renderer: function(value){	return '<img src="' + value + '" width=40 height=40 />';}			},
 		{ text : '상품코드',		dataIndex : 'it_id',					width:160	},
-		{ text : '품목별 메모',	dataIndex : 'it_memo',				width: 160,		style:'text-align:center',			editor:{allowBlank:false} },
+		{ text : '품목별 메모',	dataIndex : 'it_memo',				width: 160,		style:'text-align:center',			editor:{allowBlank:false},	hidden:true },
 		{ text : '품목명',			dataIndex : 'it_name',				width:450	},
 		{ text : '주문가',			dataIndex : 'it_org_price',		sortable: true,		style:'text-align:center',	align:'right',	renderer: Ext.util.Format.numberRenderer('0,000') },
 		{ text : '주문수량',		dataIndex : 'it_qty',					sortable: true,		style:'text-align:center',	align:'right',	renderer: Ext.util.Format.numberRenderer('0,000') },
@@ -368,9 +343,33 @@ var grid_orderlist = Ext.create('Ext.grid.Panel',{
 		{ text : '구매자메모',	dataIndex : 'memo',						width:120,	hidden:true	},		
 		{ text : '통관수량',		dataIndex : 'CR_CNT',					width:120,	hidden:true	},
 		{ text : '입고수량',		dataIndex : 'IP_CNT',					width:120,	hidden:true	},
-		{ text : '예상재고',		dataIndex : 'real_jaego',			width:120	}
+		{ text : '예상재고',		dataIndex : 'real_jaego',			width:120,	hidden:true	}
 	],
 	tbar : [
+		{	xtype: 'label',	text: '검색어 : ',		autoWidth:true,	style : 'font-weight:bold;'},
+		{
+			xtype: 'textfield',
+			id : 'keyword',
+			name: 'keyword',
+			width : 100,
+			style: 'padding:0px;',
+			enableKeyEvents: true,
+			listeners:{
+				keydown:function(t,e){
+					if(e.keyCode == 13){
+						var params = {
+							keyword : this.getValue()
+							//sdate : df_sdate.rawValue,
+							//edate : df_edate.rawValue
+						}
+
+						grid_orderlist.store.loadData([],false);
+						Ext.apply(grid_orderlist.store.getProxy().extraParams, params);
+						Ext.getCmp('ptb_orderlist').moveFirst();
+					}
+				}
+			}
+		},
 		{
 			xtype : 'textfield',
 			fieldLabel: '품목별 메모 변경',
@@ -467,6 +466,7 @@ var grid_orderlist = Ext.create('Ext.grid.Panel',{
 	bbar : {
 		plugins: new Ext.ux.SlidingPager(),
 		xtype : 'pagingtoolbar',
+		id : 'ptb_orderlist',
 		store : store_orderlist,
 		displayInfo : true,
 		displayMsg : '{0}/{1} Total - {2}',
