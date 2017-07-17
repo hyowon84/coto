@@ -60,7 +60,6 @@ Ext.onReady(function(){
 		,renderTo: 'extjsBody'
 	});//panel_body
 
-	grid_mblist.store.load();
 
 	panelResize(main_panel);
 	

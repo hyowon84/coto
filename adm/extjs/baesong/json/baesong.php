@@ -113,8 +113,8 @@ if($mode == 'mblist') {
 }
 
 /* 주문상세내역 */
-else if($mode == 'orderlist' || $mode == 'shipedlist') {
-	if($keyword) $내부조건 = " AND ( name LIKE '%$keyword%' OR hphone LIKE '%$keyword%' OR clay_id LIKE '%$keyword%' ) ";
+else if($mode == 'orderlist') {
+	if($keyword) $내부조건 = " AND ( name = '$keyword' OR hphone = '$keyword' OR clay_id = '$keyword' ) ";
 	
 	if($gpcode && $mode == 'orderlist') {
 		$공구코드조건 .=" AND gpcode IN (".str_replace("\'","'",$gpcode).") ";
@@ -122,12 +122,7 @@ else if($mode == 'orderlist' || $mode == 'shipedlist') {
 		$주문상태조건 .= " AND stats >= 20	AND stats <= 39 ";
 		$AND_SQL .= "	AND CL.stats <= 39 ";
 	}
-	if($gpcode && $mode == 'shipedlist') {
-		$공구코드조건 .=" AND gpcode IN (".str_replace("\'","'",$gpcode).") ";
-		$공구코드조건2 .=" AND T.gpcode IN (".str_replace("\'","'",$gpcode).") ";
-		$주문상태조건 .= "	AND stats >= 40 	AND stats <= 60	 ";
-		$AND_SQL .= "	AND CL.stats >= 40 	AND CL.stats <= 60	 ";
-	}
+	
 	
 	if($hphone) $AND_SQL.=" AND CL.hphone = '$hphone' ";
 	if($mb_nick) $AND_SQL.=" AND CL.clay_id = '$mb_nick' ";
@@ -135,9 +130,6 @@ else if($mode == 'orderlist' || $mode == 'shipedlist') {
 
 	if($mode == 'orderlist') {
 		$상태조건 = "15,17,20,22,23,25,30,35";
-	}
-	if($mode == 'shipedlist') {
-		$상태조건 = "40,50,60";
 	}
 
 
@@ -177,9 +169,9 @@ else if($mode == 'orderlist' || $mode == 'shipedlist') {
 														WHEN	CL.gpcode = 'QUICK'
 																	|| CL.gpcode = 'AUCTION'
 																	|| GI.gpcode_name LIKE '%릴레이%'
-																	|| IV.CNT <= IV.CNT_40
-																	|| RJ.real_jaego >= GPQTY.GP_QTY
-																	|| RJ.qk_jaego >= GPQTY.GP_QTY
+																	|| IV.CNT <= IV.CNT_40				/* 총발주수량 <= 입고완료발주수량 */
+																	|| RJ.real_jaego >= GPQTY.GP_QTY	/* 실재고 >= 공구주문집계수량 */
+																	#|| RJ.qk_jaego >= GPQTY.GP_QTY		/* 빠른배송재고(jaego + realjaego) >= 공구주문집계수량*/
 																	#|| RJ.iv_qty >= GPQTY.GP_QTY
 														THEN
 															'40'
@@ -192,7 +184,7 @@ else if($mode == 'orderlist' || $mode == 'shipedlist') {
 																	|| GI.gpcode_name LIKE '%릴레이%'
 																	|| IV.CNT <= IV.CNT_40
 																	|| RJ.real_jaego >= GPQTY.GP_QTY
-																	|| RJ.qk_jaego >= GPQTY.GP_QTY
+																	#|| RJ.qk_jaego >= GPQTY.GP_QTY
 																	#|| RJ.iv_qty >= GPQTY.GP_QTY
 														THEN
 															'배송가능'
@@ -210,29 +202,36 @@ else if($mode == 'orderlist' || $mode == 'shipedlist') {
 														$주문상태조건
 														$내부조건
 													) CL
+													
+													/*주문자의 주문내역 카운팅*/
 													LEFT JOIN (	SELECT	hphone,
 																							COUNT(*) AS CNT
 																			FROM		clay_order
 																			WHERE		1=1
 																			$공구코드조건
 																			$주문상태조건
+																			$내부조건
 																			GROUP BY hphone
 													) CLS ON (CLS.hphone = CL.hphone)
+													
 													LEFT JOIN (	SELECT	*
 																			FROM		clay_order_info
 																			WHERE		1=1
 																			$공구코드조건
 													) CI ON (CI.od_id = CL.od_id)
+													
 													LEFT JOIN (	SELECT	*
 																			FROM		gp_info
 																			WHERE		1=1
 																			$공구코드조건
 													) GI ON (GI.gpcode = CL.gpcode)
+													
 													LEFT JOIN g5_shop_group_purchase GP ON (GP.gp_id = CL.it_id)
 													LEFT JOIN comcode SN ON (SN.ctype = 'clayorder' AND SN.col = 'stats' AND SN.code = CL.stats)
 													LEFT JOIN comcode GN ON (GN.ctype = 'gpinfo' AND GN.col = 'stats' AND GN.code = GI.stats)
 													LEFT JOIN comcode DN ON (DN.ctype = 'clayorder' AND DN.col = 'delivery_type' AND DN.code = CI.delivery_type)
 													
+													/*전체 입고수량*/
 													LEFT JOIN (	SELECT	T.gpcode,
 																							T.iv_it_id,
 																							T.CNT,
@@ -242,6 +241,8 @@ else if($mode == 'orderlist' || $mode == 'shipedlist') {
 																			WHERE		T.CNT <= T40.CNT_40		/*정상발주수량부터 과발주수량까지 배송가능으로 출력*/
 																			$공구코드조건2																			
 													)	IV ON (IV.gpcode = CL.gpcode AND IV.iv_it_id = CL.it_id)
+													
+													/*공구주문집계*/
 													LEFT JOIN (	SELECT	gpcode,
 																							it_id,
 																							SUM(it_qty) AS GP_QTY
@@ -250,6 +251,7 @@ else if($mode == 'orderlist' || $mode == 'shipedlist') {
 																			$공구코드조건
 																			GROUP BY gpcode, it_id
 													) GPQTY ON (GPQTY.gpcode = CL.gpcode AND GPQTY.it_id = CL.it_id)
+													
 													LEFT JOIN (	SELECT	CL.it_id,
 																							CL.od_qty,
 																							GP.jaego,
@@ -263,28 +265,125 @@ else if($mode == 'orderlist' || $mode == 'shipedlist') {
 																													WHERE		1=1
 																													AND			stats >= 00
 																													AND			stats <= 60
-																													$공구코드조건
-																													$내부조건
+																													#$공구코드조건
+																													#$내부조건
 																												) I
 																								WHERE		1=1
 																								GROUP BY I.it_id
 																							) CL
 																							LEFT JOIN g5_shop_group_purchase GP ON (GP.gp_id = CL.it_id)
+																							
+																							/*전체입고수량*/
 																							LEFT JOIN (	SELECT	iv_it_id,
 																																	SUM(iv_qty) AS iv_qty
 																													FROM		invoice_item
 																													WHERE		iv_stats = 40
 																													GROUP BY iv_it_id
 																							) II ON (II.iv_it_id = CL.it_id)
+																							
 																			GROUP BY it_id
 													) RJ ON (RJ.it_id = CL.it_id)
 									WHERE		1=1
 									AND			CL.stats IN ($상태조건)
 									$AND_SQL									
 	";
-//	echo $SELECT_SQL;
-	
 }
+
+
+/* 주문상세내역 */
+else if($mode == 'shipedlist') {
+	if($keyword) $내부조건 = " AND ( name LIKE '%$keyword%' OR hphone LIKE '%$keyword%' OR clay_id LIKE '%$keyword%' ) ";
+
+	if($gpcode) {
+		$공구코드조건 .=" AND gpcode IN (".str_replace("\'","'",$gpcode).") ";
+		$공구코드조건2 .=" AND T.gpcode IN (".str_replace("\'","'",$gpcode).") ";
+		$주문상태조건 .= "	AND stats >= 40 	AND stats <= 60	 ";
+		$AND_SQL .= "	AND CL.stats >= 40 	AND CL.stats <= 60	 ";
+	}
+
+	if($hphone) $AND_SQL.=" AND CL.hphone = '$hphone' ";
+	if($mb_nick) $AND_SQL.=" AND CL.clay_id = '$mb_nick' ";
+	if($od_id) $AND_SQL.=" AND CL.od_id = '$od_id' ";
+
+	$상태조건 = "40,50,60";
+
+
+	//문제가 생길경우 주석처리한 부분 해제, v_invoice_cnt 테이블조인 제거
+	/* 선택된 회원의 주문목록 가져오기 */
+	$SELECT_SQL = "	SELECT	CONCAT(CL.clay_id, '(', CL.hphone, '), 총 ' ,IFNULL(CLS.CNT,0),'건(취소제외)') AS 'mbgroup',
+													CONCAT('[', GI.gpcode_name, '] ', CL.od_id, ' - 배송비(', IFNULL(DN.value,'미설정'), ') ', IFNULL(CI.delivery_price,'') , '원') AS project,
+													CL.number AS taskId,
+													SUBSTR(CL.od_id,3,12) AS projectId,
+													CL.number,
+													CL.gpcode,
+													CL.od_id,
+													CONCAT(CI.clay_id,'(',CI.name,')') AS buyer,
+													CI.clay_id,
+													CI.paytype,
+													IF(LENGTH(GP.gp_img) > 8,GP.gp_img,'/shop/img/no_image.gif') AS gp_img,
+													CL.it_id,
+													CL.it_name,
+													CL.it_memo,
+													CL.it_qty,
+													CL.it_org_price,
+													CL.it_qty * CL.it_org_price AS total_price,
+													CL.od_date,
+													CI.delivery_type,
+													CI.delivery_direct,
+													CL.delivery_invoice,	/*품목별 송장번호 우선*/
+													CI.delivery_invoice AS delivery_invoice2,	/*최근입력한 송장번호*/
+													CI.cash_receipt_yn,
+													CI.memo,
+													CI.admin_memo,
+													CL.stats,
+													GI.gpcode_name,
+													GI.stats AS gpstats,
+													GN.value AS gpstats_name,
+													SN.value AS stats_name
+									FROM		(	SELECT	*
+																			FROM		clay_order
+																			WHERE		1=1
+																			$공구코드조건
+																			$주문상태조건
+																			$내부조건
+													) CL
+													
+													LEFT JOIN (	SELECT	*
+																			FROM		clay_order_info
+																			WHERE		1=1
+																			$공구코드조건
+																			$내부조건
+													) CI ON (CL.od_id = CI.od_id)
+													
+													/*주문자의 주문내역 카운팅*/
+													LEFT JOIN (	SELECT	hphone,
+																							COUNT(*) AS CNT
+																			FROM		clay_order
+																			WHERE		1=1
+																			$공구코드조건
+																			$주문상태조건
+																			$내부조건
+																			GROUP BY hphone
+													) CLS ON (CLS.hphone = CI.hphone)
+													
+													LEFT JOIN (	SELECT	*
+																			FROM		gp_info
+																			WHERE		1=1
+																			$공구코드조건
+													) GI ON (GI.gpcode = CL.gpcode)
+													
+													LEFT JOIN g5_shop_group_purchase GP ON (GP.gp_id = CL.it_id)
+													LEFT JOIN comcode SN ON (SN.ctype = 'clayorder' AND SN.col = 'stats' AND SN.code = CL.stats)
+													LEFT JOIN comcode GN ON (GN.ctype = 'gpinfo' AND GN.col = 'stats' AND GN.code = GI.stats)
+													LEFT JOIN comcode DN ON (DN.ctype = 'clayorder' AND DN.col = 'delivery_type' AND DN.code = CI.delivery_type)
+													
+									WHERE		1=1
+									$AND_SQL									
+	";
+//	ECHO $SELECT_SQL;
+//	EXIT;
+}
+
 
 /* 주문정보 */
 else if($mode == 'orderlistdetail') {

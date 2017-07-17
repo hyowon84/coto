@@ -24,8 +24,8 @@ var panel_gpmb = Ext.create('Ext.Panel', {
 		},
 		{
 			region: 'center',
-			width : '70%',
-			items : [grid_mblist]
+			width : '70%'
+			//items : [grid_mblist]
 		}
 	]
 });
