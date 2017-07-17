@@ -83,7 +83,7 @@ var store_mblist = Ext.create('Ext.data.Store',{
 var store_shiped_list = Ext.create('Ext.data.Store',{
 	pageSize : 100,
 	model	:	'model_orderlist',
-	groupField: 'Group',
+	groupField: 'project',
 	//remoteSort: true,
 	//remoteFilter: true,
 	autoLoad : false,
@@ -166,7 +166,7 @@ var store_gpinfo = Ext.create('Ext.data.Store',{
 var store_orderlist = Ext.create('Ext.data.Store',{
 	pageSize : 200,
 	model	:	'model_orderlist',
-	groupField: 'mbgroup',
+	groupField: 'project',
 	//remoteSort: true,
 	//remoteFilter: true,
 	autoSync : true,
@@ -174,7 +174,7 @@ var store_orderlist = Ext.create('Ext.data.Store',{
 	remoteSort: true,
 	sorters:[
 		{
-			property: "mbgroup",		
+			property: "od_date",		
 			direction:'ASC'
 		}
 	],

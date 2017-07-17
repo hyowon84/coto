@@ -19,13 +19,13 @@ var panel_gpmb = Ext.create('Ext.Panel', {
 	items: [
 		{
 			region: 'west',
-			width : '30%'
-			//items : [grid_gpinfo]
+			width : '30%',
+			items : [grid_gpinfo]
 		},
 		{
 			region: 'center',
-			width : '70%'
-			//items : [grid_mblist]
+			width : '70%',
+			items : [grid_mblist]
 		}
 	]
 });

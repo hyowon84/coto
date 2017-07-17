@@ -135,7 +135,7 @@ else if($mode == 'orderlist') {
 
 	//문제가 생길경우 주석처리한 부분 해제, v_invoice_cnt 테이블조인 제거
 	/* 선택된 회원의 주문목록 가져오기 */
-	$SELECT_SQL = "	SELECT	CONCAT(CL.clay_id, '(', CL.hphone, '), 총 ' ,IFNULL(CLS.CNT,0),'건(취소제외)') AS 'mbgroup',
+	$SELECT_SQL = "	SELECT	#CONCAT(CL.clay_id, '(', CL.hphone, '), 총 ' ,IFNULL(CLS.CNT,0),'건(취소제외)') AS 'mbgroup',
 													CONCAT('[', GI.gpcode_name, '] ', CL.od_id, ' - 배송비(', IFNULL(DN.value,'미설정'), ') ', IFNULL(CI.delivery_price,'') , '원') AS project,
 													CL.number AS taskId,
 													SUBSTR(CL.od_id,3,12) AS projectId,
@@ -297,20 +297,18 @@ else if($mode == 'shipedlist') {
 	if($gpcode) {
 		$공구코드조건 .=" AND gpcode IN (".str_replace("\'","'",$gpcode).") ";
 		$공구코드조건2 .=" AND T.gpcode IN (".str_replace("\'","'",$gpcode).") ";
-		$주문상태조건 .= "	AND stats >= 40 	AND stats <= 60	 ";
-		$AND_SQL .= "	AND CL.stats >= 40 	AND CL.stats <= 60	 ";
 	}
 
 	if($hphone) $AND_SQL.=" AND CL.hphone = '$hphone' ";
 	if($mb_nick) $AND_SQL.=" AND CL.clay_id = '$mb_nick' ";
 	if($od_id) $AND_SQL.=" AND CL.od_id = '$od_id' ";
 
-	$상태조건 = "40,50,60";
+	$주문상태조건 .= "	AND stats >= 40 	AND stats <= 60	 ";
 
 
 	//문제가 생길경우 주석처리한 부분 해제, v_invoice_cnt 테이블조인 제거
 	/* 선택된 회원의 주문목록 가져오기 */
-	$SELECT_SQL = "	SELECT	CONCAT(CL.clay_id, '(', CL.hphone, '), 총 ' ,IFNULL(CLS.CNT,0),'건(취소제외)') AS 'mbgroup',
+	$SELECT_SQL = "	SELECT	#CONCAT(CL.clay_id, '(', CL.hphone, '), 총 ' ,IFNULL(CLS.CNT,0),'건(취소제외)') AS 'mbgroup',
 													CONCAT('[', GI.gpcode_name, '] ', CL.od_id, ' - 배송비(', IFNULL(DN.value,'미설정'), ') ', IFNULL(CI.delivery_price,'') , '원') AS project,
 													CL.number AS taskId,
 													SUBSTR(CL.od_id,3,12) AS projectId,

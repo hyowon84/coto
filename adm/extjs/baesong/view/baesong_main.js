@@ -40,18 +40,18 @@ Ext.onReady(function(){
 				id : 'navi_west',
 				title: '<b>공동구매 목록</b>',
 				region: 'west', 
-				width: '30%',
+				width: '50%',
 				height: 1040,
 				collapsible: true,
 				style : 'float:left; margin:0px; padding:0px;',
-				items	: [grid_gpinfo]
+				items	: [panel_gpmb]
 			},
 			{
 				//top 
 				id : 'navi_center',
 				region: 'center',
 				collapsible: false,
-				width: '70%',
+				width: '50%',
 				height: 1040,
 				style : 'float:left; margin:0px; padding:0px;',
 				items : [panel_order]		//panel_grid

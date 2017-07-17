@@ -192,104 +192,104 @@ var grid_gpinfo = Ext.create('Ext.grid.Panel',{
 });
 
 
-//
-///* 좌측 회원 */
-//var grid_mblist = Ext.create('Ext.grid.Panel',{
-//	id : 'grid_mblist',
-//	plugins	: ['clipboard'],
-//	selModel: Ext.create('Ext.selection.CheckboxModel'),
-//	remoteSort: true,
-//	autoLoad : false,
-//	autoWidth : true,
-//	height : 1000,
-//	store : store_mblist,
-//	viewConfig: {
-//		stripeRows: true,
-//		enableTextSelection: true,
-//		getRowClass: function(record, index) {
-//		}
-//	},
-//	tbar: [
-//					df_sdate,
-//					df_edate,
-//					{
-//						xtype: 'button',
-//						text: '오늘',
-//						listeners : [{
-//							click : setDate
-//						}]
-//					},
-//					{
-//						xtype: 'button',
-//						text: '일주일',
-//						listeners : [{
-//							click : setDate
-//						}]
-//					},
-//					{
-//						xtype: 'button',
-//						text: '한달',
-//						listeners : [{
-//							click : setDate
-//						}]
-//					},
-//					{
-//						xtype: 'button',
-//						text: '3개월',
-//						listeners : [{
-//							click : setDate
-//						}]
-//					}
-//	],
-//	columns : [
-//		{	text : '닉네임',				width : 140,		dataIndex : 'mb_nick'		},
-//		{	text : '이름',					width : 70,			dataIndex : 'mb_name'		},
-//		{ text : '연락처',				width : 120,		dataIndex : 'hphone'		},
-//		{ text : '퀵주문',				width : 90,			dataIndex : 'QCK_SUM_QTY',		style:'text-align:center',	align:'right',	renderer: Ext.util.Format.numberRenderer('0,000') },
-//		{ text : '퀵주문총액',		width : 120,		dataIndex : 'QCK_SUM_TOTAL',	style:'text-align:center',	align:'right',	renderer: Ext.util.Format.numberRenderer('0,000') },
-//		{ text : '발송예정',			width : 90,			dataIndex : 'S40_SUM_QTY',		style:'text-align:center',	align:'right',	renderer: Ext.util.Format.numberRenderer('0,000') },
-//		{ text : '발송예정총액',	width : 120,		dataIndex : 'S40_SUM_TOTAL',	style:'text-align:center',	align:'right',	renderer: Ext.util.Format.numberRenderer('0,000') },
-//		{ text : '발송불가',			width : 90,			dataIndex : 'NS40_SUM_QTY',	style:'text-align:center',	align:'right',	renderer: Ext.util.Format.numberRenderer('0,000') },
-//		{ text : '발송불가총액',	width : 120,		dataIndex : 'NS40_SUM_TOTAL',	style:'text-align:center',	align:'right',	renderer: Ext.util.Format.numberRenderer('0,000') },
-//		{ text : '전체주문수량',	width : 90,			dataIndex : 'SUM_QTY',			style:'text-align:center',	align:'right',	renderer: Ext.util.Format.numberRenderer('0,000') },
-//		{ text : '전체주문총액',	width : 120,		dataIndex : 'SUM_TOTAL',		style:'text-align:center',	align:'right',	renderer: Ext.util.Format.numberRenderer('0,000') }
-//		
-//	],
-//	bbar : {
-//		plugins: new Ext.ux.SlidingPager(),
-//		xtype : 'pagingtoolbar',
-//		id : 'ptb_mblist',
-//		store : store_mblist,
-//		displayInfo : true,
-//		displayMsg : '{0}/{1} Total - {2}',
-//		emptyMsg : 'No Data'
-//	},
-//	listeners : {
-//		selectionchange: function(view, records) {
-//			
-//			store_orderlist.loadData([],false);
-//			store_shiped_list.loadData([],false);
-//			
-//			/* 회원목록의 선택된 레코드 */
-//			var sm = grid_mblist.getSelectionModel().getSelection()[0];
-//			
-//			if(sm) {
-//				Ext.getCmp('grid_orderlist').setTitle('> "'+sm.get('mb_nick')+'"님의 배송예정 목록');
-//				Ext.getCmp('grid_shiped_list').setTitle('> "'+sm.get('mb_nick')+'"님의 배송완료 목록');
-//				Ext.getCmp('hf_hphone').setValue(sm.get('hphone'));
-//				
-//				/* >>주문내역 리프레시 */
-//				Ext.apply(store_shiped_list.getProxy().extraParams, sm.data);
-//				Ext.apply(store_orderlist.getProxy().extraParams, sm.data);
-//				
-//				store_orderlist.load();
-//				store_shiped_list.load();				
-//			}
-//			
-//	 	}
-//	}
-//	
-//});
+
+/* 좌측 회원 */
+var grid_mblist = Ext.create('Ext.grid.Panel',{
+	id : 'grid_mblist',
+	plugins	: ['clipboard'],
+	selModel: Ext.create('Ext.selection.CheckboxModel'),
+	remoteSort: true,
+	autoLoad : true,
+	autoWidth : true,
+	height : 1000,
+	store : store_mblist,
+	viewConfig: {
+		stripeRows: true,
+		enableTextSelection: true,
+		getRowClass: function(record, index) {
+		}
+	},
+	tbar: [
+		df_sdate,
+		df_edate,
+		{
+			xtype: 'button',
+			text: '오늘',
+			listeners : [{
+				click : setDate
+			}]
+		},
+		{
+			xtype: 'button',
+			text: '일주일',
+			listeners : [{
+				click : setDate
+			}]
+		},
+		{
+			xtype: 'button',
+			text: '한달',
+			listeners : [{
+				click : setDate
+			}]
+		},
+		{
+			xtype: 'button',
+			text: '3개월',
+			listeners : [{
+				click : setDate
+			}]
+		}
+	],
+	columns : [
+		{	text : '닉네임',				width : 140,		dataIndex : 'mb_nick'		},
+		{	text : '이름',					width : 70,			dataIndex : 'mb_name'		},
+		{ text : '연락처',				width : 120,		dataIndex : 'hphone'		},
+		{ text : '퀵주문',				width : 90,			dataIndex : 'QCK_SUM_QTY',		style:'text-align:center',	align:'right',	renderer: Ext.util.Format.numberRenderer('0,000') },
+		{ text : '퀵주문총액',		width : 120,		dataIndex : 'QCK_SUM_TOTAL',	style:'text-align:center',	align:'right',	renderer: Ext.util.Format.numberRenderer('0,000') },
+		{ text : '발송예정',			width : 90,			dataIndex : 'S40_SUM_QTY',		style:'text-align:center',	align:'right',	renderer: Ext.util.Format.numberRenderer('0,000') },
+		{ text : '발송예정총액',	width : 120,		dataIndex : 'S40_SUM_TOTAL',	style:'text-align:center',	align:'right',	renderer: Ext.util.Format.numberRenderer('0,000') },
+		{ text : '발송불가',			width : 90,			dataIndex : 'NS40_SUM_QTY',	style:'text-align:center',	align:'right',	renderer: Ext.util.Format.numberRenderer('0,000') },
+		{ text : '발송불가총액',	width : 120,		dataIndex : 'NS40_SUM_TOTAL',	style:'text-align:center',	align:'right',	renderer: Ext.util.Format.numberRenderer('0,000') },
+		{ text : '전체주문수량',	width : 90,			dataIndex : 'SUM_QTY',			style:'text-align:center',	align:'right',	renderer: Ext.util.Format.numberRenderer('0,000') },
+		{ text : '전체주문총액',	width : 120,		dataIndex : 'SUM_TOTAL',		style:'text-align:center',	align:'right',	renderer: Ext.util.Format.numberRenderer('0,000') }
+
+	],
+	bbar : {
+		plugins: new Ext.ux.SlidingPager(),
+		xtype : 'pagingtoolbar',
+		id : 'ptb_mblist',
+		store : store_mblist,
+		displayInfo : true,
+		displayMsg : '{0}/{1} Total - {2}',
+		emptyMsg : 'No Data'
+	},
+	listeners : {
+		selectionchange: function(view, records) {
+
+			store_orderlist.loadData([],false);
+			store_shiped_list.loadData([],false);
+
+			/* 회원목록의 선택된 레코드 */
+			var sm = grid_mblist.getSelectionModel().getSelection()[0];
+
+			if(sm) {
+				Ext.getCmp('grid_orderlist').setTitle('> "'+sm.get('mb_nick')+'"님의 배송예정 목록');
+				Ext.getCmp('grid_shiped_list').setTitle('> "'+sm.get('mb_nick')+'"님의 배송완료 목록');
+				Ext.getCmp('hf_hphone').setValue(sm.get('hphone'));
+
+				/* >>주문내역 리프레시 */
+				Ext.apply(store_shiped_list.getProxy().extraParams, sm.data);
+				Ext.apply(store_orderlist.getProxy().extraParams, sm.data);
+
+				store_orderlist.load();
+				store_shiped_list.load();
+			}
+
+		}
+	}
+
+});
 
 
 
