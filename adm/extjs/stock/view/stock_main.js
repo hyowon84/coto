@@ -33,7 +33,7 @@ Ext.onReady(function(){
 		],
 		layout: 'border',
 		width: 1900,
-		height : 1200,
+		height : 1500,
 		bodyBorder: false,
 		defaults: {
 			collapsible: true,

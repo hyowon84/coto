@@ -30,7 +30,7 @@ var grid_navi_invoice = Ext.create('Ext.grid.Panel',{
 	},
 	autoLoad : false,
 	autoWidth : true,
-	height : 260,
+	height : 560,
 	store : store_navi_invoice,
 	columns : [
 		{ text : '날짜',							dataIndex : 'iv_date',					sortable: true,	summaryType: 'max',		renderer: Ext.util.Format.dateRenderer('Y-m-d'),	summaryRenderer: Ext.util.Format.dateRenderer('Y-m-d'),		field: { xtype: 'datefield' },		hidden:true	},
@@ -142,13 +142,22 @@ var grid_navi_invoice_dtl = Ext.create('Ext.grid.Panel',{
 	id : 'grid_navi_invoice_dtl',
 	plugins: [Ext.create('Ext.grid.plugin.CellEditing',{clicksToEdit: 1})],
 	selModel: Ext.create('Ext.selection.CheckboxModel', {}),
+	features: [
+		{
+			ftype : 'groupingsummary',
+			groupHeaderTpl: '{name}',
+			hideGroupedHeader: true,
+			enableGroupingMenu: true,
+			collapsible : false
+		}
+	],
 	viewConfig: {
 		stripeRows: true,
 		enableTextSelection: true,
 		getRowClass: ivStatsColorSetting
 	},
 	autoWidth : true,
-	height : 260,
+	height : 560,
 	store : store_navi_invoice_dtl,
 	columns : [
 		{ text : 'number',			dataIndex : 'number',						hidden:true	},
@@ -169,9 +178,9 @@ var grid_navi_invoice_dtl = Ext.create('Ext.grid.Panel',{
 		{ text : '공구명',				dataIndex : 'gpcode_name'	},
 		{ text : 'IMG', 					dataIndex : 'iv_it_img',						width: 50,		renderer:rendererImage 		},
 		{ text : '상품코드',			dataIndex : 'iv_it_id',							width:160			},
-		{ text : '주문집계',			dataIndex : 'GP_ORDER_QTY',					width:100,		style:'text-align:center',	align:'right',	renderer: Ext.util.Format.numberRenderer('0,000') },
-		{ text : '발주수량',			dataIndex : 'iv_qty',								width:100,		editor: { allowBlank : false },		style:'text-align:center',	align:'right',	renderer: Ext.util.Format.numberRenderer('0,000') },
-		{ text : '입고수량',			dataIndex : 'ip_qty',								width:100,		editor: { allowBlank : false },		style:'text-align:center',	align:'right',	renderer: Ext.util.Format.numberRenderer('0,000') },
+		{ text : '주문집계',			dataIndex : 'GPT_QTY',							width:100,		style:'text-align:center',	align:'right',	renderer: Ext.util.Format.numberRenderer('0,000'),	summaryType : 'sum',	summaryRenderer: Ext.util.Format.numberRenderer('0,000') },
+		{ text : '발주수량',			dataIndex : 'iv_qty',								width:100,		style:'text-align:center',	align:'right',	renderer: Ext.util.Format.numberRenderer('0,000'),	summaryType : 'sum',	summaryRenderer: Ext.util.Format.numberRenderer('0,000') },
+		{ text : '입고수량',			dataIndex : 'ip_qty',								width:100,		style:'text-align:center',	align:'right',	renderer: Ext.util.Format.numberRenderer('0,000'),	summaryType : 'sum',	summaryRenderer: Ext.util.Format.numberRenderer('0,000') },
 		{ text : '통화',					dataIndex : 'money_type',						width:70			},
 		{ text : '발주가',				dataIndex : 'iv_dealer_worldprice',	width:120,		editor: { allowBlank : false },		style:'text-align:center',	align:'right',	renderer: Ext.util.Format.numberRenderer('0,000.00') },
 		{ text : 'TOTAL',					dataIndex : 'total_price',					width:120,																			style:'text-align:center',	align:'right',	renderer: Ext.util.Format.numberRenderer('0,000.00') },
@@ -206,6 +215,31 @@ var grid_navi_invoice_dtl = Ext.create('Ext.grid.Panel',{
 			handler: function() {
 				Ext.ux.grid.Printer.mainTitle = Ext.util.Format.date(new Date(),'Y-m-d g:i:s') +' 발주목록';
 				Ext.ux.grid.Printer.print(grid_navi_invoice_dtl);
+			}
+		}
+	],
+	tbar : [
+		{	xtype: 'label',	text: '검색어 : ',		autoWidth:true,	style : 'font-weight:bold;'},
+		{
+			xtype: 'textfield',
+			id : 'navi_ivdtl_keyword',
+			name: 'keyword',
+			style: 'padding:0px;',
+			enableKeyEvents: true,
+			listeners:{
+				keydown:function(t,e) {
+					if(e.keyCode == 13) {
+						store_navi_invoice_dtl.removeAll();
+
+						var v_param = {
+							keyword : Ext.getCmp('navi_ivdtl_keyword').getValue()
+						}
+
+						store_navi_invoice_dtl.loadData([],false);
+						Ext.apply(store_navi_invoice_dtl.getProxy().extraParams, v_param);
+						store_navi_invoice_dtl.load();
+					}
+				}
 			}
 		}
 	],

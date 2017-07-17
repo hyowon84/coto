@@ -7,7 +7,7 @@ var navi_panel = Ext.create('Ext.Panel', {
 	requires: ['Ext.layout.container.Border'],
 	layout: 'border',
 	width: '100%',
-	height : 300,
+	height : 600,
 	bodyBorder: false,
 	defaults: {
 		collapsible: false,
@@ -20,7 +20,7 @@ var navi_panel = Ext.create('Ext.Panel', {
 						title : '발주서 정보',
 						region: 'west',
 						collapsible: true,
-						width : '65%',
+						width : '35%',
 						autoHeight : true,
 						style : 'float:left; margin:0px; padding:0px;',
 						items	: [
@@ -35,7 +35,7 @@ var navi_panel = Ext.create('Ext.Panel', {
 						id : 'NAVI_CENTER',
 						title : '발주서 정보',
 						region: 'center',
-						width : '35%',
+						width : '65%',
 						autoHeight : true,
 						style : 'float:left; margin:0px; padding:0px;',
 						items	: [

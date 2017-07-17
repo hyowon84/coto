@@ -343,6 +343,7 @@ else if($mode == 'orderitems') {
 																		) FD
 														WHERE		1=1
 														$AND_SQL
+														$OR_SQL
 									) T
 	";
 //	echo $SELECT_SQL;
@@ -645,6 +646,12 @@ else if($mode == 'invoiceEndClearance') {
 /* 송금탭의 송금예정과 관련된 발주품목 */
 else if($mode == 'invoice_item') {
 
+	if($keyword) {
+//		$AND_SQL.= " AND ( ($IVID조건) OR ($인보이스번호조건) OR ($발주서별칭조건) OR ($발주서메모조건)  )";	//OR ($상품명조건)
+		$AND_SQL .= " AND	(($상품명_조건) OR	($상품ID_조건) OR	($공구명_조건) OR	($공구코드_조건)) ";
+	}
+	
+	
 	if($iv_id) {
 		$AND_SQL.=" AND IV.iv_id IN (".str_replace("\'","'",$iv_id).") ";
 	}
@@ -663,9 +670,11 @@ else if($mode == 'invoice_item') {
 													II.money_type,
 													IV.iv_dealer_worldprice,		/*주문단가($)*/
 													IV.iv_dealer_price,					/*주문단가*/
-													GPO.GP_ORDER_QTY,						/*공동구매의 품목 주문수량 실시간 확인*/
+													IFNULL(GPO.GP_ORDER_QTY,0) AS GP_ORDER_QTY,						/*공동구매의 품목 주문수량 실시간 확인*/
+													IFNULL(GPT.GPT_QTY,0) AS GPT_QTY,								/*공동구매의 배송완료 이하 총 주문수량*/
+													
 													IV.iv_qty,									/*발주수량*/
-													IV.ip_qty,									/*입고수량*/
+													IP.iv_qty AS ip_qty,				/*입고수량*/
 													IV.iv_dealer,								/*딜러*/
 													(IV.iv_dealer_worldprice * IV.iv_qty) AS total_price,
 													IV.iv_stats,
@@ -674,17 +683,28 @@ else if($mode == 'invoice_item') {
 													CR.cr_qty,
 													CR.cr_cancel_qty
 									FROM		invoice_item IV
+													
 													LEFT JOIN invoice_info II ON (II.iv_id = IV.iv_id)
 													LEFT JOIN g5_shop_group_purchase IT ON (IT.gp_id = IV.iv_it_id)
 													LEFT JOIN gp_info GI ON (GI.gpcode = IV.gpcode)
 													
-													/* 해당공구 총주문수량 */
+													/* 해당공구 총주문수량(배송완료 이하) */
+													LEFT JOIN ( SELECT	gpcode,
+																							it_id,
+																							it_org_price,
+																							SUM(it_qty) AS GPT_QTY
+																			FROM		clay_order
+																			WHERE		stats <= 60		/* 취소건 제외, 모든 신청수량 */
+																			GROUP BY gpcode, it_id
+													) GPT ON (GPT.gpcode = IV.gpcode AND GPT.it_id = IV.iv_it_id)
+													
+													/* 해당공구 총주문수량(포장 이하) */
 													LEFT JOIN ( SELECT	gpcode,
 																							it_id,
 																							it_org_price,
 																							SUM(it_qty) AS GP_ORDER_QTY
 																			FROM		clay_order
-																			WHERE		stats <= 22		/* 취소건 제외, 모든 신청수량 */
+																			WHERE		stats <= 23		/* 취소건 제외, 모든 신청수량 */
 																			GROUP BY gpcode, it_id
 													) GPO ON (GPO.gpcode = IV.gpcode AND GPO.it_id = IV.iv_it_id)
 													LEFT JOIN (	SELECT	iv_id,
@@ -699,8 +719,13 @@ else if($mode == 'invoice_item') {
 																							iv_id
 																			FROM		clearance_item
 													) CLR ON (CLR.iv_id = IV.iv_id)
+													LEFT JOIN (	SELECT	*
+																			FROM		invoice_item
+																			WHERE		iv_stats = 40
+													) IP ON (IP.iv_id = IV.iv_id AND IP.iv_it_id = IV.iv_it_id)													
 									WHERE		1=1
 									$AND_SQL
+									$OR_SQL
 	";
 //	ECHO $SELECT_SQL;
 }

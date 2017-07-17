@@ -167,6 +167,7 @@ Ext.define('store.invoice_list',{
 Ext.define('store.invoice_dtl',{
 	//id : 'store_invoiceEndWire',
 	extend: 'Ext.data.Store',
+	pageSize : 300,
 	fields : ['number',
 		'iv_id',
 		'gpcode',
@@ -217,12 +218,64 @@ Ext.define('store.invoice_dtl',{
 
 //상단 검색 발주서 통계 목록
 var store_navi_invoice = Ext.create('store.invoice_list');
+store_navi_invoice.autoLoad = false;
 store_navi_invoice.proxy.api.read = '/adm/extjs/stock/crud/stock.php?mode=naviFindInvoice';
 
 //상단 발주서와 관련된 발주품목들
-var store_navi_invoice_dtl = Ext.create('store.invoice_dtl');
-
-
+var store_navi_invoice_dtl = Ext.create('store.invoice_dtl',{
+	//id : 'store_invoiceEndWire',
+	extend: 'Ext.data.Store',
+	groupField : 'iv_it_id',
+	pageSize : 300,
+	fields : ['number',
+		'iv_id',
+		'gpcode',
+		'gpcode_name',
+		'iv_dealer',
+		'iv_order_no',
+		'iv_it_img',
+		'iv_it_id',
+		'iv_it_name',
+		{name: 'GP_ORDER_QTY',	type: 'int'},
+		{name: 'GPT_QTY',				type: 'int'},
+		{name: 'iv_qty',				type: 'int'},
+		{name: 'ip_qty',				type: 'int'},
+		'iv_dealer_worldprice',
+		'iv_dealer_price',
+		'total_price',
+		'money_type',
+		'iv_receipt_link',
+		'reg_date'],
+	remoteSort: true,
+	autoLoad : false,
+	autoSync : true,
+	sorters:[
+		{
+			property:'reg_date',
+			direction:'DESC'
+		}
+	],
+	proxy : {
+		type : 'ajax',
+		extraParams : {
+		},
+		api : {
+			read : '/adm/extjs/stock/crud/stock.php?mode=invoice_item',
+			update	: '/adm/extjs/stock/crud/stockitem_update.php'
+		},
+		reader : {
+			rootProperty : 'data',
+			totalProperty : 'total'
+		},
+		writer : {
+			type : 'json',
+			writeAllFields : true,
+			encode : true,
+			rootProperty : 'data'
+		}
+	}
+});
+//store_navi_invoice_dtl.groupField = 'iv_it_id';
 
 
 /************************************************************************************/
@@ -307,7 +360,7 @@ var store_memo_gpinfo = Ext.create('Ext.data.Store',{
 /* 통계  */
 var store_orderitems = Ext.create('Ext.data.Store',{
 	id : 'store_orderitems',
-	pageSize : 50,
+	pageSize : 300,
 	autoLoad : false,
 	autoSync : true,
 	model	:	'model_stockManage',
