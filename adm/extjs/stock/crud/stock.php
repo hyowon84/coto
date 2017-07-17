@@ -665,6 +665,8 @@ else if($mode == 'invoice_item') {
 													IV.iv_id,
 													CLR.cr_id,
 													IT.gp_img AS iv_it_img,
+													IT.ca_id,
+													IT.jaego,
 													IV.iv_it_id,								/*주문상품코드*/
 													IV.iv_it_name,							/*주문상품명*/
 													II.money_type,
@@ -691,7 +693,6 @@ else if($mode == 'invoice_item') {
 													/* 해당공구 총주문수량(배송완료 이하) */
 													LEFT JOIN ( SELECT	gpcode,
 																							it_id,
-																							it_org_price,
 																							SUM(it_qty) AS GPT_QTY
 																			FROM		clay_order
 																			WHERE		stats <= 60		/* 취소건 제외, 모든 신청수량 */

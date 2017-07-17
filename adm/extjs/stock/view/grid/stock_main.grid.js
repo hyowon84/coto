@@ -178,6 +178,8 @@ var grid_navi_invoice_dtl = Ext.create('Ext.grid.Panel',{
 		{ text : '공구명',				dataIndex : 'gpcode_name'	},
 		{ text : 'IMG', 					dataIndex : 'iv_it_img',						width: 50,		renderer:rendererImage 		},
 		{ text : '상품코드',			dataIndex : 'iv_it_id',							width:160			},
+		{ text : '분류',					dataIndex : 'ca_id',								width:100,		style:'text-align:center'		},
+		{ text : '재고값',				dataIndex : 'jaego',								width:100,		style:'text-align:center',	align:'right',	renderer: Ext.util.Format.numberRenderer('0,000')			},
 		{ text : '주문집계',			dataIndex : 'GPT_QTY',							width:100,		style:'text-align:center',	align:'right',	renderer: Ext.util.Format.numberRenderer('0,000'),	summaryType : 'sum',	summaryRenderer: Ext.util.Format.numberRenderer('0,000') },
 		{ text : '발주수량',			dataIndex : 'iv_qty',								width:100,		style:'text-align:center',	align:'right',	renderer: Ext.util.Format.numberRenderer('0,000'),	summaryType : 'sum',	summaryRenderer: Ext.util.Format.numberRenderer('0,000') },
 		{ text : '입고수량',			dataIndex : 'ip_qty',								width:100,		style:'text-align:center',	align:'right',	renderer: Ext.util.Format.numberRenderer('0,000'),	summaryType : 'sum',	summaryRenderer: Ext.util.Format.numberRenderer('0,000') },

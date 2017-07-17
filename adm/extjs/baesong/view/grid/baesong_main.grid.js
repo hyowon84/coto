@@ -239,6 +239,30 @@ var grid_mblist = Ext.create('Ext.grid.Panel',{
 			listeners : [{
 				click : setDate
 			}]
+		},
+		{	xtype: 'label',	text: '검색어 : ',		autoWidth:true,	style : 'font-weight:bold;'},
+		{
+			xtype: 'textfield',
+			width : 100,
+			style: 'padding:0px;',
+			enableKeyEvents: true,
+			listeners:{
+				keydown:function(t,e){
+					if(e.keyCode == 13){
+
+						var params = {
+							keyword : this.getValue(),
+							sdate : df_sdate.rawValue,
+							edate : df_edate.rawValue
+						}
+
+						grid_mblist.store.loadData([],false);
+						Ext.apply(grid_mblist.store.getProxy().extraParams, params);
+						Ext.getCmp('ptb_mblist').moveFirst();
+
+					}
+				}
+			}
 		}
 	],
 	columns : [
