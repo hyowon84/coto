@@ -598,7 +598,7 @@ var grid_shiped_list = Ext.create('Ext.grid.Panel',{
 			iconCls	: 'icon-table_print_add',
 			handler : function() {
 
-				if( grid_mblist.getSelectionModel().getSelection() == '' ) {
+				if( grid_shiped_list.getSelectionModel().getSelection() == '' ) {
 					Ext.Msg.alert('알림','좌측 회원목록에서 회원을 선택하세요');
 					return false;
 				}
@@ -609,8 +609,8 @@ var grid_shiped_list = Ext.create('Ext.grid.Panel',{
 					return false;
 				}
 
-				var mblist_sm = grid_mblist.getSelectionModel().getSelection()[0];
-				winInvoice.setTitle(mblist_sm.get('mb_nick')+'('+mblist_sm.get('mb_name')+')님의 배송완료 목록');
+				var mblist_sm = grid_shiped_list.getSelectionModel().getSelection()[0];
+				winInvoice.setTitle(mblist_sm.get('clay_id')+'('+mblist_sm.get('name')+')님의 배송완료 목록');
 
 
 				store_window_baesong.loadData([],false);
