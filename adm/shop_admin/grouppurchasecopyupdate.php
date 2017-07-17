@@ -50,6 +50,11 @@ $reset_sql = "	UPDATE	{$g5['g5_shop_group_purchase_table']}		SET
 sql_query($reset_sql);
 
 
+$log_sql = " $sql
+$reset_sql ";
+db_log($log_sql,'g5_shop_group_purchase','상품복제');
+
+
 
 // 선택/추가 옵션 copy
 $opt_sql = " insert ignore into {$g5['g5_shop_group_purchase_option_table']} ( gp_id, po_num, po_sqty, po_eqty, po_cash_price, po_card_price, po_add_price )
