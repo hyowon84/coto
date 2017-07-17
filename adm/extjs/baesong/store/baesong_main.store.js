@@ -164,7 +164,7 @@ var store_gpinfo = Ext.create('Ext.data.Store',{
 
 /* 주문정보 목록  */
 var store_orderlist = Ext.create('Ext.data.Store',{
-	pageSize : 100,
+	pageSize : 200,
 	model	:	'model_orderlist',
 	groupField: 'mbgroup',
 	//remoteSort: true,
