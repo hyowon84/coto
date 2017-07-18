@@ -446,8 +446,8 @@ var grid_orderlist = Ext.create('Ext.grid.Panel',{
 					return false;
 				}
 
-				var mblist_sm = grid_orderlist.getSelectionModel().getSelection()[0];
-				winInvoice.setTitle(mblist_sm.get('clay_id')+'('+mblist_sm.get('name')+')님의 배송예정 목록');
+				var mblist_sm = grid_mblist.getSelectionModel().getSelection()[0];
+				winInvoice.setTitle(mblist_sm.get('mb_nick')+'('+mblist_sm.get('mb_name')+')님의 배송예정 목록');
 				
 				
 				store_window_baesong.loadData([],false);
