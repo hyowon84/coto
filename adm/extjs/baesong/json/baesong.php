@@ -135,7 +135,8 @@ else if($mode == 'orderlist') {
 
 	//문제가 생길경우 주석처리한 부분 해제, v_invoice_cnt 테이블조인 제거
 	/* 선택된 회원의 주문목록 가져오기 */
-	$SELECT_SQL = "	SELECT	#CONCAT(CL.clay_id, '(', CL.hphone, '), 총 ' ,IFNULL(CLS.CNT,0),'건(취소제외)') AS 'mbgroup',
+	$SELECT_SQL = "	
+									SELECT	#CONCAT(CL.clay_id, '(', CL.hphone, '), 총 ' ,IFNULL(CLS.CNT,0),'건(취소제외)') AS 'mbgroup',
 													CONCAT('[', GI.gpcode_name, '] ', CL.od_id, ' - 배송비(', IFNULL(DN.value,'미설정'), ') ', IFNULL(CI.delivery_price,'') , '원') AS project,
 													CL.number AS taskId,
 													SUBSTR(CL.od_id,3,12) AS projectId,
