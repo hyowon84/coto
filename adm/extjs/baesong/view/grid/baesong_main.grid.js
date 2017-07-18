@@ -115,7 +115,7 @@ var grid_gpinfo = Ext.create('Ext.grid.Panel',{
 			xtype: 'textfield',
 			id : 'gp_keyword',
 			name: 'gp_keyword',
-			width : 100,
+			width : 70,
 			style: 'padding:0px;',
 			enableKeyEvents: true,
 			listeners:{
