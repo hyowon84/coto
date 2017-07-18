@@ -328,6 +328,7 @@ else if($mode == 'shipedlist') {
 													CI.clay_id,
 													CI.paytype,
 													IF(LENGTH(GP.gp_img) > 8,GP.gp_img,'/shop/img/no_image.gif') AS gp_img,
+													CL.name,
 													CL.it_id,
 													CL.it_name,
 													CL.it_memo,
