@@ -301,6 +301,16 @@ var grid_mblist = Ext.create('Ext.grid.Panel',{
 				store_orderlist.load();
 				store_shiped_list.load();
 			}
+			else {
+				var v_param = {
+					hphone : '',
+					name : '',
+					mb_nick : '',
+					mb_name : ''
+				}
+				Ext.apply(store_shiped_list.getProxy().extraParams, v_param);
+				Ext.apply(store_orderlist.getProxy().extraParams, v_param);
+			}
 
 		}
 	}

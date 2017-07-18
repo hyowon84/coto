@@ -114,7 +114,7 @@ if($mode == 'mblist') {
 
 /* 주문상세내역 */
 else if($mode == 'orderlist') {
-	if($keyword) $내부조건 = " AND ( name = '$keyword' OR hphone = '$keyword' OR clay_id = '$keyword' ) ";
+	if($keyword) $내부조건 = " AND ( name = '$keyword' OR hphone = '$keyword' OR clay_id LIKE '%$keyword%' ) ";
 	if($gpcode) {
 		$공구코드조건 .=" AND gpcode IN (".str_replace("\'","'",$gpcode).") ";
 		$공구코드조건2 .=" AND T.gpcode IN (".str_replace("\'","'",$gpcode).") ";
@@ -348,11 +348,11 @@ else if($mode == 'shipedlist') {
 													GN.value AS gpstats_name,
 													SN.value AS stats_name
 									FROM		(	SELECT	*
-																			FROM		clay_order
-																			WHERE		1=1
-																			$공구코드조건
-																			$주문상태조건
-																			$내부조건
+														FROM		clay_order
+														WHERE		1=1
+														$공구코드조건
+														$주문상태조건
+														$내부조건
 													) CL
 													
 													LEFT JOIN (	SELECT	*
