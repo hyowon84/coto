@@ -294,24 +294,23 @@ else if($mode == 'orderlist') {
 
 /* 주문상세내역 */
 else if($mode == 'shipedlist') {
-	if($keyword) $내부조건 = " AND ( name LIKE '%$keyword%' OR hphone LIKE '%$keyword%' OR clay_id LIKE '%$keyword%' ) ";
-
+//	if($keyword) $내부조건 = " AND ( name LIKE '%$keyword%' OR hphone LIKE '%$keyword%' OR clay_id LIKE '%$keyword%' ) ";
+	$주문상태조건 .= "	AND stats >= 40 	AND stats <= 60	 ";
+	
 	if($gpcode) {
 		$공구코드조건 .=" AND gpcode IN (".str_replace("\'","'",$gpcode).") ";
 		$공구코드조건2 .=" AND T.gpcode IN (".str_replace("\'","'",$gpcode).") ";
 	}
 
-	if($hphone) $AND_SQL.=" AND CL.hphone = '$hphone' ";
-	if($mb_nick) $AND_SQL.=" AND CL.clay_id = '$mb_nick' ";
-	if($od_id) $AND_SQL.=" AND CL.od_id = '$od_id' ";
+//	if($hphone) $AND_SQL.=" AND CL.hphone = '$hphone' ";
+	if($mb_nick) $AND_SQL .= " AND clay_id = '$mb_nick' ";
 
-	$주문상태조건 .= "	AND stats >= 40 	AND stats <= 60	 ";
+	
 
 
 	//문제가 생길경우 주석처리한 부분 해제, v_invoice_cnt 테이블조인 제거
 	/* 선택된 회원의 주문목록 가져오기 */
-	$SELECT_SQL = "	SELECT	#CONCAT(CL.clay_id, '(', CL.hphone, '), 총 ' ,IFNULL(CLS.CNT,0),'건(취소제외)') AS 'mbgroup',
-													CONCAT('[', GI.gpcode_name, '] ', CL.od_id, ' - 배송비(', IFNULL(DN.value,'미설정'), ') ', IFNULL(CI.delivery_price,'') , '원') AS project,
+	$SELECT_SQL = "	SELECT	CONCAT('[', GI.gpcode_name, '] ', CL.od_id, ' - 배송비(', IFNULL(DN.value,'미설정'), ') ', IFNULL(CI.delivery_price,'') , '원') AS project,
 													CL.number AS taskId,
 													SUBSTR(CL.od_id,3,12) AS projectId,
 													CL.number,
@@ -344,6 +343,7 @@ else if($mode == 'shipedlist') {
 									FROM		(	SELECT	*
 														FROM		clay_order
 														WHERE		1=1
+														$AND_SQL
 														$공구코드조건
 														$주문상태조건
 														$내부조건
@@ -352,20 +352,10 @@ else if($mode == 'shipedlist') {
 													LEFT JOIN (	SELECT	*
 																			FROM		clay_order_info
 																			WHERE		1=1
+																			$AND_SQL
 																			$공구코드조건
 																			$내부조건
 													) CI ON (CL.od_id = CI.od_id)
-													
-													/*주문자의 주문내역 카운팅*/
-													LEFT JOIN (	SELECT	hphone,
-																							COUNT(*) AS CNT
-																			FROM		clay_order
-																			WHERE		1=1
-																			$공구코드조건
-																			$주문상태조건
-																			$내부조건
-																			GROUP BY hphone
-													) CLS ON (CLS.hphone = CI.hphone)
 													
 													LEFT JOIN (	SELECT	*
 																			FROM		gp_info
@@ -379,7 +369,6 @@ else if($mode == 'shipedlist') {
 													LEFT JOIN comcode DN ON (DN.ctype = 'clayorder' AND DN.col = 'delivery_type' AND DN.code = CI.delivery_type)
 													
 									WHERE		1=1
-									$AND_SQL									
 	";
 //	ECHO $SELECT_SQL;
 //	EXIT;
