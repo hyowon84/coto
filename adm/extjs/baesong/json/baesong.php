@@ -229,17 +229,6 @@ else if($mode == 'orderlist') {
 																		LEFT JOIN comcode DN ON (DN.ctype = 'clayorder' AND DN.col = 'delivery_type' AND DN.code = CI.delivery_type)
 													) T					
 													
-													/*주문자의 주문내역 카운팅*/
-													LEFT JOIN (	SELECT	hphone,
-																							COUNT(*) AS CNT
-																			FROM		clay_order
-																			WHERE		1=1
-																			$공구코드조건
-																			$주문상태조건
-																			$내부조건
-																			GROUP BY hphone
-													) CLS ON (CLS.hphone = T.hphone)
-													
 													LEFT JOIN g5_shop_group_purchase GP ON (GP.gp_id = T.it_id)
 													
 													/* 단일공구에 대한  발주서카운팅 <= 입고 카운팅*/
@@ -296,6 +285,9 @@ else if($mode == 'orderlist') {
 									WHERE		1=1
 									$AND_SQL									
 	";
+	
+//	echo $SELECT_SQL;
+//	exit;
 	
 }
 

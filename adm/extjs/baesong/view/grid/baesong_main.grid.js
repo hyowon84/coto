@@ -378,7 +378,7 @@ var grid_orderlist = Ext.create('Ext.grid.Panel',{
 		{ text : '예상재고',		dataIndex : 'real_jaego',			width:120,	hidden:true	}
 	],
 	tbar : [
-		{	xtype: 'label',	text: '검색어 : ',		autoWidth:true,	style : 'font-weight:bold;'},
+		/*{	xtype: 'label',	text: '검색어 : ',		autoWidth:true,	style : 'font-weight:bold;'},
 		{
 			xtype: 'textfield',
 			id : 'keyword',
@@ -390,7 +390,6 @@ var grid_orderlist = Ext.create('Ext.grid.Panel',{
 				keydown:function(t,e){
 					if(e.keyCode == 13){
 
-						/* 공구목록 선택된 레코드 */
 						var sm = grid_gpinfo.getSelectionModel().getSelection();
 						var v_gpcode = '';
 						var v_gpcode_name = '';
@@ -416,7 +415,7 @@ var grid_orderlist = Ext.create('Ext.grid.Panel',{
 					}
 				}
 			}
-		},
+		},*/
 		{
 			xtype : 'textfield',
 			fieldLabel: '품목별 메모 변경',
@@ -581,6 +580,7 @@ var grid_shiped_list = Ext.create('Ext.grid.Panel',{
 	selModel: Ext.create('Ext.selection.CheckboxModel', {
 	}),
 	tbar : [
+		/*
 		{	xtype: 'label',	text: '검색어 : ',		autoWidth:true,	style : 'font-weight:bold;'},
 		{
 			xtype: 'textfield',
@@ -592,7 +592,6 @@ var grid_shiped_list = Ext.create('Ext.grid.Panel',{
 			listeners:{
 				keydown:function(t,e){
 					if(e.keyCode == 13){
-						/* 공구목록 선택된 레코드 */
 						var sm = grid_gpinfo.getSelectionModel().getSelection();
 						var v_gpcode = '';
 						var v_gpcode_name = '';
@@ -617,7 +616,7 @@ var grid_shiped_list = Ext.create('Ext.grid.Panel',{
 					}
 				}
 			}
-		},
+		},*/
 		{
 			id : 'output_shiped',
 			text	: '추출',
