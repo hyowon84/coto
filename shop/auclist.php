@@ -5,7 +5,7 @@ define('_GROUPSHOP_', true);
 if($listnum){
 	$listnum = $listnum;
 }else{
-	$listnum = 32;
+	$listnum = 50;
 }
 
 
