@@ -36,7 +36,7 @@ Ext.define('Ext.store.item.odstats',{
 
 /* 공구목록 */
 var store_mblist = Ext.create('Ext.data.Store',{
-		pageSize : 50,
+		pageSize : 500,
 		remoteSort: true,
 		fields : [
 					{	name : 'mb_nick'	},
