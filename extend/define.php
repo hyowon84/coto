@@ -376,8 +376,6 @@ function makeProductSql($gpcode) {
 $sql_product = makeProductSql($gpcode);
 
 #$sql_aucPrd = makeProductSql('QUICK');
-
-$상품상세조건 = ($gp_id) ? "	AND			gp_id = '$gp_id'	" : "";
 $sql_auction_item = " SELECT		
  																T.gp_id,
 																T.ca_id,
@@ -561,7 +559,7 @@ $sql_auction_item = " SELECT
 																				AND			ca_id LIKE 'CT%'
 																				AND			ac_yn = 'Y'
 																				AND			ac_enddate > NOW()
-																				$상품상세조건
+																				#상품기본조건#
 																		) GP
 																		
 																		LEFT JOIN	g5_shop_group_purchase_option PO ON (PO.gp_id = GP.gp_id AND po_num = 0)
