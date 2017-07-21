@@ -35,14 +35,16 @@ if($mode == 'mblist') {
 	
 	/* 주문금액 큰 순서대로 회원목록 추출 */
 	$SELECT_SQL = "	SELECT	T.*
-													,IFNULL(Q1.SUM_QTY,0) AS QCK_SUM_QTY				/*퀵주문건수*/
+													/*
+													,IFNULL(Q1.SUM_QTY,0) AS QCK_SUM_QTY				#퀵주문건수
 													,IFNULL(Q1.SUM_TOTAL,0) AS QCK_SUM_TOTAL
-													,IFNULL(S1.SUM_QTY,0) AS S40_SUM_QTY				/*발송예정건수*/
+													,IFNULL(S1.SUM_QTY,0) AS S40_SUM_QTY				#발송예정건수
 													,IFNULL(S1.SUM_TOTAL,0) AS S40_SUM_TOTAL
-													,IFNULL(S2.SUM_QTY,0) AS NS40_SUM_QTY				/*발송불가건수*/
+													,IFNULL(S2.SUM_QTY,0) AS NS40_SUM_QTY				#발송불가건수
 													,IFNULL(S2.SUM_TOTAL,0) AS NS40_SUM_TOTAL
-									FROM		(
-														SELECT	CL.clay_id AS mb_nick,
+													*/
+									FROM		#전체주문건수, 총액
+													(	SELECT	CL.clay_id AS mb_nick,
 																		CL.name AS mb_name,
 																		CL.hphone,
 																		SUM(CL.it_qty) AS SUM_QTY,
@@ -50,11 +52,37 @@ if($mode == 'mblist') {
 														FROM		clay_order CL
 																		LEFT JOIN gp_info GI ON (GI.gpcode = CL.gpcode)
 														WHERE		CL.stats >= 15
+														AND			CL.stats <= 39
 														$공구코드조건
 														$기간조건
 														$내부조건
 														GROUP BY CL.hphone, CL.clay_id
-													) T	/* 전체주문건수, 총액 */
+													) T
+													
+													/*
+													#발송가능 건수, 총액
+													(	SELECT	CL.clay_id AS mb_nick,
+																		CL.name AS mb_name,
+																		CL.hphone,
+																		SUM(CL.it_qty) AS SUM_QTY,
+																		SUM(CL.it_qty * CL.it_org_price) AS SUM_TOTAL,
+																		IV.CNT,
+																		IV.CNT_40
+														FROM		clay_order CL
+																		LEFT JOIN (	SELECT	T.gpcode,
+																												T.iv_it_id,
+																												T.CNT,				#인보이스 전체 발주건수
+																												T40.CNT_40		#인보이스 발주건의 도착건수
+																								FROM		v_invoice_cnt T
+																												LEFT JOIN v_invoice_cnt40 T40 ON (T40.gpcode = T.gpcode AND T40.iv_it_id = T.iv_it_id)
+																		)	IV ON (IV.gpcode = CL.gpcode AND IV.iv_it_id = CL.it_id)
+														WHERE		CL.stats >= 15 	#결제완료, 통합배송요청, 포장완료, 배송대기중까지만 픽업대기, 직배대기는 배송대상에 포함안함
+														AND			CL.stats <= 39
+														AND			IV.CNT <= IV.CNT_40 
+														GROUP BY CL.hphone, CL.clay_id
+													) S1 ON (S1.hphone = T.hphone AND S1.mb_nick = T.mb_nick)
+													
+													#퀵주문 건수, 총액
 													LEFT JOIN (
 																			SELECT	CL.clay_id AS mb_nick,
 																							CL.name AS mb_name,
@@ -67,27 +95,8 @@ if($mode == 'mblist') {
 																			AND			( CL.gpcode IN ('QUICK','AUCTION')
 																			OR			GI.gpcode_name LIKE '%릴레이%' )
 																			GROUP BY CL.hphone, CL.clay_id
-													) Q1 ON (Q1.hphone = T.hphone AND Q1.mb_nick = T.mb_nick) /* 퀵주문 건수, 총액 */
-													LEFT JOIN (
-																			SELECT	CL.clay_id AS mb_nick,
-																							CL.name AS mb_name,
-																							CL.hphone,
-																							SUM(CL.it_qty) AS SUM_QTY,
-																							SUM(CL.it_qty * CL.it_org_price) AS SUM_TOTAL,
-																							IV.CNT,
-																							IV.CNT_40
-																			FROM		clay_order CL
-																							LEFT JOIN (	SELECT	T.gpcode,
-																																	T.iv_it_id,
-																																	T.CNT,	/*인보이스 전체 발주건수*/
-																																	T40.CNT_40	/*인보이스 발주건의 도착건수*/
-																													FROM		v_invoice_cnt T
-																																	LEFT JOIN v_invoice_cnt40 T40 ON (T40.gpcode = T.gpcode AND T40.iv_it_id = T.iv_it_id)
-																							)	IV ON (IV.gpcode = CL.gpcode AND IV.iv_it_id = CL.it_id)
-																			WHERE		CL.stats IN (20,22,23,25) /* 결제완료, 통합배송요청, 포장완료, 배송대기중까지만 픽업대기, 직배대기는 배송대상에 포함안함 */
-																			AND			IV.CNT <= IV.CNT_40 
-																			GROUP BY CL.hphone, CL.clay_id
-													) S1 ON (S1.hphone = T.hphone AND S1.mb_nick = T.mb_nick) /* 발송가능 건수, 총액 */
+													) Q1 ON (Q1.hphone = T.hphone AND Q1.mb_nick = T.mb_nick)
+													
 													LEFT JOIN (	SELECT	DISTINCT
 																							CL.clay_id,
 																							CL.hphone,
@@ -96,7 +105,7 @@ if($mode == 'mblist') {
 																			FROM		clay_order CL
 																							LEFT JOIN (	SELECT	II.gpcode,
 																																	II.iv_it_id,
-																																	COUNT(*) AS CNT	/* 도착안된 총 발주건수*/
+																																	COUNT(*) AS CNT			#도착안된 총 발주건수
 																													FROM		invoice_item II
 																													WHERE		II.iv_stats IN ('00')
 																													GROUP BY II.gpcode, II.iv_it_id
@@ -105,6 +114,7 @@ if($mode == 'mblist') {
 																			AND			IV.CNT > 0		#해외배송이 시작안된 주문신청건들중 결제완료, 배송대기중인것들
 																			GROUP BY CL.hphone, CL.clay_id
 													) S2 ON (S2.hphone = T.hphone AND S2.clay_id = T.mb_nick)
+													*/
 									WHERE		1=1
 									$FILTER_BY
 									$AND_SQL
@@ -131,7 +141,7 @@ else if($mode == 'orderlist') {
 	/* 선택된 회원의 주문목록 가져오기 */
 	$SELECT_SQL = "	
 									SELECT	T.*,
-													#CONCAT(CL.clay_id, '(', CL.hphone, '), 총 ' ,IFNULL(CLS.CNT,0),'건(취소제외)') AS 'mbgroup',
+													
 													CONCAT('[', T.gpcode_name, '] ', T.od_id, ' - 배송비(', IFNULL(T.DN_VALUE,'미설정'), ') ', IFNULL(T.delivery_price,'') , '원') AS project,
 													IF(LENGTH(GP.gp_img) > 8,GP.gp_img,'/shop/img/no_image.gif') AS gp_img,
 													GP.jaego,
@@ -140,8 +150,8 @@ else if($mode == 'orderlist') {
 														WHEN	T.gpcode = 'QUICK'
 																	|| T.gpcode = 'AUCTION'
 																	|| T.gpcode_name LIKE '%릴레이%'
-																	|| IV.CNT <= IV.CNT_40				/* 단일공구에 대한 발주서카운팅 <= 입고된 발주서 카운팅 */
-																	|| RJ.real_jaego >= GPQTY.GP_QTY	/* 실재고 >= 공구주문집계수량 */
+																	#|| IV.CNT <= IV.CNT_40				/* 단일공구에 대한 발주서카운팅 <= 입고된 발주서 카운팅 */
+																	#|| RJ.real_jaego >= GPQTY.GP_QTY	/* 실재고 >= 공구주문집계수량 */
 																	#|| RJ.qk_jaego >= GPQTY.GP_QTY		/* 빠른배송재고(jaego + realjaego) >= 공구주문집계수량*/
 																	#|| RJ.iv_qty >= GPQTY.GP_QTY
 														THEN
@@ -153,19 +163,21 @@ else if($mode == 'orderlist') {
 														WHEN	T.gpcode = 'QUICK' 
 																	|| T.gpcode = 'AUCTION'
 																	|| T.gpcode_name LIKE '%릴레이%'
-																	|| IV.CNT <= IV.CNT_40
-																	|| RJ.real_jaego >= GPQTY.GP_QTY
+																	#|| IV.CNT <= IV.CNT_40
+																	#|| RJ.real_jaego >= GPQTY.GP_QTY
 																	#|| RJ.qk_jaego >= GPQTY.GP_QTY
 																	#|| RJ.iv_qty >= GPQTY.GP_QTY
 														THEN
 															'배송가능'
 														ELSE
 															'배송불가'
-													END	AS IV_STATS_NAME,
-													IV.CNT,
-													IV.CNT_40,
-													IF( T.gpcode = 'QUICK' && T.gpcode = 'AUCTION', RJ.real_jaego + GP.jaego, RJ.real_jaego) AS real_jaego,
-													GPQTY.GP_QTY												
+													END	AS IV_STATS_NAME
+													
+													#CONCAT(CL.clay_id, '(', CL.hphone, '), 총 ' ,IFNULL(CLS.CNT,0),'건(취소제외)') AS 'mbgroup',
+													#IV.CNT,
+													#IV.CNT_40,
+													#IF( T.gpcode = 'QUICK' && T.gpcode = 'AUCTION', RJ.real_jaego + GP.jaego, RJ.real_jaego) AS real_jaego,
+													#GPQTY.GP_QTY												
 													
 									FROM		(		
 														SELECT	
@@ -231,18 +243,19 @@ else if($mode == 'orderlist') {
 													
 													LEFT JOIN g5_shop_group_purchase GP ON (GP.gp_id = T.it_id)
 													
-													/* 단일공구에 대한  발주서카운팅 <= 입고 카운팅*/
+													/*
+													#단일공구에 대한  발주서카운팅 <= 입고 카운팅
 													LEFT JOIN (	SELECT	T.gpcode,
 																							T.iv_it_id,
 																							T.CNT,
 																							T40.CNT_40
 																			FROM		v_invoice_cnt T
 																							LEFT JOIN v_invoice_cnt40 T40 ON (T40.gpcode = T.gpcode AND T40.iv_it_id = T.iv_it_id)
-																			WHERE		T.CNT <= T40.CNT_40		/*정상발주수량부터 과발주수량까지 배송가능으로 출력*/
+																			WHERE		T.CNT <= T40.CNT_40		#정상발주수량부터 과발주수량까지 배송가능으로 출력
 																			$공구코드조건2
 													)	IV ON (IV.gpcode = T.gpcode AND IV.iv_it_id = T.it_id)
 													
-													/*단일공구에 대한  단일공구주문집계*/
+													#단일공구에 대한  단일공구주문집계
 													LEFT JOIN (	SELECT	gpcode,
 																							it_id,
 																							SUM(it_qty) AS GP_QTY
@@ -252,12 +265,12 @@ else if($mode == 'orderlist') {
 																			GROUP BY gpcode, it_id
 													) GPQTY ON (GPQTY.gpcode = T.gpcode AND GPQTY.it_id = T.it_id)
 													
-													/*품목에 대한 전체 통계 */
+													#품목에 대한 전체 통계
 													LEFT JOIN (	SELECT	CL.it_id,
 																							CL.od_qty,
 																							II.iv_qty,
-																							#( IFNULL(II.iv_qty,0) - IFNULL(CL.od_qty,0)) AS qk_jaego,	/*빠른상품 재고산출*/
-																							( IFNULL(II.iv_qty,0) - IFNULL(CL.od_qty,0)) AS real_jaego						/*공구 재고산출*/
+																							#( IFNULL(II.iv_qty,0) - IFNULL(CL.od_qty,0)) AS qk_jaego,		#빠른상품 재고산출
+																							( IFNULL(II.iv_qty,0) - IFNULL(CL.od_qty,0)) AS real_jaego		#공구 재고산출
 																			FROM		(	SELECT	I.it_id,
 																												SUM(I.it_qty) AS od_qty
 																								FROM		(	SELECT	*
@@ -272,7 +285,7 @@ else if($mode == 'orderlist') {
 																								GROUP BY I.it_id
 																							) CL
 																							
-																							/*전체입고수량*/
+																							#전체입고수량
 																							LEFT JOIN (	SELECT	iv_it_id,
 																																	SUM(iv_qty) AS iv_qty
 																													FROM		invoice_item
@@ -282,6 +295,7 @@ else if($mode == 'orderlist') {
 																							
 																			GROUP BY it_id
 													) RJ ON (RJ.it_id = T.it_id)
+													*/
 									WHERE		1=1
 									$AND_SQL									
 	";

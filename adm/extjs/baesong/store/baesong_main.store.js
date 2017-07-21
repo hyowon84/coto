@@ -51,7 +51,7 @@ var store_mblist = Ext.create('Ext.data.Store',{
 		],
 		sorters:[
 			{
-				property:'QCK_SUM_QTY',
+				property:'SUM_QTY',
 				direction:'DESC'
 			}
 		],

@@ -105,7 +105,7 @@ var grid_gpinfo = Ext.create('Ext.grid.Panel',{
 	tbar: [
 		{
 			xtype: 'button',
-			text: '선택초기화',
+			text: '초기화',
 			listeners : [{
 				click : resetGpinfo
 			}]
@@ -202,36 +202,6 @@ var grid_mblist = Ext.create('Ext.grid.Panel',{
 		}
 	},
 	tbar: [
-		df_sdate,
-		df_edate,
-		{
-			xtype: 'button',
-			text: '오늘',
-			listeners : [{
-				click : setDate
-			}]
-		},
-		{
-			xtype: 'button',
-			text: '일주일',
-			listeners : [{
-				click : setDate
-			}]
-		},
-		{
-			xtype: 'button',
-			text: '한달',
-			listeners : [{
-				click : setDate
-			}]
-		},
-		{
-			xtype: 'button',
-			text: '3개월',
-			listeners : [{
-				click : setDate
-			}]
-		},
 		{	xtype: 'label',	text: '검색어 : ',		autoWidth:true,	style : 'font-weight:bold;'},
 		{
 			xtype: 'textfield',
@@ -241,17 +211,13 @@ var grid_mblist = Ext.create('Ext.grid.Panel',{
 			listeners:{
 				keydown:function(t,e){
 					if(e.keyCode == 13){
-
 						var params = {
-							keyword : this.getValue(),
-							sdate : df_sdate.rawValue,
-							edate : df_edate.rawValue
+							keyword : this.getValue()
 						}
 
 						grid_mblist.store.loadData([],false);
 						Ext.apply(grid_mblist.store.getProxy().extraParams, params);
 						Ext.getCmp('ptb_mblist').moveFirst();
-
 					}
 				}
 			}
@@ -261,14 +227,14 @@ var grid_mblist = Ext.create('Ext.grid.Panel',{
 		{	text : '닉네임',				width : 140,		dataIndex : 'mb_nick'		},
 		{	text : '이름',					width : 70,			dataIndex : 'mb_name'		},
 		{ text : '연락처',				width : 120,		dataIndex : 'hphone'		},
-		{ text : '퀵주문',				width : 90,			dataIndex : 'QCK_SUM_QTY',		style:'text-align:center',	align:'right',	renderer: Ext.util.Format.numberRenderer('0,000') },
+		/*{ text : '퀵주문',				width : 90,			dataIndex : 'QCK_SUM_QTY',		style:'text-align:center',	align:'right',	renderer: Ext.util.Format.numberRenderer('0,000') },
 		{ text : '퀵주문총액',		width : 120,		dataIndex : 'QCK_SUM_TOTAL',	style:'text-align:center',	align:'right',	renderer: Ext.util.Format.numberRenderer('0,000') },
 		{ text : '발송예정',			width : 90,			dataIndex : 'S40_SUM_QTY',		style:'text-align:center',	align:'right',	renderer: Ext.util.Format.numberRenderer('0,000') },
 		{ text : '발송예정총액',	width : 120,		dataIndex : 'S40_SUM_TOTAL',	style:'text-align:center',	align:'right',	renderer: Ext.util.Format.numberRenderer('0,000') },
 		{ text : '발송불가',			width : 90,			dataIndex : 'NS40_SUM_QTY',	style:'text-align:center',	align:'right',	renderer: Ext.util.Format.numberRenderer('0,000') },
-		{ text : '발송불가총액',	width : 120,		dataIndex : 'NS40_SUM_TOTAL',	style:'text-align:center',	align:'right',	renderer: Ext.util.Format.numberRenderer('0,000') },
-		{ text : '전체주문수량',	width : 90,			dataIndex : 'SUM_QTY',			style:'text-align:center',	align:'right',	renderer: Ext.util.Format.numberRenderer('0,000') },
-		{ text : '전체주문총액',	width : 120,		dataIndex : 'SUM_TOTAL',		style:'text-align:center',	align:'right',	renderer: Ext.util.Format.numberRenderer('0,000') }
+		{ text : '발송불가총액',	width : 120,		dataIndex : 'NS40_SUM_TOTAL',	style:'text-align:center',	align:'right',	renderer: Ext.util.Format.numberRenderer('0,000') },*/
+		{ text : '배송예정수량',	width : 120,		dataIndex : 'SUM_QTY',			style:'text-align:center',	align:'right',	renderer: Ext.util.Format.numberRenderer('0,000') },
+		{ text : '배송예정총액',	width : 120,		dataIndex : 'SUM_TOTAL',		style:'text-align:center',	align:'right',	renderer: Ext.util.Format.numberRenderer('0,000') }
 
 	],
 	bbar : {
