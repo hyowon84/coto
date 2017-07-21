@@ -559,6 +559,7 @@ $sql_auction_item = " SELECT
 																				AND			ca_id LIKE 'CT%'
 																				AND			ac_yn = 'Y'
 																				AND		ac_enddate > NOW()
+																				AND			gp_id = '$gp_id'
 																		) GP
 																		
 																		LEFT JOIN	g5_shop_group_purchase_option PO ON (PO.gp_id = GP.gp_id AND po_num = 0)
