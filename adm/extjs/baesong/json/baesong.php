@@ -53,8 +53,9 @@ if($mode == 'mblist') {
 																		SUM(CL.it_qty * CL.it_org_price) AS SUM_TOTAL
 														FROM		clay_order CL
 																		LEFT JOIN gp_info GI ON (GI.gpcode = CL.gpcode)
-														WHERE		CL.stats >= 15
+														WHERE		( CL.stats >= 15
 														AND			CL.stats <= 39
+														OR			CL.stats IN (70,80) )
 														$공구코드조건
 														$기간조건
 														$내부조건
@@ -121,7 +122,8 @@ if($mode == 'mblist') {
 									$FILTER_BY
 									$AND_SQL
 	";
-
+//	echo $SELECT_SQL;
+//	exit;
 }
 
 /* 주문상세내역 */
@@ -136,14 +138,16 @@ else if($mode == 'orderlist') {
 	if($mb_nick) $내부조건.=" AND	clay_id = '$mb_nick' ";
 	if($od_id) $내부조건.=" AND	od_id = '$od_id' ";
 
-	$주문상태조건 .= " AND stats >= 15	AND stats <= 39 ";
+	$주문상태조건 .= " AND ( stats >= 15	AND stats <= 39 OR stats IN (70,80) ) ";
 
 
 	//문제가 생길경우 주석처리한 부분 해제, v_invoice_cnt 테이블조인 제거
 	/* 선택된 회원의 주문목록 가져오기 */
 	$SELECT_SQL = "	
 									SELECT	T.*,
-													
+													PI.od_qty,
+													PI.ip_qty,
+													(PI.ip_qty - PI.od_qty) AS cal_qty,
 													CONCAT('[', T.gpcode_name, '] ', T.od_id, ' - 배송비(', IFNULL(T.DN_VALUE,'미설정'), ') ', IFNULL(T.delivery_price,'') , '원') AS project,
 													IF(LENGTH(GP.gp_img) > 8,GP.gp_img,'/shop/img/no_image.gif') AS gp_img,
 													GP.jaego,
@@ -152,6 +156,8 @@ else if($mode == 'orderlist') {
 														WHEN	T.gpcode = 'QUICK'
 																	|| T.gpcode = 'AUCTION'
 																	|| T.gpcode_name LIKE '%릴레이%'
+																	|| PI.ip_yn = 'Y'
+																	|| ( T.stats >= '23' AND T.stats <= '39' )
 																	#|| IV.CNT <= IV.CNT_40				/* 단일공구에 대한 발주서카운팅 <= 입고된 발주서 카운팅 */
 																	#|| RJ.real_jaego >= GPQTY.GP_QTY	/* 실재고 >= 공구주문집계수량 */
 																	#|| RJ.qk_jaego >= GPQTY.GP_QTY		/* 빠른배송재고(jaego + realjaego) >= 공구주문집계수량*/
@@ -165,6 +171,8 @@ else if($mode == 'orderlist') {
 														WHEN	T.gpcode = 'QUICK' 
 																	|| T.gpcode = 'AUCTION'
 																	|| T.gpcode_name LIKE '%릴레이%'
+																	|| PI.ip_yn = 'Y'
+																	|| ( T.stats >= '23' AND T.stats <= '39' )
 																	#|| IV.CNT <= IV.CNT_40
 																	#|| RJ.real_jaego >= GPQTY.GP_QTY
 																	#|| RJ.qk_jaego >= GPQTY.GP_QTY
@@ -244,6 +252,8 @@ else if($mode == 'orderlist') {
 													) T					
 													
 													LEFT JOIN g5_shop_group_purchase GP ON (GP.gp_id = T.it_id)
+													
+													LEFT JOIN product_ipinfo PI ON (PI.it_id = T.it_id)
 													
 													/*
 													#단일공구에 대한  발주서카운팅 <= 입고 카운팅

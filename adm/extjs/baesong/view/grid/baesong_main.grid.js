@@ -339,9 +339,10 @@ var grid_orderlist = Ext.create('Ext.grid.Panel',{
 		{ text : '주문총액',		dataIndex : 'total_price',		sortable: true,		style:'text-align:center',	align:'right',	renderer: Ext.util.Format.numberRenderer('0,000') },
 		{ text : '관리자메모',	dataIndex : 'admin_memo',			width:120,	hidden:true	},
 		{ text : '구매자메모',	dataIndex : 'memo',						width:120,	hidden:true	},		
-		{ text : '통관수량',		dataIndex : 'CR_CNT',					width:120,	hidden:true	},
-		{ text : '입고수량',		dataIndex : 'IP_CNT',					width:120,	hidden:true	},
-		{ text : '예상재고',		dataIndex : 'real_jaego',			width:120,	hidden:true	}
+		{ text : '주문량',			dataIndex : 'od_qty',					width:120,		style:'text-align:center',	align:'right',	renderer: Ext.util.Format.numberRenderer('0,000')	},
+		{ text : '입고량',			dataIndex : 'ip_qty',					width:120,		style:'text-align:center',	align:'right',	renderer: Ext.util.Format.numberRenderer('0,000')	},
+		{ text : '차수량',			dataIndex : 'cal_qty',				width:120,		style:'text-align:center',	align:'right',	renderer: Ext.util.Format.numberRenderer('0,000')	}
+		
 	],
 	tbar : [
 		/*{	xtype: 'label',	text: '검색어 : ',		autoWidth:true,	style : 'font-weight:bold;'},
