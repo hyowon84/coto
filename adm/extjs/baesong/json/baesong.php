@@ -35,11 +35,13 @@ if($mode == 'mblist') {
 	
 	/* 주문금액 큰 순서대로 회원목록 추출 */
 	$SELECT_SQL = "	SELECT	T.*
+													,IFNULL(S1.SUM_QTY,0) AS S40_SUM_QTY				#발송예정건수
+													,IFNULL(S1.SUM_TOTAL,0) AS S40_SUM_TOTAL
+													
 													/*
 													,IFNULL(Q1.SUM_QTY,0) AS QCK_SUM_QTY				#퀵주문건수
 													,IFNULL(Q1.SUM_TOTAL,0) AS QCK_SUM_TOTAL
-													,IFNULL(S1.SUM_QTY,0) AS S40_SUM_QTY				#발송예정건수
-													,IFNULL(S1.SUM_TOTAL,0) AS S40_SUM_TOTAL
+													
 													,IFNULL(S2.SUM_QTY,0) AS NS40_SUM_QTY				#발송불가건수
 													,IFNULL(S2.SUM_TOTAL,0) AS NS40_SUM_TOTAL
 													*/
@@ -59,29 +61,29 @@ if($mode == 'mblist') {
 														GROUP BY CL.hphone, CL.clay_id
 													) T
 													
-													/*
 													#발송가능 건수, 총액
-													(	SELECT	CL.clay_id AS mb_nick,
-																		CL.name AS mb_name,
-																		CL.hphone,
-																		SUM(CL.it_qty) AS SUM_QTY,
-																		SUM(CL.it_qty * CL.it_org_price) AS SUM_TOTAL,
-																		IV.CNT,
-																		IV.CNT_40
-														FROM		clay_order CL
-																		LEFT JOIN (	SELECT	T.gpcode,
-																												T.iv_it_id,
-																												T.CNT,				#인보이스 전체 발주건수
-																												T40.CNT_40		#인보이스 발주건의 도착건수
-																								FROM		v_invoice_cnt T
-																												LEFT JOIN v_invoice_cnt40 T40 ON (T40.gpcode = T.gpcode AND T40.iv_it_id = T.iv_it_id)
-																		)	IV ON (IV.gpcode = CL.gpcode AND IV.iv_it_id = CL.it_id)
-														WHERE		CL.stats >= 15 	#결제완료, 통합배송요청, 포장완료, 배송대기중까지만 픽업대기, 직배대기는 배송대상에 포함안함
-														AND			CL.stats <= 39
-														AND			IV.CNT <= IV.CNT_40 
-														GROUP BY CL.hphone, CL.clay_id
+													LEFT JOIN (	SELECT	CL.clay_id AS mb_nick,
+																							CL.name AS mb_name,
+																							CL.hphone,
+																							SUM(CL.it_qty) AS SUM_QTY,
+																							SUM(CL.it_qty * CL.it_org_price) AS SUM_TOTAL,
+																							IV.CNT,
+																							IV.CNT_40
+																			FROM		clay_order CL
+																							LEFT JOIN (	SELECT	T.gpcode,
+																																	T.iv_it_id,
+																																	T.CNT,				#인보이스 전체 발주건수
+																																	T40.CNT_40		#인보이스 발주건의 도착건수
+																													FROM		v_invoice_cnt T
+																																	LEFT JOIN v_invoice_cnt40 T40 ON (T40.gpcode = T.gpcode AND T40.iv_it_id = T.iv_it_id)
+																							)	IV ON (IV.gpcode = CL.gpcode AND IV.iv_it_id = CL.it_id)
+																			WHERE		CL.stats >= 15 	#결제완료, 통합배송요청, 포장완료, 배송대기중까지만 픽업대기, 직배대기는 배송대상에 포함안함
+																			AND			CL.stats <= 39
+																			AND			IV.CNT <= IV.CNT_40 
+																			GROUP BY CL.hphone, CL.clay_id
 													) S1 ON (S1.hphone = T.hphone AND S1.mb_nick = T.mb_nick)
 													
+													/*
 													#퀵주문 건수, 총액
 													LEFT JOIN (
 																			SELECT	CL.clay_id AS mb_nick,
