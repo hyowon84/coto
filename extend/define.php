@@ -374,9 +374,8 @@ function makeProductSql($gpcode) {
 
 
 $sql_product = makeProductSql($gpcode);
-$sql_aucPrd = makeProductSql('QUICK');
 
-
+#$sql_aucPrd = makeProductSql('QUICK');
 $sql_auction_item = " SELECT		
  																T.gp_id,
 																T.ca_id,
@@ -415,7 +414,7 @@ $sql_auction_item = " SELECT
 																T.gp_type4,
 																T.gp_type5,
 																T.gp_type6,
-																T.real_jaego,
+
 																CASE
 																	WHEN	T.ca_id LIKE 'CT%' || T.ca_id = 'GP'	THEN
 																		CASE
@@ -431,6 +430,7 @@ $sql_auction_item = " SELECT
 																	ELSE
 																		CEIL(IFNULL(T.po_cash_price,T.gp_price) / 100) * 100
 																END po_cash_price,
+																
 																CA.ca_name,
 																CA.ca_use,
 																CA.ca_include_head,
@@ -450,7 +450,128 @@ $sql_auction_item = " SELECT
 																
 																MAX_MB.mb_id AS MB_ID,
 																MYBID.MY_BID_PRICE
-												FROM		$sql_aucPrd
+												FROM		
+																(	SELECT	GP.*,
+																					PO.po_cash_price * FP.USD * 1.16 AS po_cash_price,
+																					GP.gp_usdprice * FP.USD * 1.16 AS gp_fixprice,
+																					
+																					FP.USD,
+							
+																					/*실시간 스팟시세*/
+																					CASE
+																						WHEN	GP.gp_metal_type = 'GL' THEN
+																								CASE
+																									WHEN	GP.gp_spotprice_type = '%' THEN
+																										( (GP.gp_metal_don *  FP.GL) + (GP.gp_metal_don * FP.GL * (GP.gp_spotprice/100) ) ) * FP.USD * 1.16
+							
+																									/* 1온스 이상 */
+																									WHEN	GP.gp_spotprice_type = 'U$' THEN
+																										(( FP.GL  +  GP.gp_spotprice)  *  GP.gp_metal_don ) * FP.USD * 1.16
+							
+																									/* 1온스 이하 */
+																									WHEN	GP.gp_spotprice_type = 'D$' THEN
+																										(( FP.GL  * GP.gp_metal_don )  + GP.gp_spotprice ) * FP.USD * 1.16
+							
+																									WHEN	GP.gp_spotprice_type = '￦' THEN
+																										(GP.gp_metal_don * FP.GL * FP.USD * 1.16) + GP.gp_spotprice
+																									ELSE
+																										0
+																								END
+																						WHEN	GP.gp_metal_type = 'SL' THEN
+																								CASE
+																									WHEN	GP.gp_spotprice_type = '%' THEN
+																										( ( FP.SL * GP.gp_metal_don ) + ( GP.gp_metal_don * FP.SL * (GP.gp_spotprice/100) ) ) * FP.USD * 1.16
+							
+																									/* 1온스 이상 */
+																									WHEN	GP.gp_spotprice_type = 'U$' THEN
+																										(( FP.SL  + GP.gp_spotprice)  *  GP.gp_metal_don ) * FP.USD * 1.16
+							
+																									/* 1온스 이하 */
+																									WHEN	GP.gp_spotprice_type = 'D$' THEN
+																										(( FP.SL * GP.gp_metal_don )  + GP.gp_spotprice ) * FP.USD * 1.16
+							
+																									WHEN	GP.gp_spotprice_type = '￦' THEN
+																										( FP.SL * GP.gp_metal_don * FP.USD * 1.16) + GP.gp_spotprice
+																									ELSE
+																										0
+																								END
+																						ELSE
+																								0
+																					END gp_realprice
+																	FROM			(		SELECT	gp_id,	
+																								ca_id,	
+																								ca_id2,	/*2차 분류*/
+																								ca_id3,	/*3차 분류*/
+																								location,	
+																								event_yn,	/*이벤트 진행 상품 유(Y)/무(N)*/
+																								b2b_yn,	
+																								gp_name,	
+																								gp_site,	/*상품 원본URL*/
+																								gp_img,	
+																								gp_explan,	
+																								gp_360img,	
+																								gp_objective_price,	
+																								jaego,	/*상품초기재고*/
+																								gp_jaego,	/*공동구매 셋팅재고*/
+																								gp_have_qty,	
+																								gp_buy_min_qty,	/*최소구매수량*/
+																								gp_buy_max_qty,	/*최대구매수량*/
+																								only_member,
+																								gp_charge,	/*수수료*/
+																								gp_duty,	/*관세*/
+																								gp_use,	/*판매유무*/
+																								gp_order,	
+																								gp_stock,	
+																								gp_time,	
+																								gp_update_time,	
+																								gp_price,	/*코투현금가(\)*/
+																								gp_usdprice,	/*상품 달러가격*/
+																								gp_price_org,	/*코투 매입가($)*/
+																								gp_card,	/*카드가 노출 여부*/
+																								gp_card_price,	/*코투카드가(\)*/
+																								gp_price_type,	/*고정형 / 실시간형*/
+																								gp_spotprice_type,	/*스팟시세유형 , %, 원*/
+																								gp_spotprice,	/*스팟시세값*/
+																								gp_metal_type,	/*GL, SL, PT, PD,ETC*/
+																								gp_metal_don,	/*oz*/
+																								gp_metal_etc_price,	
+																								gp_sc_method,	/*배송유형*/
+																								gp_sc_price,	/*배송비*/
+																								it_type,	/*상품유형아이콘*/
+																								gp_type1,	/*히트*/
+																								gp_type2,	/*추천*/
+																								gp_type3,	/*신상품*/
+																								gp_type4,	/*인기*/
+																								gp_type5,	/*할인*/
+																								gp_type6,	/*경매*/
+																								admin_memo,	
+																								IF(NOW() > ac_enddate, 'N',ac_yn) AS ac_yn,		/*경매진행여부*/
+																								ac_code,					/*경매진행코드*/
+																								ac_enddate,					/*경매마감일*/
+																								ac_delay_date,	/*연장최대시간*/
+																								ac_delay_cnt,				/*경매마감일 연장횟수*/
+																								ac_qty,							/*경매가능수량*/
+																								ac_startprice,	/*경매시작가*/
+																								ac_buyprice					/*경매즉시구매가*/
+																				FROM		g5_shop_group_purchase
+																				WHERE		1=1
+																				AND			gp_use = '1'
+																				AND			ca_id LIKE 'CT%'
+																				AND			ac_yn = 'Y'
+																				AND		ac_enddate > NOW()
+																		) GP
+																		
+																		LEFT JOIN	g5_shop_group_purchase_option PO ON (PO.gp_id = GP.gp_id AND po_num = 0)
+				
+																		,(	SELECT	*
+																				FROM		flow_price
+																				ORDER BY	reg_date DESC
+																				LIMIT 1
+																		) FP
+																) T
+												
+																#sql_aucPrd
+																
 																LEFT JOIN g5_shop_category CA ON (CA.ca_id = T.ca_id)
 																
 																LEFT JOIN (	SELECT	ac_code,
