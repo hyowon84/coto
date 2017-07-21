@@ -8,7 +8,6 @@ var panel_gpmb = Ext.create('Ext.Panel', {
 	],
 	layout: 'auto',
 	autoWidth : true,
-	autoHeight: true,
 	bodyBorder: false,
 	defaults: {
 		collapsible: false,
@@ -40,7 +39,6 @@ var panel_order = Ext.create('Ext.Panel', {
 	],
 	layout: 'auto',
 	autoWidth : true,
-	autoHeight: true,
 	bodyBorder: false,
 	defaults: {
 		collapsible: false,
