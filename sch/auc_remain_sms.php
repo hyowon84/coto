@@ -17,7 +17,7 @@ function process($data) {
 	$SMS->SMS_con($config['cf_icode_server_ip'], $config['cf_icode_id'], $config['cf_icode_pw'], $config['cf_icode_server_port']);
 	$mh_hp[]['bk_hp'] = get_hp($data[mb_hp],0);
 
-	$경매명 = substr($data[gp_name],0,18).".."; 
+	$경매명 = mb_substr($data[gp_name], 0, 18, 'UTF-8')."..";
 	$mh_send_message = "{$경매명}의 경매마감시간이 30분 남았습니다 - 코인즈투데이";
 	$result = $SMS->Add($mh_hp, $mh_reply, '', '', $mh_send_message, '', 1);
 
