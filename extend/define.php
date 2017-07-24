@@ -557,8 +557,6 @@ $sql_auction_item = " SELECT
 																				WHERE		1=1
 																				AND			gp_use = '1'
 																				AND			ca_id LIKE 'CT%'
-																				AND			ac_yn = 'Y'
-																				AND			ac_enddate > NOW()
 																				#상품기본조건#
 																		) GP
 																		
