@@ -1859,10 +1859,11 @@ var grid_warehousing_dtl = Ext.create('Ext.grid.Panel',{
 				for(var i = 0; i < sm.length; i++) {
 					if(sm[i].data.iv_stats != '40') {
 						sm[i].set('iv_stats','40');
-						grid_warehousing_dtl.store.update();
 					}
 				}
-				
+
+				//grid_warehousing_dtl.store.update();
+				grid_warehousing_dtl.store.sync();
 			}
 		},
 		{

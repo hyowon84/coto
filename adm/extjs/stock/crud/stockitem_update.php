@@ -89,40 +89,40 @@ if(count($it_id) > 0) {
 	$result = sql_query($cate_sql);
 	db_log($cate_sql, 'g5_shop_group_purchase', '입고처리');
 
-
-	$ip_sql = "	DELETE FROM  product_ipinfo WHERE	it_id IN ($gpid_list);
 	
-							INSERT	INTO	product_ipinfo
+	sql_query(" DELETE FROM  product_ipinfo WHERE	it_id IN ($gpid_list) ");
+	$ip_sql = "	INSERT	INTO	product_ipinfo
 											(	it_id,
 												ip_qty,
 												od_qty,
 												ip_yn
 											)
-							SELECT	T.it_id,
-											T.ip_qty,
-											T.od_qty,
-											IF(T.ip_qty >= T.od_qty,'Y','N') AS ip_yn 
-							FROM		(
-												SELECT	IV.iv_it_id AS it_id,
-																SUM(IV.iv_qty) AS ip_qty,						/*전체발주수량 중 총 입고수량 */
-																IFNULL(OD.OD_QTY,0) AS od_qty				/*총 주문수량*/	
-												FROM		invoice_item IV
-																LEFT JOIN (	SELECT	it_id,
-																										SUM(it_qty) AS OD_QTY
-																						FROM		clay_order
-																						WHERE		1=1
-																						AND			stats >= '00'
-																						AND			stats <= '60'
-																						AND			it_id IN ($gpid_list)
-																						GROUP BY it_id
-																) OD ON (OD.it_id = IV.iv_it_id)
-												WHERE		1=1
-												AND			IV.iv_stats = '40'
-												AND			IV.iv_it_id IN ($gpid_list)
-												GROUP BY IV.iv_it_id
-											) T
+												SELECT	T.it_id,
+																T.ip_qty,
+																T.od_qty,
+																IF(T.ip_qty >= T.od_qty,'Y','N') AS ip_yn 
+												FROM		(
+																	SELECT	IV.iv_it_id AS it_id,
+																					SUM(IV.iv_qty) AS ip_qty,						/*전체발주수량 중 총 입고수량 */
+																					IFNULL(OD.OD_QTY,0) AS od_qty				/*총 주문수량*/	
+																	FROM		invoice_item IV
+																					LEFT JOIN (	SELECT	it_id,
+																															SUM(it_qty) AS OD_QTY
+																											FROM		clay_order
+																											WHERE		1=1
+																											AND			stats >= '00'
+																											AND			stats <= '60'
+																											AND			it_id IN ($gpid_list)
+																											GROUP BY it_id
+																					) OD ON (OD.it_id = IV.iv_it_id)
+																	WHERE		1=1
+																	AND			IV.iv_stats = '40'
+																	AND			IV.iv_it_id IN ($gpid_list)
+																	GROUP BY IV.iv_it_id
+																) T
 	";
 	sql_query($ip_sql);
+	db_log($ip_sql, 'product_ipinfo', '입고정보생성');
 	
 }
 

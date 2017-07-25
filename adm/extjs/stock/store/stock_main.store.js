@@ -798,7 +798,7 @@ var store_warehousing_dtl = Ext.create('Ext.data.Store',{
 	],
 	remoteSort: true,
 	autoLoad : false,
-	autoSync : true,
+	autoSync : false,
 	sorters:[
 		{
 			property:'reg_date',
