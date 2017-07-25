@@ -593,7 +593,6 @@ class auction_list
 				$sql_order = " order by {$this->order_by} ";
 			}
 
-			$sql_auction_item = str_replace('#상품기본조건#', " AND ac_yn = 'Y'  ", $sql_auction_item);
 			$it_result = sql_query($sql_auction_item);
 			$sql_limit = " limit " . $this->from_record . " , " . ($this->list_mod * $this->list_row);
 			
