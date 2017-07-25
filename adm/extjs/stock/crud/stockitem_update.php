@@ -100,9 +100,9 @@ if(count($it_id) > 0) {
 											)
 											SELECT	GP.gp_id AS it_id,
 															IFNULL(IV.ip_qty,0) AS ip_qty,
-															IFNULL(GP.jaego,0) AS jaego,
+															IF( GP.gp_id LIKE 'GV%' || GP.gp_site LIKE 'http%',0,IFNULL(GP.jaego,0) ) AS jaego,
 															IFNULL(OD.od_qty,0) AS od_qty,
-															IF( (IV.ip_qty + GP.jaego) >= OD.od_qty,'Y','N') AS ip_yn 
+															IF( ( IFNULL(IV.ip_qty,0) + IF( GP.gp_id LIKE 'GV%' || GP.gp_site LIKE 'http%',0,IFNULL(GP.jaego,0)) ) >= IFNULL(OD.od_qty,0),'Y','N') AS ip_yn 
 											FROM		g5_shop_group_purchase GP
 															LEFT JOIN (
 																					SELECT	IV.iv_it_id AS it_id,
