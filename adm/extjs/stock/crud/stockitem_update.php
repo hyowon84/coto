@@ -94,17 +94,48 @@ if(count($it_id) > 0) {
 	$ip_sql = "	INSERT	INTO	product_ipinfo
 											(	it_id,
 												ip_qty,
+												jaego,
 												od_qty,
 												ip_yn
 											)
+											SELECT	GP.gp_id AS it_id,
+															IFNULL(IV.ip_qty,0) AS ip_qty,
+															IFNULL(GP.jaego,0) AS jaego,
+															IFNULL(OD.od_qty,0) AS od_qty,
+															IF( (IV.ip_qty + GP.jaego) >= OD.od_qty,'Y','N') AS ip_yn 
+											FROM		g5_shop_group_purchase GP
+															LEFT JOIN (
+																					SELECT	IV.iv_it_id AS it_id,
+																									SUM(IV.iv_qty) AS ip_qty
+																					FROM		invoice_item IV
+																					WHERE		1=1
+																					AND			IV.iv_stats = '40'
+																					AND			IV.iv_it_id IN ($gpid_list)
+																					GROUP BY IV.iv_it_id
+															) IV ON (IV.it_id = GP.gp_id)
+															LEFT JOIN (	SELECT	it_id,
+																									SUM(it_qty) AS od_qty
+																					FROM		clay_order
+																					WHERE		1=1
+																					AND			stats >= '00'
+																					AND			stats <= '60'
+																					AND			it_id IN ($gpid_list)
+																					GROUP BY it_id
+															) OD ON (OD.it_id = GP.gp_id)
+											WHERE			1=1
+											AND				GP.gp_id IN ($gpid_list)											
+	";
+
+/*
 												SELECT	T.it_id,
-																T.ip_qty,
+																T.ip_qty AS ip_qty,
+																IFNULL(GP.jaego,0),
 																T.od_qty,
-																IF(T.ip_qty >= T.od_qty,'Y','N') AS ip_yn 
+																IF( (T.ip_qty + GP.jaego) >= T.od_qty,'Y','N') AS ip_yn 
 												FROM		(
 																	SELECT	IV.iv_it_id AS it_id,
-																					SUM(IV.iv_qty) AS ip_qty,						/*전체발주수량 중 총 입고수량 */
-																					IFNULL(OD.OD_QTY,0) AS od_qty				/*총 주문수량*/	
+																					SUM(IV.iv_qty) AS ip_qty,						#전체발주수량 중 총 입고수량
+																					IFNULL(OD.OD_QTY,0) AS od_qty				#총 주문수량	
 																	FROM		invoice_item IV
 																					LEFT JOIN (	SELECT	it_id,
 																															SUM(it_qty) AS OD_QTY
@@ -113,14 +144,17 @@ if(count($it_id) > 0) {
 																											AND			stats >= '00'
 																											AND			stats <= '60'
 																											AND			it_id IN ($gpid_list)
-																											GROUP BY it_id
-																					) OD ON (OD.it_id = IV.iv_it_id)
-																	WHERE		1=1
-																	AND			IV.iv_stats = '40'
-																	AND			IV.iv_it_id IN ($gpid_list)
+																																																					GROUP BY it_id
+																																															) OD ON (OD.it_id = IV.iv_it_id)
+																																															
+																																											WHERE		1=1
+																											AND			IV.iv_stats = '40'
+																											AND			IV.iv_it_id IN ($gpid_list)
 																	GROUP BY IV.iv_it_id
 																) T
-	";
+																LEFT JOIN g5_shop_group_purchase GP ON (GP.gp_id = T.it_id)
+	  
+	 */
 	sql_query($ip_sql);
 	db_log($ip_sql, 'product_ipinfo', '입고정보생성');
 	
