@@ -181,12 +181,11 @@ if ($is_admin)
 	$order_by = "T.ac_yn DESC, T.ac_enddate	DESC";
 
 	$sql_auction_item = $sql_auction_item_bak;
-	$sql_auction_item = str_replace('#상품기본조건#', " AND ac_yn = 'Y'  AND			ac_enddate <= NOW()	", $sql_auction_item);
+	$sql_auction_item = str_replace('#상품기본조건#', " AND			ac_enddate <= NOW()	", $sql_auction_item);
 	
 	$list = new auction_list('list.auc.skin.php', 4, 8, 170, 170, $sch_que, $listnum);
 	$list->set_mobile(true);
 	$list->set_is_page(true);
-	$list->set_acyn('N');
 	$list->set_order_by($order_by);
 	$list->set_from_record($from_record);
 	$list->set_view('gp_img', true);

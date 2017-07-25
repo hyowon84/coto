@@ -582,7 +582,7 @@ class auction_list
 
 			$where = array();
 			if ($this->ac_yn) {
-				$where[] = " T.ac_yn = '{$this->ac_yn}' ";
+//				$where[] = " T.ac_yn = '{$this->ac_yn}' ";
 			}
 
 			if ($this->type) {
@@ -596,7 +596,7 @@ class auction_list
 			$it_result = sql_query($sql_auction_item);
 			$sql_limit = " limit " . $this->from_record . " , " . ($this->list_mod * $this->list_row);
 			
-			$sql = $sql_auction_item ." AND ".implode("AND", $where). $sql_order . $sql_limit;
+			$sql = $sql_auction_item ." ".implode("AND", $where). $sql_order . $sql_limit;
 			
 			if($mode == 'jhw') {
 				echo "<textarea>".$sql."</textarea>";
