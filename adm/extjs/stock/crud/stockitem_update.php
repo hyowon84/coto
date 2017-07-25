@@ -41,9 +41,8 @@ if( ($arr[number]*1) > 0 ) {
 	sql_query($common_sql);
 	db_log($common_sql,'invoice_item','발주품목 수정');
 	
-	if($real_jaego > 0) {
-		$it_id[] = "'$iv_it_id'";
-	}
+	$it_id[] = "'$iv_it_id'";
+	
 }
 else {	/* 복수레코드일때 */
 
@@ -73,9 +72,8 @@ else {	/* 복수레코드일때 */
 		sql_query($common_sql);
 		db_log($common_sql,'invoice_item','발주품목 수정');
 		
-		if($real_jaego > 0) {
-			$it_id[] = "'$iv_it_id'";
-		}
+		$it_id[] = "'$iv_it_id'";
+		
 	}
 }
 
@@ -92,7 +90,7 @@ if(count($it_id) > 0) {
 	db_log($cate_sql, 'g5_shop_group_purchase', '입고처리');
 
 
-	$ip_sql = "	DELETE FROM  product_info WHERE	it_id IN ($gpid_list);
+	$ip_sql = "	DELETE FROM  product_ipinfo WHERE	it_id IN ($gpid_list);
 	
 							INSERT	INTO	product_ipinfo
 											(	it_id,
