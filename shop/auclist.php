@@ -112,8 +112,9 @@ if ($is_admin)
 
 			$sql_auction_item_bak = $sql_auction_item;
 			$sql_auction_item = str_replace('#상품기본조건#', " AND ac_yn = 'Y'  AND			ac_enddate > NOW()	", $sql_auction_item);
-			
-			$list = new auction_list('list.auc.skin.php', 4, 14, 170, 170, '', '100');
+
+			$listnum = 56;
+			$list = new auction_list('list.auc.skin.php', 4, 14, 170, 170, '', $listnum);
 			$list->set_is_page(false);
 			$list->set_order_by($order_by);
 			$list->set_from_record(0);
@@ -148,7 +149,8 @@ if ($is_admin)
 
 		$sql_auction_item = $sql_auction_item_bak;
 		$sql_auction_item = str_replace('#상품기본조건#', " AND			ac_enddate <= NOW()	", $sql_auction_item);
-		
+
+		$listnum = 32;
 		$list = new auction_list('list.auc.skin.php', 4, 8, 170, 170, $sch_que, $listnum);
 		$list->set_is_page(true);
 		$list->set_order_by($order_by);
