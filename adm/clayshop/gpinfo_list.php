@@ -87,9 +87,9 @@ list($gpcode_d) = mysql_fetch_array(sql_query($seq_sql));
 	<div style='float:left; margin-left:50px;'>
 		<label for="search" class="sound_only">검색어</label>
 
-		시작일 : <input type="text" id="start_date" name="start_date" value="<?=$start_date?>" style='width:82px;' >
-		종료일 : <input type="text" id="end_date" name="end_date" value="<?=$end_date?>" style='width:82px;' >
-		<script>$("#start_date, #end_date").datepicker();</script>
+		시작일 : <input type="text" class="start_date" name="start_date" value="<?=$start_date?>" style='width:82px;' >
+		종료일 : <input type="text" class="end_date" name="end_date" value="<?=$end_date?>" style='width:82px;' >
+		<script>$(".start_date, .end_date").datepicker();</script>
 
 		검색어 : <input type="text" name="search" value="<?=$search;?>" id="search" class="frm_input" autocomplete="off">
 	</div>&nbsp;
@@ -147,7 +147,7 @@ list($gpcode_d) = mysql_fetch_array(sql_query($seq_sql));
 </div>
 
 <!-- 공동구매 추가 다이얼로그 -->
-<div id="dialog" class='gpinfo_dialog' title="공동구매 설정" style='display:none;'>
+<div id="dialog" class='gpinfo_dialog' title="공동구매 설정" style="display:none;">
 	<form id='gpinfo_form' name='gpinfo_form' method="post" action="gpinfo_list.inp.php?mode=new" enctype="MULTIPART/FORM-DATA" autocomplete="off">
 
 	<table id='gpinfo_tb' border='0'>
@@ -184,7 +184,9 @@ list($gpcode_d) = mysql_fetch_array(sql_query($seq_sql));
 		<tr>
 			<th>날짜</th>
 			<td>
-				<input type='text' id='start_date' name='start_date' style='width:82px;' /> ~ <input type='text' id='end_date' name='end_date' style='width:82px;' />
+				<input type='text' class='start_date' name='start_date' style='width:82px;' /> ~
+				<input type='text' class='end_date' name='end_date' style='width:82px;' />
+				<script>$(".start_date, .end_date").datepicker();</script>
 			</td>
 		</tr>
 		<tr>
@@ -408,8 +410,8 @@ while($arr = mysql_fetch_array($sbox_result)) {
 			<input type='checkbox' id='cd3_<?=$공구코드?>' name='choice_dealer' value='GV' <?=$CD_GV?> />GainsVille <input type='checkbox' id='cd4_<?=$공구코드?>' name='choice_dealer' value='MC' <?=$CD_MC?> />MCM <br>
 			<input type='checkbox' id='cd5_<?=$공구코드?>' name='choice_dealer' value='SD' <?=$CD_SD?> />ScottsDale <input type='checkbox' id='cd6_<?=$공구코드?>' name='choice_dealer' value='OD' <?=$CD_OD?> />OTHER</td>
 		<td>
-			S:<input type='text' id='start_date_<?=$공구코드?>' name='start_date_<?=$공구코드?>' value='<?=$시작일?>' style='width:80px;' /><br>
-			E:<input type='text' id='end_date_<?=$공구코드?>' name='end_date_<?=$공구코드?>' value='<?=$종료일?>' style='width:80px;' />
+			S:<input type='text' class='start_date' id='start_date_<?=$공구코드?>' name='start_date_<?=$공구코드?>' value='<?=$시작일?>' style='width:80px;' /><br>
+			E:<input type='text' class='end_date' id='end_date_<?=$공구코드?>' name='end_date_<?=$공구코드?>' value='<?=$종료일?>' style='width:80px;' />
 		</td>
 		<td>
 			<input type='radio' name='volprice_yn_<?=$공구코드?>' value='Y' <?=$volprice_y?> />적용 <input type='radio' name='volprice_yn_<?=$공구코드?>' value='N' <?=$volprice_n?> />안함<br>
@@ -462,7 +464,7 @@ while($arr = mysql_fetch_array($sbox_result)) {
 
 <script>
 $(function(){
-	$("#start_date, #end_date").datepicker({ changeMonth: true, changeYear: true, dateFormat: "yy-mm-dd", showButtonPanel: true, yearRange: "c-99:c+99", maxDate: "+90d" });
+	$(".start_date, .end_date").datepicker({ changeMonth: true, changeYear: true, dateFormat: "yy-mm-dd", showButtonPanel: true, yearRange: "c-99:c+99", maxDate: "+90d" });
 });
 
 
