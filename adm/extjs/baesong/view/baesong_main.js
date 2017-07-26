@@ -32,7 +32,9 @@ Ext.onReady(function(){
 		height: 1040,
 		bodyBorder: false,
 		defaults: {
-			bodyPadding: 0
+			collapsible: true,
+			bodyPadding: 0,
+			split:true
 		},
 		items: [
 			{ 
@@ -42,6 +44,7 @@ Ext.onReady(function(){
 				region: 'west', 
 				width: '47%',
 				height: 1040,
+				floatable: false,
 				collapsible: true,
 				style : 'float:left; margin:0px; padding:0px;',
 				items	: [panel_gpmb]
