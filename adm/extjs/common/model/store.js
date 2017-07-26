@@ -159,7 +159,8 @@ Ext.define('Ext.store.bank.taxtype',{
 		{	name:'-선택안함-',			value:''	},
 		{	name:'현금영수증',			value:'T01'	},
 		{	name:'사업자지출증빙',	value:'T02'	},
-		{	name:'세금계산서',			value:'T03'	}
+		{	name:'세금계산서',			value:'T03'	},
+		{	name:'현금판매',				value:'T04'	}
 	]
 });
 //입출금 관련 end

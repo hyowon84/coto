@@ -35,7 +35,6 @@ Ext.onReady(function(){
 		layout: 'border',
 		width: '1900',
 		height: 850,
-//		autoScroll : true,
 		bodyBorder: false,
 		defaults: {
 			collapsible: true,
@@ -49,11 +48,6 @@ Ext.onReady(function(){
 				title: '<b>입출금내역</b>',
 				region: 'west', 
 				floatable: false,
-				
-//				collapsible: true,
-//				headerPosition:'left',
-//				split: true,
-//				width: '25%',
 				width : '70%',
 				minWidth: 400,
 				style : 'float:left; margin:0px; padding:0px;',
@@ -65,8 +59,6 @@ Ext.onReady(function(){
 				title: '<b>연결된 주문내역</b> [ '+'금: $'+v_GL+' / 은: $'+v_SL+' / $환율: '+v_USD+'원 ]',
 				region: 'center',
 				collapsible: false,
-//				headerPosition:'left',
-//				floatable: false,
 				width: '30%',
 				minWidth: 400,
 				height: 830,
