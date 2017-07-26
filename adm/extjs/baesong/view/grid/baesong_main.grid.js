@@ -327,10 +327,6 @@ var grid_orderlist = Ext.create('Ext.grid.Panel',{
 		{ text : '공구코드',		dataIndex : 'gpcode',					hidden:true	},		
 		{ text : '공구명',			dataIndex : 'gpcode_name',		style:'text-align:center',	width:140	},
 		{ text : '상태코드',		dataIndex : 'IV_STATS',				width:70,	hidden:true	},
-		{ text : '+입고',				dataIndex : 'ip_qty',					width:70,		style:'text-align:center',	align:'right',	renderer: Ext.util.Format.numberRenderer('0,000')	},
-		{ text : '+재고',				dataIndex : 'jaego',					width:70,		style:'text-align:center',	align:'right',	renderer: Ext.util.Format.numberRenderer('0,000')	},
-		{ text : '-집계',				dataIndex : 'od_qty',					width:70,		style:'text-align:center',	align:'right',	renderer: Ext.util.Format.numberRenderer('0,000')	},
-		{ text : '=차수',				dataIndex : 'cal_qty',				width:70,		style:'text-align:center',	align:'right',	renderer: Ext.util.Format.numberRenderer('0,000')	},
 		{ text : '입고상태',		dataIndex : 'IV_STATS_NAME',	width:120	},
 		{ text : '품목별 메모',	dataIndex : 'it_memo',				width: 160,		style:'text-align:center',			editor:{allowBlank:false} },
 		{ text : '주문ID',			dataIndex : 'od_id',					width:140	},
@@ -343,8 +339,11 @@ var grid_orderlist = Ext.create('Ext.grid.Panel',{
 		{ text : '주문수량',		dataIndex : 'it_qty',					sortable: true,		style:'text-align:center',	align:'right',	renderer: Ext.util.Format.numberRenderer('0,000') },
 		{ text : '주문총액',		dataIndex : 'total_price',		sortable: true,		style:'text-align:center',	align:'right',	renderer: Ext.util.Format.numberRenderer('0,000') },
 		{ text : '관리자메모',	dataIndex : 'admin_memo',			width:120,	hidden:true	},
-		{ text : '구매자메모',	dataIndex : 'memo',						width:120,	hidden:true	}	
-		
+		{ text : '구매자메모',	dataIndex : 'memo',						width:120,	hidden:true	},
+		{ text : '+입고',				dataIndex : 'ip_qty',					width:70,		style:'text-align:center',	align:'right',	renderer: Ext.util.Format.numberRenderer('0,000')	},
+		{ text : '+재고',				dataIndex : 'jaego',					width:70,		style:'text-align:center',	align:'right',	renderer: Ext.util.Format.numberRenderer('0,000')	},
+		{ text : '-집계',				dataIndex : 'od_qty',					width:70,		style:'text-align:center',	align:'right',	renderer: Ext.util.Format.numberRenderer('0,000')	},
+		{ text : '=차수',				dataIndex : 'cal_qty',				width:70,		style:'text-align:center',	align:'right',	renderer: Ext.util.Format.numberRenderer('0,000')	}
 		
 	],
 	tbar : [
