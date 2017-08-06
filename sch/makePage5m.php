@@ -4,8 +4,8 @@ include_once('./_common.php');
 
 //5분에 한번씩 최신등록상품 HTML파일 생성
 $filelist = array(
-	"mainCateItemLIst",
-	"mainGpItemLIst"
+	"mainCateItemList",
+	"mainGpItemList"
 );
 
 //PC
@@ -35,17 +35,17 @@ for($i = 0; $i < sizeof($filelist); $i++) {
 
 
 /* 진행중인 공동구매 상품목록 */
-include_once "../data/html/mainGpItemLIst.html";
+include_once "../data/html/mainGpItemList.html";
 
 /* 카테고리 상품목록 */
-include_once "../data/html/mainCateItemLIst.html";
+include_once "../data/html/mainCateItemList.html";
 
 
 
 /* 진행중인 공동구매 상품목록 */
-include_once "../data/html/mainGpItemLIst_m.html";
+include_once "../data/html/mainGpItemList_m.html";
 
 /* 카테고리 상품목록 */
-include_once "../data/html/mainCateItemLIst_m.html";
+include_once "../data/html/mainCateItemList_m.html";
 
 ?>

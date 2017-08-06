@@ -43,9 +43,7 @@ if(G5_IS_MOBILE) {
     include_once(G5_MOBILE_PATH.'/shop/index.php');
     return;
 }
-else {
-	
-}
+
 
 //일반웹 접속
 include_once(G5_PATH.'/_head.php');
@@ -94,10 +92,10 @@ makeMainSlideImage();
 makeHtmlAucPrdList();
 
 /* 진행중인 공동구매 상품목록 */
-include_once "./data/html/mainGpItemLIst.html";
+include_once "./data/html/mainGpItemList.html";
 
 /* 카테고리 상품목록 */
-include_once "./data/html/mainCateItemLIst.html";
+include_once "./data/html/mainCateItemList.html";
 ?>
 
 <script src='<?=G5_JS_URL?>/imgLiquid.js'></script>

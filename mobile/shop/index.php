@@ -45,6 +45,8 @@
 </style>
 
 <?
+
+
 /* 메인화면 슬라이드 */
 makeMainSlideImage();
 
@@ -52,10 +54,10 @@ makeMainSlideImage();
 makeHtmlAucPrdList();
 
 /* 진행중인 공동구매 상품목록 */
-include_once "./data/html/mainGpItemLIst_m.html";
+include_once "./data/html/mainGpItemList_m.html";
 
 /* 카테고리 상품목록 */
-include_once "./data/html/mainCateItemLIst_m.html";
+include_once "./data/html/mainCateItemList_m.html";
 ?>
 
 <script src='<?=G5_JS_URL?>/imgLiquid.js'></script>
