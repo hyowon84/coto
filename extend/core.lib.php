@@ -600,7 +600,7 @@ function makeMainSlideImage() {
 				$img_url = "/image.php?image=/data/main_img/$main_slide_row[img_file]";
 				$size = " height='550' ";
 				
-				if($mode == 'jhw') {
+				if($_GET[mode] == 'jhw') {
 					$it = array();
 					$it[gp_img] = "/data/main_img/$main_slide_row[img_file]";
 					$it[gp_id] = "mainimg_" . $main_slide_row[no];
