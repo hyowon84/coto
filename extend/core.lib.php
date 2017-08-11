@@ -574,6 +574,20 @@ function makeMainSlideImage() {
 			$main_slide_row = mysql_fetch_array($main_slide_res);
 			$img_url = "/image.php?image=/data/main_img/$main_slide_row[img_file]";
 
+
+//		$img_url = "/image.php?image=/data/main_img/$main_slide_row[img_file]";
+			$size = " height='550' ";
+
+//		if($_GET[mode] == 'jhw') {
+			$it = array();
+			$it[gp_img] = "http://coinstoday.co.kr/data/main_img/$main_slide_row[img_file]";
+			$it[gp_id] = "mainimg_" . $main_slide_row[no]."_m";
+
+			$imgthumb = getThumb($it, 414, 211);
+			$img_url = $imgthumb[src];
+//		}
+			
+			
 			if($main_slide_row[URL]) {
 				$링크 = "<a href=\"$main_slide_row[URL]\"><img class='slick-slide-img' src=\"$img_url\"></a>";
 			} else {
@@ -597,17 +611,17 @@ function makeMainSlideImage() {
 			
 			if ($main_slide_row[status] == "2") {
 
-				$img_url = "/image.php?image=/data/main_img/$main_slide_row[img_file]";
+//				$img_url = "/image.php?image=/data/main_img/$main_slide_row[img_file]";
 				$size = " height='550' ";
-				
-				if($_GET[mode] == 'jhw') {
+
+//				if($_GET[mode] == 'jhw') {
 					$it = array();
-					$it[gp_img] = "/data/main_img/$main_slide_row[img_file]";
+					$it[gp_img] = "http://coinstoday.co.kr/data/main_img/$main_slide_row[img_file]";
 					$it[gp_id] = "mainimg_" . $main_slide_row[no];
 
-					$imgthumb = @getThumb($it, 1070, 550);
+					$imgthumb = getThumb($it, 1070, 540);
 					$img_url = $imgthumb[src];
-				}
+//				}
 				?>
 				<div><a href="<?= $URL ?>"><img class="slick-slide-img" src="<?= $img_url ?>" <?= $size ?> /></a></div>
 				<?
