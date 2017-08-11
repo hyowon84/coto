@@ -590,21 +590,24 @@ function makeMainSlideImage() {
 	//PC 슬라이드
 	else {
 		echo "<section class=\"slide\" style='display:none;'>";
+		
 		for ($i = 0; $main_slide_row = mysql_fetch_array($main_slide_res); $i++) {
 
 			$URL = ($main_slide_row[URL]) ? $main_slide_row[URL] : '#';
-
+			
 			if ($main_slide_row[status] == "2") {
 
 				$img_url = "/image.php?image=/data/main_img/$main_slide_row[img_file]";
+				$size = " height='550' ";
+				
+				if($mode == 'jhw') {
+					$it = array();
+					$it[gp_img] = "/data/main_img/$main_slide_row[img_file]";
+					$it[gp_id] = "mainimg_" . $main_slide_row[no];
 
-				if (G5_IS_MOBILE) {
-					$size = " height='120' ";
-				} else {
-					$size = " height='550' ";
+					$imgthumb = @getThumb($it, 1070, 550);
+					$img_url = $imgthumb[src];
 				}
-
-
 				?>
 				<div><a href="<?= $URL ?>"><img class="slick-slide-img" src="<?= $img_url ?>" <?= $size ?> /></a></div>
 				<?
@@ -996,6 +999,8 @@ function makeHtmlAucPrdList() {
 		
 		//나의입찰액이 최고가인 경우 나의 입찰금액 노출
 		$나의입찰금액 = ($it[MAX_BID_PRICE] == $it[MY_BID_PRICE]) ? "<dl><font color='blue' style='font-size:1.1em; font-weight:bold;'>최고가 입찰중 ".number_format($it[MY_BID_PRICE])."원</font></dl>" : "";
+		$imgthumb = getThumb($it);
+		$it[gp_img] = $imgthumb[src];
 		
 		echo "<div class='prdlist_item'>
 						<a href='/shop/auction.php?gp_id=$it[gp_id]'>

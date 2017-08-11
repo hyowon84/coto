@@ -123,7 +123,7 @@ function get_image_resource_from_file ($path_file){
 				  $param['preview_yn'] = 'Y' or 'N' (미리보기 방지 여부 => 미리보기방지 대체 이미지 제공)
 	Return		: array('bool' => true or false, 'src' => 썸네일 이미지 url, 'msg' => 성공, 실패 메세지)
 */
-function getThumb($param){
+function getThumb($param,$width = null,$height = null){
 	global $접속기기, $DOCUMENT_ROOT;
 	preg_match_all("/(jpg|gif|jpeg|png|JPG|PNG|GIF)/",$param[gp_img],$last);
 	$lastname = $last[0][0];
@@ -142,13 +142,23 @@ function getThumb($param){
 	
 	$param['n_path'] = "$DOCUMENT_ROOT/data/outsrc/thumb/".$param[gp_id].(($접속기기 != '데스크탑') ? "_m" : "").".".$lastname;
 	$imgsrc = "/data/outsrc/thumb/".$param[gp_id].(($접속기기 != '데스크탑') ? "_m" : "").".".$lastname;
-	$param['width'] = ($접속기기 != '데스크탑') ? 120 : 250;
-	$param['height'] = ($접속기기 != '데스크탑') ? 80 : 230;
+	
+	if($width) {
+		$param['width'] = $width;
+	} else {		
+		$param['width'] = ($접속기기 != '데스크탑') ? 120 : 250;
+	}
+	
+	if($height) {
+		$param['height'] = $height;
+	}
+	else {
+		$param['height'] = ($접속기기 != '데스크탑') ? 80 : 230;
+	}
+	
 	$param['mode'] = 'ratio';
 	$param['fill_yn'] = 'Y';
 	$param['preview_yn'] = 'Y';
-
-	
 
 	if(empty($param['o_path']))		return array('bool' => false, 'msg' => '원본 파일 경로가 없습니다.');
 	if(empty($param['n_path']))		return array('bool' => false, 'msg' => '원본 파일 경로가 없습니다.');
