@@ -663,7 +663,7 @@ else if($mode == 'invoice_item') {
 													II.ip_id,
 													II.wr_id,
 													IV.iv_id,
-													CLR.cr_id,
+													#CLR.cr_id,
 													IT.gp_img AS iv_it_img,
 													IT.ca_id,
 													IT.jaego,
@@ -715,15 +715,19 @@ else if($mode == 'invoice_item') {
 																			FROM		clearance_item
 																			GROUP BY iv_id, cr_it_id
 													) CR ON (CR.iv_id = IV.iv_id AND CR.cr_it_id = IV.iv_it_id)
+													
+													LEFT JOIN (	SELECT	*
+																			FROM		invoice_item
+																			WHERE		iv_stats = 40
+													) IP ON (IP.iv_id = IV.iv_id AND IP.iv_it_id = IV.iv_it_id)
+																										
+													/*													
 													LEFT JOIN (	SELECT	DISTINCT
 																							cr_id,
 																							iv_id
 																			FROM		clearance_item
 													) CLR ON (CLR.iv_id = IV.iv_id)
-													LEFT JOIN (	SELECT	*
-																			FROM		invoice_item
-																			WHERE		iv_stats = 40
-													) IP ON (IP.iv_id = IV.iv_id AND IP.iv_it_id = IV.iv_it_id)													
+													*/
 									WHERE		1=1
 									$AND_SQL
 									$OR_SQL
