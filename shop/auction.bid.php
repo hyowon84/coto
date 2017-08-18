@@ -3,6 +3,10 @@ include_once('./_common.php');
 define('_GROUPSHOP_', true);
 
 
+/*동시접속자수 제어*/
+transaction_start();
+
+
 //마감 1분 이내에 입찰시도시 1분 연장, 최대 ?분까지 연장할지는 추후 협의시 아래 소스에서 작성
 function delayAuctionEnddate($gp_id) {
 	return true;	
@@ -40,22 +44,30 @@ if($경매진행여부 == 'N') alert_close("경매가 종료되었습니다");
 /*경매입찰시도*/
 $bid_qty = 1;	//입찰수량 1개로 고정
 
+//mysql_query("START TRANSACTION; UNLOCK TABLES");
+//mysql_query("LOCK TABLES auction_log READ;");
+
 if($mode == 'auc_bid') {	
 //	$bid_qty = $_POST[bid_qty];	//입찰수량, 입찰제한수량이 1개일경우 브레이크
 	
 	$입찰시도금액 = $_POST[bid_price]*1;	//입찰가
 	$현재입찰가계산 = calcBidPrice($최고현재가);
-
+	
 	$mybid_sql = "	SELECT	*
-									FROM		auction_log AL
-									WHERE		AL.mb_id = '$member[mb_id]'
-									AND			AL.ac_code = '$it[ac_code]'
-									AND			AL.it_id = '$it[gp_id]'
-									AND			AL.bid_stats NOT IN ('90')
-									ORDER BY	AL.bid_price DESC, AL.bid_last_price DESC
+									FROM		auction_log
+									WHERE		mb_id = '$member[mb_id]'
+									AND			ac_code = '$it[ac_code]'
+									AND			it_id = '$it[gp_id]'
+									AND			bid_stats NOT IN ('90')
+									ORDER BY	bid_price DESC, bid_last_price DESC
 									LIMIT 1
 	";
 	$mybid = sql_fetch($mybid_sql);
+
+//	mysql_query("LOCK TABLES auction_log WRITE;");
+//	sql_query("UNLOCK TABLES");
+//	sql_query("ROLLBACK");
+//	EXIT;
 
 	$최고입찰자당사자여부 = ($mybid[bid_price] >= $최고입찰가) ? true : false; 
 		
@@ -64,7 +76,7 @@ if($mode == 'auc_bid') {
 		alert("현재 입찰중인 가격(".number_format($최고현재가)."원)보다 높은 금액을 입력하셔야합니다");
 	}
 	
-	//입찰시도금액이 이전 최고입찰가보다 높아야함
+	//입찰금액 상향 : 나의 입찰시도금액이 이전 나의 최고입찰가보다 높아야함
 	else if($입찰시도금액 <= $mybid [bid_price]) {
 		alert("이전에 입찰한 가격(".number_format($mybid[bid_price])."원)보다 높은 금액을 입력하셔야합니다");
 	}
@@ -76,8 +88,10 @@ if($mode == 'auc_bid') {
 		//이전 최고입찰자의 오토비딩정보 입력
 		$bid_last_price = calcBidPrice($입찰시도금액);
 		$bid_last_price = ($bid_last_price > $최고입찰가) ? $최고입찰가 : $bid_last_price;
-		$t = explode('.',_microtime());	$timestamp = date("Y-m-d H:i:s.",$t[0]).$t[1];
-		$auto_sql = "	INSERT INTO		auction_log		SET
+		$t = explode('.',_microtime());	$timestamp = date("Y-m-d H:i:s.",$t[0]).str_pad($t[1], 4, "0", STR_PAD_RIGHT);
+
+		
+		$auto_sql = "	INSERT INTO		auction_log 	SET
 																	ac_code = '$it[ac_code]',							/*경매진행코드*/
 																	it_id = '$it[gp_id]',									/*경매상품코드*/
 																	it_name = '$상품명',							/*경매상품명*/
@@ -121,7 +135,8 @@ if($mode == 'auc_bid') {
 
 		//입찰시도금액이 나의 이전 최고입찰가보다 높고, 현재의 최고입찰가보다 높은경우 상향조정
 		if($입찰시도금액 > $mybid[bid_price] && $mybid[bid_price] > $시작가 && $입찰시도금액 > $최고입찰가 && $최고입찰자당사자여부) {
-
+			sql_query("UNLOCK TABLES");
+			
 			$t = explode('.',_microtime());	$timestamp = date("Y-m-d H:i:s.",$t[0]).$t[1];
 			$UPD_SQL = "	UPDATE	auction_log	SET
 															bid_price				= '$입찰시도금액',			/*입찰가격*/
@@ -211,7 +226,13 @@ if($mode == 'auc_bid') {
 		$bid_last_price = $시작가;	//입찰시도금액은 직접 입력했지만 시작가랑 같을수 있다
 	}
 	
+	
+	
 	$t = explode('.',_microtime());	$timestamp = date("Y-m-d H:i:s.",$t[0]).$t[1];
+	
+	sql_query("UNLOCK TABLES");
+//	sql_query("LOCK TABLES WRITE");
+	
 	$UPD_SQL = "	INSERT INTO auction_log	SET
 													ac_code					= '$ac_code',				/*경매진행코드*/
 													it_id						= '$it[gp_id]',			/*경매상품코드*/
@@ -226,6 +247,7 @@ if($mode == 'auc_bid') {
 													bid_from				=	'$접속기기'
 	";
 	sql_query($UPD_SQL);
+	
 	delayAuctionEnddate($it[gp_id]);
 	
 	alert_close("축하합니다. 현재 최고금액(".number_format($bid_last_price)."원) 경매자입니다.");
@@ -244,5 +266,8 @@ if (G5_IS_MOBILE) {
 else {
 	include_once(G5_SHOP_SKIN_PATH.'/auction.bid.skin.php');
 }
+
+sql_query("commit");
+//sql_query("UNLOCK TABLES;");
 ?>
 

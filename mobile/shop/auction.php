@@ -7,11 +7,6 @@ include_once(G5_LIB_PATH.'/iteminfo.lib.php');
 
 if (!$it['gp_id'])
     alert('자료가 없습니다.');
-if (!($it['ca_use'] && $it['gp_use'])) {
-    if (!$is_admin)
-        alert('현재 판매가능한 상품이 아닙니다.');
-}
-
 
 
 //분류 테이블에서 분류 상단, 하단 코드를 얻음

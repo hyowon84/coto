@@ -1225,4 +1225,64 @@ function calcBidPrice($price) {
 function _microtime() { return array_sum(explode(' ',microtime())); }
 
 
+
+//트랜잭션 시작, 마무리 commit은 함수 다음 별도로 선언해줘야함
+function transaction_start() {
+
+	session_start();
+	$table_name = 'coto_siteon';
+	$session_id = session_id();
+	$page = $_SERVER['REQUEST_URI'];	//REQUEST_URI, HTTP_REFERER 이전주소
+	if (strlen($page)<1) $page="direct";
+
+	while(1) {
+		$t = explode('.',_microtime());	$timestamp = date("Y-m-d H:i:s.",$t[0]).$t[1];
+		$t[1] = str_pad($t[1], 4, "0", STR_PAD_RIGHT);
+
+		$micro = str_pad($t[1]-8000, 4, "0", STR_PAD_LEFT);
+		$unixtime = $t[0];
+
+		if($micro >= 1) {
+			$mirco = $t[1];
+		}
+		else {
+			$micro = 10000 + $micro;
+			$unixtime -= 1;
+		}
+
+		$stime = date("Y-m-d H:i:s.",$unixtime).($micro);
+		$etime = date("Y-m-d H:i:s.",$t[0]).$t[1];
+
+		@mysql_query("set autocommit = 0 ");
+		@mysql_query("insert into $table_name set session='$session_id'");
+		@mysql_query("update $table_name set page='$page', ctime=now(), fulltime = '$etime' where session='$session_id'");
+		@mysql_query("delete from $table_name where ctime < DATE_SUB(NOW(), INTERVAL 60 SECOND)");
+
+		$query = "SELECT	count(*) total 
+							FROM		$table_name
+							WHERE		page = '$page'
+							AND			fulltime >= '$stime'
+							AND			fulltime <= '$etime'
+	";
+
+		$result = mysql_query($query);
+		$total = 0;
+
+		if ($result) {
+			$row = mysql_fetch_row($result);
+			if ($row) {
+				$total = intval($row[0]);
+			}
+		}
+
+		if ($total <= 1) {
+			break;
+		}
+		else {
+			usleep(400000);
+		}
+	}
+}
+
+
 ?>
