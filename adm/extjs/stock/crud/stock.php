@@ -290,8 +290,8 @@ else if($mode == 'orderitems') {
 																		IFNULL(RIV.RIV_QTY,0) AS RIV_QTY,								/*모든공구 총발주수량*/
 																		
 																		/*상품의 총 발주수량 - 상품의 총 주문수량 = 재고 */
-																		IF( IFNULL(GP.jaego,0) + IFNULL(RIV.RIV_QTY,0) - IFNULL(CO.ORDER_QTY,0) > 0, IFNULL(GP.jaego,0) + IFNULL(RIV.RIV_QTY,0) - IFNULL(CO.ORDER_QTY,0), 0) AS real_jaego
-																		
+																		#IF( IFNULL(GP.jaego,0) + IFNULL(RIV.RIV_QTY,0) - IFNULL(CO.ORDER_QTY,0) > 0, IFNULL(GP.jaego,0) + IFNULL(RIV.RIV_QTY,0) - IFNULL(CO.ORDER_QTY,0), 0) AS real_jaego
+																		IFNULL(GP.jaego,0) + IFNULL(RIV.RIV_QTY,0) - IFNULL(CO.ORDER_QTY,0) AS real_jaego
 														FROM		v_gpinfo_links vGL
 																		
 																		/* 해당공구 발주수량 */
