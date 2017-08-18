@@ -446,7 +446,7 @@ $sql_auction_item = " SELECT
 																IFNULL(BID.BID_CNT,0) AS BID_CNT,
 																
 																IFNULL(BID.MAX_BID_PRICE,0) AS MAX_BID_PRICE,
-																IFNULL(BID.MAX_BID_LAST_PRICE,0) AS MAX_BID_LAST_PRICE,
+																IFNULL(BIDL.MAX_BID_LAST_PRICE,0) AS MAX_BID_LAST_PRICE,
 																
 																MAX_MB.mb_id AS MB_ID,
 																MYBID.MY_BID_PRICE
@@ -576,8 +576,16 @@ $sql_auction_item = " SELECT
 																LEFT JOIN (	SELECT	ac_code,
 																										it_id,
 																										COUNT(*) AS BID_CNT,
-																										MAX(bid_price) AS MAX_BID_PRICE,
 																										MAX(bid_last_price) AS MAX_BID_LAST_PRICE																										
+																						FROM		auction_log
+																						WHERE		bid_stats <= 90
+																						GROUP BY ac_code, it_id
+																) BIDL ON (BIDL.ac_code = T.ac_code AND BIDL.it_id = T.gp_id)
+																
+																LEFT JOIN (	SELECT	ac_code,
+																										it_id,
+																										COUNT(*) AS BID_CNT,
+																										MAX(bid_price) AS MAX_BID_PRICE
 																						FROM		auction_log
 																						WHERE		bid_stats <= 90
 																						GROUP BY ac_code, it_id
@@ -592,14 +600,14 @@ $sql_auction_item = " SELECT
 																						WHERE		bid_stats <= 10
 																) MAX_MB ON (MAX_MB.ac_code = T.ac_code AND MAX_MB.it_id = T.gp_id AND MAX_MB.bid_price = BID.MAX_BID_PRICE)
 																
-																LEFT JOIN (	SELECT	AL.mb_id,
-																										AL.ac_code,
+																LEFT JOIN (	SELECT	AL.ac_code,
 																										AL.it_id,
+																										AL.mb_id,
 																										MAX(AL.bid_price) AS MY_BID_PRICE
 																						FROM		auction_log AL
 																						WHERE		AL.mb_id = '$member[mb_id]'
-																						AND			AL.bid_stats <= '10'
-																						GROUP BY AL.mb_id, AL.ac_code, AL.it_id																
+																						AND			AL.bid_stats <= 10
+																						GROUP BY AL.ac_code, AL.it_id, AL.mb_id														
 																) MYBID ON (MYBID.ac_code = T.ac_code AND MYBID.it_id = T.gp_id)
 												WHERE		1=1
 ";

@@ -64,11 +64,6 @@ if($mode == 'auc_bid') {
 	";
 	$mybid = sql_fetch($mybid_sql);
 
-//	mysql_query("LOCK TABLES auction_log WRITE;");
-//	sql_query("UNLOCK TABLES");
-//	sql_query("ROLLBACK");
-//	EXIT;
-
 	$최고입찰자당사자여부 = ($mybid[bid_price] >= $최고입찰가) ? true : false; 
 		
 	/* step1. 현재 입찰가보다 커야 입찰금액을 입력할수 있음*/
@@ -123,9 +118,11 @@ if($mode == 'auc_bid') {
 																bid_from				=	'$접속기기'
 		";
 		sql_query($auto_sql);
+		sql_query("commit");
 		
 		delayAuctionEnddate($it[gp_id]);
-		alert("현재 입찰하신 ".number_format($입찰시도금액)."원 보다 더 높은 경매금액을 제시한 분이 있습니다. 더 높은 경매금액으로 다시 참여해주세요");		
+		alert("현재 입찰하신 ".number_format($입찰시도금액)."원 보다 더 높은 경매금액을 제시한 분이 있습니다. 더 높은 경매금액으로 다시 참여해주세요");
+		
 	}
 	/* 5000원이 맥스 입찰가고  현재가 4000원이면  내가 6000원을 입력하면 5000원 자동입찰 기록을 해두고 나의 입찰가를 구해야함 */
 	else if($입찰시도금액 >= $최고입찰가 && $최고입찰가 > 1000) {
@@ -135,7 +132,6 @@ if($mode == 'auc_bid') {
 
 		//입찰시도금액이 나의 이전 최고입찰가보다 높고, 현재의 최고입찰가보다 높은경우 상향조정
 		if($입찰시도금액 > $mybid[bid_price] && $mybid[bid_price] > $시작가 && $입찰시도금액 > $최고입찰가 && $최고입찰자당사자여부) {
-			sql_query("UNLOCK TABLES");
 			
 			$t = explode('.',_microtime());	$timestamp = date("Y-m-d H:i:s.",$t[0]).$t[1];
 			$UPD_SQL = "	UPDATE	auction_log	SET
@@ -148,7 +144,8 @@ if($mode == 'auc_bid') {
 										AND			no			= '$mybid[no]'
 			";
 			sql_query($UPD_SQL);
-	
+			sql_query("commit");
+			
 //		alert("$입찰시도금액 > $mybid[bid_price] && $mybid[bid_price] > $시작가 && $입찰시도금액 > $최고입찰가 && $최고입찰자당사자여부");
 			alert_close("입찰금액이 상향조정 되었습니다");
 			exit;
@@ -177,9 +174,9 @@ if($mode == 'auc_bid') {
 																	bid_from				=	'SERVER'
 			";
 			sql_query($auto_sql);
-
-			delayAuctionEnddate($it[gp_id]);
+			sql_query("commit");
 			
+			delayAuctionEnddate($it[gp_id]);
 		}
 		
 		
@@ -203,6 +200,7 @@ if($mode == 'auc_bid') {
 
 			";
 			sql_query($auto_sql);
+			sql_query("commit");
 			
 			alert("현재 입찰하신 ".number_format($입찰시도금액)."원 보다 더 높은 경매금액을 제시한 분이 있습니다. 더 높은 경매금액으로 다시 참여해주세요");
 			//break
@@ -230,8 +228,6 @@ if($mode == 'auc_bid') {
 	
 	$t = explode('.',_microtime());	$timestamp = date("Y-m-d H:i:s.",$t[0]).$t[1];
 	
-	sql_query("UNLOCK TABLES");
-//	sql_query("LOCK TABLES WRITE");
 	
 	$UPD_SQL = "	INSERT INTO auction_log	SET
 													ac_code					= '$ac_code',				/*경매진행코드*/
@@ -241,16 +237,17 @@ if($mode == 'auc_bid') {
 													bid_qty					= '$bid_qty',			
 													bid_price				= '$bid_price',			/*입찰가격*/
 													bid_last_price	= '$bid_last_price',		/*현재 입찰가 기록*/
-													bid_stats 			= '00',	/* 00:입찰신청, 05:오토비딩, 10:낙찰, 20:결제완료, 80:구매자취소 ,90:판매자 취소*/
+													bid_stats 			= '00',	/* 00:입찰신청, 01:입찰상향, 05:오토비딩, 10:낙찰, 20:결제완료, 80:구매자취소 ,90:판매자 취소*/
 													bid_dbdate			= NOW(),							/*등록일*/
 													bid_date				= '$timestamp',
 													bid_from				=	'$접속기기'
 	";
 	sql_query($UPD_SQL);
+	sql_query("commit");
 	
 	delayAuctionEnddate($it[gp_id]);
-	
 	alert_close("축하합니다. 현재 최고금액(".number_format($bid_last_price)."원) 경매자입니다.");
+//	echo "축하합니다. 현재 최고금액(".number_format($bid_last_price)."원) 경매자입니다.";
 	exit;
 }
 //echo "<textarea>".$sql."</textarea>";
@@ -268,6 +265,5 @@ else {
 }
 
 sql_query("commit");
-//sql_query("UNLOCK TABLES;");
 ?>
 

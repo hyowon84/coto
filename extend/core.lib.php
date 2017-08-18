@@ -1236,17 +1236,19 @@ function transaction_start() {
 	if (strlen($page)<1) $page="direct";
 
 	while(1) {
-		$t = explode('.',_microtime());	$timestamp = date("Y-m-d H:i:s.",$t[0]).$t[1];
+		$t = explode('.',_microtime());	
 		$t[1] = str_pad($t[1], 4, "0", STR_PAD_RIGHT);
 
-		$micro = str_pad($t[1]-8000, 4, "0", STR_PAD_LEFT);
+		$micro = $t[1];
+//		$micro = str_pad($t[1]-1000, 4, "0", STR_PAD_LEFT);
 		$unixtime = $t[0];
 
 		if($micro >= 1) {
 			$mirco = $t[1];
+			$unixtime -= 1;
 		}
 		else {
-			$micro = 10000 + $micro;
+//			$micro = 10000 + $micro;
 			$unixtime -= 1;
 		}
 
@@ -1263,8 +1265,7 @@ function transaction_start() {
 							WHERE		page = '$page'
 							AND			fulltime >= '$stime'
 							AND			fulltime <= '$etime'
-	";
-
+		";
 		$result = mysql_query($query);
 		$total = 0;
 
@@ -1279,7 +1280,8 @@ function transaction_start() {
 			break;
 		}
 		else {
-			usleep(400000);
+//			usleep(1000000);
+			sleep(1);
 		}
 	}
 }
