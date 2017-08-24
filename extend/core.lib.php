@@ -1182,7 +1182,7 @@ function getDataGpJaego($gp_id) {
 /*DB로그 작성*/
 function db_log($쿼리,$테이블명,$메모,$이전데이터='',$현재데이터='') {
 	global $member;
-	$관리자ID = $member[mb_id];
+	$관리자ID = $_SESSION['ss_mb_id'];
 	$파일명 = $_SERVER['PHP_SELF'];
 
 	$쿼리 =	preg_replace("/\t\t\t\t/",' ',$쿼리);
@@ -1200,7 +1200,7 @@ function db_log($쿼리,$테이블명,$메모,$이전데이터='',$현재데이�
 												admin_id = '$관리자ID',	/*관리자 계정*/
 												reg_date = now()					/*생성일*/
 	";
-	sql_query($sql);	
+	sql_query($sql);
 }
 
 //최소입찰가 구하기
