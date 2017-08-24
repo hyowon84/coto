@@ -3288,3 +3288,14 @@ div.table.cell.unitname {
 @media screen and (min-width:701px) {
 	.prdlist_item {width: 25% !important}
 }
+
+.auclist_top {
+	padding:4px; width:49%; height:29px; float:left; text-align:center; cursor:pointer;
+}
+
+.auclist_top.auc_on {
+	border-top:1px solid #cccccc;
+	border-left:1px solid #cccccc;
+	border-right:1px solid #cccccc;
+	background-color:#f7f7f7;
+}

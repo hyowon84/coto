@@ -120,39 +120,28 @@ if ($is_admin)
 	// 리스트 유형별로 출력
 	$list_file = G5_MSHOP_SKIN_PATH.'/'.$ca['ca_mobile_skin'];
 
-	if (file_exists($list_file)) {
-		/*
-				echo '<div id="sct_sortlst">';
-				include G5_SHOP_SKIN_PATH.'/list.sort.skin.php';
-		
-				// 상품 보기 타입 변경 버튼
-				include G5_SHOP_SKIN_PATH.'/list.sub.skin.php';
-				echo '</div>';
-		*/
-		// 총몇개 = 한줄에 몇개 * 몇줄
+	// 페이지가 없으면 첫 페이지 (1 페이지)
+	if ($page == "") $page = 1;
+	// 시작 레코드 구함
+	$from_record = ($page - 1) * $items;
+	
+	if($ac_yn != 'N') {
 		if($listnum){
 			$items = $listnum;
 		}else{
 			$items = $ca['ca_list_mod'] * $ca['ca_list_row'];
 		}
 
-		// 페이지가 없으면 첫 페이지 (1 페이지)
-		if ($page == "") $page = 1;
-		// 시작 레코드 구함
-		$from_record = ($page - 1) * $items;
-
 		#$sch_que .= ' AND PO.po_cash_price > 0 ';
 		/*상품목록*/
-		$order_by = "T.ac_yn DESC, T.ac_enddate	ASC";
-
-		$sql_auction_item_bak = $sql_auction_item;
+		$order_by = "T.ac_enddate	ASC";
+//		$sql_auction_item_bak = $sql_auction_item;
 		$sql_auction_item = str_replace('#상품기본조건#', " AND ac_yn = 'Y'  AND			ac_enddate > NOW()	", $sql_auction_item);
 
 		$listnum = 56;
 		$list = new auction_list('list.auc.skin.php', 4, 14, 170, 170, '', $listnum);
 		$list->set_mobile(true);
 		$list->set_is_page(true);
-		$list->set_acyn('Y');
 		$list->set_order_by($order_by);
 		$list->set_from_record(0);
 		$list->set_view('gp_img', true);
@@ -167,50 +156,38 @@ if ($is_admin)
 		// 전체 페이지 계산
 		$total_page  = ceil($total_count / $items);
 	}
-	else
-	{
-		$i = 0;
-		$error = '<p class="sct_nofile">'.$ca['ca_skin'].' 파일을 찾을 수 없습니다.<br>관리자에게 알려주시면 감사하겠습니다.</p>';
+	else {
+		$order_by = "T.ac_enddate	DESC";
+
+//		$sql_auction_item = $sql_auction_item_bak;
+		$sql_auction_item = str_replace('#상품기본조건#', " AND			ac_enddate <= NOW()	", $sql_auction_item);
+
+		$listnum = 32;
+		$list = new auction_list('list.auc.skin.php', 4, 8, 170, 170, $sch_que, $listnum);
+		$list->set_mobile(true);
+		$list->set_is_page(true);
+		$list->set_order_by($order_by);
+		$list->set_from_record($from_record);
+		$list->set_view('gp_img', true);
+		$list->set_view('gp_id', false);
+		$list->set_view('gp_name', true);
+		$list->set_view('it_icon', true);
+		$list->set_view('sns', false);
+		echo $list->run();
+
+		// where 된 전체 상품수
+		$total_count = $list->total_count;
+		// 전체 페이지 계산
+		$total_page = ceil($total_count / $items);
+
+
+		$qstr1 .= 'ca_id=' . $ca_id;
+		if ($skin)
+			$qstr1 .= '&amp;skin=' . $skin;
+		$qstr1 .= "&sort=$sort&sortodr=$sortodr";
+		//echo get_paging($config['cf_write_pages'], $page, $total_page, $_SERVER['PHP_SELF'].'?'.$qstr1.'&amp;apmval='.$apmval.'&amp;apm_type='.$apm_type.'&amp;sch_val='.$sch_val.'&amp;page=');
 	}
-
-	if ($i==0)
-	{
-		echo '<div>'.$error.'</div>';
-	}
-
-
-	$order_by = "T.ac_yn DESC, T.ac_enddate	DESC";
-
-	$sql_auction_item = $sql_auction_item_bak;
-	$sql_auction_item = str_replace('#상품기본조건#', " AND			ac_enddate <= NOW()	", $sql_auction_item);
-
-	$listnum = 32;
-	$list = new auction_list('list.auc.skin.php', 4, 8, 170, 170, $sch_que, $listnum);
-	$list->set_mobile(true);
-	$list->set_is_page(true);
-	$list->set_order_by($order_by);
-	$list->set_from_record($from_record);
-	$list->set_view('gp_img', true);
-	$list->set_view('gp_id', false);
-	$list->set_view('gp_name', true);
-	$list->set_view('it_icon', true);
-	$list->set_view('sns', false);
-	echo $list->run();
-
-	// where 된 전체 상품수
-	$total_count = $list->total_count;
-	// 전체 페이지 계산
-	$total_page  = ceil($total_count / $items);
-	
-	
-	
-	$qstr1 .= 'ca_id='.$ca_id;
-	if($skin)
-		$qstr1 .= '&amp;skin='.$skin;
-	$qstr1 .="&sort=$sort&sortodr=$sortodr";
-	//echo get_paging($config['cf_write_pages'], $page, $total_page, $_SERVER['PHP_SELF'].'?'.$qstr1.'&amp;apmval='.$apmval.'&amp;apm_type='.$apm_type.'&amp;sch_val='.$sch_val.'&amp;page=');
-	
-	
+		
 	
 	
 	?>

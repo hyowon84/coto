@@ -21,10 +21,19 @@ $height = (G5_IS_MOBILE) ? '140px' : '230px';
 $margin = (G5_IS_MOBILE) ? '0px' : '15px';
 
 
+if($_GET[ac_yn] == 'N') {
+	$스위치1 = '';
+	$스위치2 = 'auc_on';
+}
+else {
+	$스위치1 = 'auc_on';
+	$스위치2 = '';
+}
+	
 
-$타이틀 = ($this->ac_yn == 'Y') ? "진행중인 경매상품" : "종료된 경매상품";
 echo "<div class='prdlist_title cut_text1line'>
-				<font color='red'>$타이틀</font>
+				<a href='?ac_yn=Y'><div class='auclist_top $스위치1'><font color='red'>진행중</font></div></a>
+				<a href='?ac_yn=N'><div class='auclist_top $스위치2'><font color='gray'>종료</font></div></a>
 			</div>";
 
 echo "<section class='slide' style=''>

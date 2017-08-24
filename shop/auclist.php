@@ -83,33 +83,29 @@ if ($is_admin)
 	<!-- 상품 목록 시작 { -->
 	<div id="sct">
 
-		<?php
+<?php
 		$nav_ca_id = $ca_id;
 		//include G5_SHOP_SKIN_PATH.'/navigation.skin.php';
 
 		// 상단 HTML
 		echo '<div id="sct_hhtml" style="padding-top:15px">'.stripslashes($ca['ca_head_html']).'</div>';
 
-		// 리스트 유형별로 출력
-		$list_file = G5_SHOP_SKIN_PATH.'/'.$ca['ca_skin'];
+		// 총몇개 = 한줄에 몇개 * 몇줄
+		if($listnum){
+			$items = $listnum;
+		}else{
+			$items = $ca['ca_list_mod'] * $ca['ca_list_row'];
+		}
 
-		if (file_exists($list_file)) {
-			// 총몇개 = 한줄에 몇개 * 몇줄
-			if($listnum){
-				$items = $listnum;
-			}else{
-				$items = $ca['ca_list_mod'] * $ca['ca_list_row'];
-			}
+		// 페이지가 없으면 첫 페이지 (1 페이지)
+		if ($page == "") $page = 1;
+		// 시작 레코드 구함
+		$from_record = ($page - 1) * $items;
 
-			// 페이지가 없으면 첫 페이지 (1 페이지)
-			if ($page == "") $page = 1;
-			// 시작 레코드 구함
-			$from_record = ($page - 1) * $items;
+		if($ac_yn != 'N') {
 
-
-			/*상품목록*/
-			$order_by = "T.ac_yn DESC, T.ac_enddate	ASC";
-
+			/*진행중인 경매상품목록*/
+			$order_by = "T.ac_enddate	ASC";
 			$sql_auction_item_bak = $sql_auction_item;
 			$sql_auction_item = str_replace('#상품기본조건#', " AND ac_yn = 'Y'  AND			ac_enddate > NOW()	", $sql_auction_item);
 
@@ -118,7 +114,7 @@ if ($is_admin)
 			$list->set_is_page(false);
 			$list->set_order_by($order_by);
 			$list->set_from_record(0);
-			$list->set_acyn('Y');
+			//			$list->set_acyn('Y');
 			$list->set_view('gp_img', true);
 			$list->set_view('gp_id', false);
 			$list->set_view('gp_name', true);
@@ -130,56 +126,43 @@ if ($is_admin)
 			// where 된 전체 상품수
 			$total_count = $list->total_count;
 			// 전체 페이지 계산
-			$total_page  = ceil($total_count / $items);
+			$total_page = ceil($total_count / $items);
 		}
-		else
-		{
-			$i = 0;
-			$error = '<p class="sct_nofile">'.$ca['ca_skin'].' 파일을 찾을 수 없습니다.<br>관리자에게 알려주시면 감사하겠습니다.</p>';
+		else {
+			/* 경매종료 상품목록*/
+			$order_by = "T.ac_enddate	DESC";
+
+//			$sql_auction_item = $sql_auction_item_bak;
+			$sql_auction_item = str_replace('#상품기본조건#', " AND			ac_enddate <= NOW()	", $sql_auction_item);
+
+			$listnum = 32;
+			$list = new auction_list('list.auc.skin.php', 4, 8, 170, 170, $sch_que, $listnum);
+			$list->set_is_page(true);
+			$list->set_order_by($order_by);
+			$list->set_from_record($from_record);
+			$list->set_view('gp_img', true);
+			$list->set_view('gp_id', false);
+			$list->set_view('gp_name', true);
+			$list->set_view('gc_state', true);
+			$list->set_view('it_icon', true);
+			$list->set_view('sns', false);
+			echo $list->run();
+
+			// where 된 전체 상품수
+			$total_count = $list->total_count;
+			// 전체 페이지 계산
+			$total_page = ceil($total_count / $items);
+
+
+			$qstr1 .= 'ca_id=' . $ca_id;
+			if ($skin)
+				$qstr1 .= '&amp;skin=' . $skin;
+			$qstr1 .= "&sort=$sort&sortodr=$sortodr";
+			$소스URL = $_SERVER['PHP_SELF'] . "?" . $qstr1 . '&ac_yn=N&amp;apmval=' . $apmval . '&amp;apm_type=' . $apm_type . '&amp;sch_val=' . $sch_val . '&amp;sch_val_all=' . $sch_val_all . '&amp;listnum=' . $listnum . '&amp;page=';
+			echo get_paging($config['cf_write_pages'], $page, $total_page, $소스URL);
 		}
-
-		if ($i==0)
-		{
-			echo '<div>'.$error.'</div>';
-		}
-
-
-		/* 경매종료 상품목록*/
-		$order_by = "T.ac_enddate	DESC";
-
-		$sql_auction_item = $sql_auction_item_bak;
-		$sql_auction_item = str_replace('#상품기본조건#', " AND			ac_enddate <= NOW()	", $sql_auction_item);
-
-		$listnum = 32;
-		$list = new auction_list('list.auc.skin.php', 4, 8, 170, 170, $sch_que, $listnum);
-		$list->set_is_page(true);
-		$list->set_order_by($order_by);
-		$list->set_from_record($from_record);
-		$list->set_view('gp_img', true);
-		$list->set_view('gp_id', false);
-		$list->set_view('gp_name', true);
-		$list->set_view('gc_state', true);
-		$list->set_view('it_icon', true);
-		$list->set_view('sns', false);
-		echo $list->run();
-
-		// where 된 전체 상품수
-		$total_count = $list->total_count;
-		// 전체 페이지 계산
-		$total_page  = ceil($total_count / $items);
-
-
-		$qstr1 .= 'ca_id='.$ca_id;
-		if($skin)
-			$qstr1 .= '&amp;skin='.$skin;
-		$qstr1 .="&sort=$sort&sortodr=$sortodr";
-		$소스URL = $_SERVER['PHP_SELF']."?".$qstr1.'&amp;apmval='.$apmval.'&amp;apm_type='.$apm_type.'&amp;sch_val='.$sch_val.'&amp;sch_val_all='.$sch_val_all.'&amp;listnum='.$listnum.'&amp;page=';
-		echo get_paging($config['cf_write_pages'], $page, $total_page, $소스URL);
 		
 		
-		
-		// 하단 HTML
-		echo '<div id="sct_thtml">'.stripslashes($ca['ca_tail_html']).'</div>';
 
 		?>
 	</div>
