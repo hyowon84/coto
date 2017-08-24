@@ -1724,3 +1724,16 @@ a.btn_admin:focus, a.btn_admin:hover {text-decoration:none}
 
 #goldSpotLastUpdate{margin:3px 0 0 3px;font-size:10px;width:145px;line-height:0.9em;}
 /************************ 실시간 시세 끝 ************************/
+
+/************************ 경매상품목록 *************************/
+.auclist_top {
+	width:49%; height:29px; float:left; text-align:center; cursor:pointer;
+}
+
+.auclist_top.auc_on {
+	border-top:1px solid #cccccc;
+	border-left:1px solid #cccccc;
+	border-right:1px solid #cccccc;
+	background-color:#f7f7f7;
+}
+
