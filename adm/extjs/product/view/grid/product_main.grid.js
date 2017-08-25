@@ -72,6 +72,37 @@ var grid_gplist = Ext.create('Ext.grid.Panel',{
 					}
 				}
 			}
+		},
+		{
+			text	: '상품수정모드',
+			iconCls	: 'icon-eye',
+			handler : function() {
+				//grid_orderlist;
+				for(var i=0; i < grid_itemlist.columns.length; i++) {
+					if(grid_itemlist.columns[i].groupIndex == 1) {
+						grid_itemlist.columns[i].show();
+					}
+					if(grid_itemlist.columns[i].groupIndex == 2) {
+						grid_itemlist.columns[i].hide();
+					}
+				}
+
+
+			}
+		},
+		{
+			text	: '경매등록모드',
+			iconCls	: 'icon-eye',
+			handler : function() {
+				for(var i=0; i < grid_itemlist.columns.length; i++) {
+					if(grid_itemlist.columns[i].groupIndex == 1) {
+						grid_itemlist.columns[i].hide();
+					}
+					if(grid_itemlist.columns[i].groupIndex == 2) {
+						grid_itemlist.columns[i].show();
+					}
+				}
+			}
 		}
 	],
 	bbar : {
@@ -135,6 +166,7 @@ var grid_itemlist = Ext.create('Ext.grid.Panel',{
 	},
 	columns : [
 		{
+			groupIndex:'1',
 			xtype: 'gridcolumn',
 			dataIndex: 'gp_use',
 			text: '노출',
@@ -147,13 +179,14 @@ var grid_itemlist = Ext.create('Ext.grid.Panel',{
 		},
 		{ groupIndex:'1',		header: '회원전용',			dataIndex: 'only_member',			width: 80,		align:'center',		style:'text-align:center',		xtype: 'checkcolumn',		headerCheckbox: true,		stopSelection: false	},
 		{ groupIndex:'1',		text: '최대구매수량',		dataIndex : 'gp_buy_max_qty',	width: 100,		editor:{allowBlank:true}	},
-		{ groupIndex:'1',		text: 'img',						dataIndex : 'gp_img',					width: 60,		renderer: function(value){	return '<img src="' + value + '" width=40 height=40 />';}			},
-		{ groupIndex:'1',		text: '상품코드',				dataIndex : 'gp_id',					width: 160		},
+		{ groupIndex:'',		text: 'img',						dataIndex : 'gp_img',					width: 60,		renderer: function(value){	return '<img src="' + value + '" width=40 height=40 />';}			},
+		{ groupIndex:'',		text: '상품코드',				dataIndex : 'gp_id',					width: 160		},
 		{ groupIndex:'',		text: 'EBAY_IT_ID',			dataIndex : 'ebay_id',				width: 140,		editor:{allowBlank:true},		style:'text-align:center',	align:'center',		hidden:true	},
 		{ groupIndex:'1',		text: '카테고리',				dataIndex : 'ca_id',					width: 100,		editor:{allowBlank:true}	},
 		{ groupIndex:'1',		text: '재고위치',				dataIndex : 'location',				width: 100,		editor:{allowBlank:true}	},		
-		{ groupIndex:'1',		text: '품목명',					dataIndex : 'gp_name',				width: 350,		editor:{allowBlank:false}	},
+		{ groupIndex:'',		text: '품목명',					dataIndex : 'gp_name',				width: 350,		editor:{allowBlank:false}	},
 		{
+			groupIndex:'1',
 			xtype: 'gridcolumn',
 			dataIndex: 'gp_card',
 			text: '카드가노출',
@@ -165,6 +198,7 @@ var grid_itemlist = Ext.create('Ext.grid.Panel',{
 			renderer: rendererCombo
 		},
 		{
+			groupIndex:'1',
 			xtype: 'gridcolumn',
 			dataIndex: 'gp_price_type',
 			text: '가격유형',
@@ -179,6 +213,7 @@ var grid_itemlist = Ext.create('Ext.grid.Panel',{
 		{ groupIndex:'1',		text: '스팟시세가(￦)',		dataIndex : 'gp_realprice',		width: 140,		style:'text-align:center',		align:'right',					renderer: Ext.util.Format.numberRenderer('0,000')	},
 		{ groupIndex:'1',		text: '매입가($)',				dataIndex : 'gp_price_org',		width: 140,		editor:{allowBlank:true},		style:'text-align:center',	align:'right',	renderer: Ext.util.Format.numberRenderer('0,000.00')	},
 		{
+			groupIndex:'1',
 			xtype: 'gridcolumn',
 			dataIndex: 'gp_metal_type',
 			text: '유형',
@@ -190,6 +225,7 @@ var grid_itemlist = Ext.create('Ext.grid.Panel',{
 		},
 		{ groupIndex:'1',		text: 'Oz',							dataIndex : 'gp_metal_don',		width: 60,		style :'text-align:center',	align:'right',	renderer: Ext.util.Format.numberRenderer('0,000.00'),	editor:{allowBlank:false}	},
 		{
+			groupIndex:'1',
 			xtype: 'gridcolumn',
 			dataIndex: 'gp_spotprice_type',
 			text: '스팟유형',
@@ -243,6 +279,7 @@ var grid_itemlist = Ext.create('Ext.grid.Panel',{
 					xtype: 'textfield',
 					id : 'keyword',
 					name: 'keyword',
+					width: 80,
 					style: 'padding:0px;',
 					enableKeyEvents: true,
 					listeners:{
