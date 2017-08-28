@@ -33,10 +33,10 @@ function process($data) {
 	$gp_use = $data[gp_use];
 	$ebay_id = trim($data[ebay_id]);
 	$real_jaego = $data[real_jaego];
-	$gp_realprice = $data[gp_realprice];
+	$po_cash_price = $data[po_cash_price];
 
 
-	$시작가 = ceil(($gp_realprice / 5) / 1000) * 1000;
+	$시작가 = ceil(($po_cash_price / 5) / 1000) * 1000;
 	
 	$prev_sql = "	SELECT	*	FROM	g5_shop_group_purchase WHERE	gp_id = '$gp_id'";
 	$prev = sql_fetch($prev_sql);
