@@ -1,7 +1,10 @@
 <?php
 include_once('./_common.php');
 
-if($mode != 'jhw' && $_SERVER['REMOTE_ADDR'] != '221.146.206.90') {
+if($mode == 'jhw' || $_SERVER['REMOTE_ADDR'] == '221.146.206.90') {
+	echo "admin";
+}
+else {
 	exit;
 }
 
