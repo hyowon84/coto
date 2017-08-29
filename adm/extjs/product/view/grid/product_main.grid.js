@@ -61,6 +61,7 @@ var grid_gplist = Ext.create('Ext.grid.Panel',{
 			xtype: 'textfield',
 			id : 'gpkeyword',
 			name: 'keyword',
+			width: 140,
 			style: 'padding:0px;',
 			enableKeyEvents: true,
 			listeners:{
@@ -279,7 +280,7 @@ var grid_itemlist = Ext.create('Ext.grid.Panel',{
 					xtype: 'textfield',
 					id : 'keyword',
 					name: 'keyword',
-					width: 80,
+					width: 140,
 					style: 'padding:0px;',
 					enableKeyEvents: true,
 					listeners:{
@@ -488,6 +489,7 @@ var grid_aucPrdList = Ext.create('Ext.grid.Panel',{
 			xtype: 'textfield',
 			id : 'apl_keyword',
 			name: 'keyword',
+			width: 140,
 			style: 'padding:0px;',
 			enableKeyEvents: true,
 			listeners:{
@@ -641,6 +643,7 @@ var grid_aucBidList = Ext.create('Ext.grid.Panel',{
 			xtype: 'textfield',
 			id : 'abl_keyword',
 			name: 'keyword',
+			width: 140,
 			style: 'padding:0px;',
 			enableKeyEvents: true,
 			listeners:{
