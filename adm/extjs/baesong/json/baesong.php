@@ -145,10 +145,11 @@ else if($mode == 'orderlist') {
 	/* 선택된 회원의 주문목록 가져오기 */
 	$SELECT_SQL = "	
 									SELECT	T.*,
-													PI.od_qty,
-													PI.ip_qty,
-													PI.jaego,
-													(PI.ip_qty + PI.jaego - PI.od_qty) AS cal_qty,
+													/*PI.od_qty,*/
+													IFNULL(OD_QTY.od_qty,0) AS od_qty,
+													IFNULL(PI.ip_qty,0) AS ip_qty,
+													IFNULL(PI.jaego,0) AS jaego,
+													(IFNULL(PI.ip_qty,0) + IFNULL(PI.jaego,0) - IFNULL(OD_QTY.od_qty,0)) AS cal_qty,
 													CONCAT('[', T.gpcode_name, '] ', T.od_id, ' - 배송비(', IFNULL(T.DN_VALUE,'미설정'), ') ', IFNULL(T.delivery_price,'') , '원') AS project,
 													IF(LENGTH(GP.gp_img) > 8,GP.gp_img,'/shop/img/no_image.gif') AS gp_img,
 													
@@ -157,8 +158,9 @@ else if($mode == 'orderlist') {
 														WHEN	T.gpcode = 'QUICK'
 																	|| T.gpcode = 'AUCTION'
 																	|| T.gpcode_name LIKE '%릴레이%'
-																	|| PI.ip_yn = 'Y'
+																	|| (PI.ip_qty + PI.jaego - OD_QTY.od_qty) >= 0
 																	|| ( T.stats >= '23' AND T.stats <= '39' )
+																	#|| PI.ip_yn = 'Y'
 																	#|| IV.CNT <= IV.CNT_40				/* 단일공구에 대한 발주서카운팅 <= 입고된 발주서 카운팅 */
 																	#|| RJ.real_jaego >= GPQTY.GP_QTY	/* 실재고 >= 공구주문집계수량 */
 																	#|| RJ.qk_jaego >= GPQTY.GP_QTY		/* 빠른배송재고(jaego + realjaego) >= 공구주문집계수량*/
@@ -172,8 +174,9 @@ else if($mode == 'orderlist') {
 														WHEN	T.gpcode = 'QUICK' 
 																	|| T.gpcode = 'AUCTION'
 																	|| T.gpcode_name LIKE '%릴레이%'
-																	|| PI.ip_yn = 'Y'
+																	|| (PI.ip_qty + PI.jaego - OD_QTY.od_qty) >= 0
 																	|| ( T.stats >= '23' AND T.stats <= '39' )
+																	#|| PI.ip_yn = 'Y'
 																	#|| IV.CNT <= IV.CNT_40
 																	#|| RJ.real_jaego >= GPQTY.GP_QTY
 																	#|| RJ.qk_jaego >= GPQTY.GP_QTY
@@ -255,6 +258,13 @@ else if($mode == 'orderlist') {
 													LEFT JOIN g5_shop_group_purchase GP ON (GP.gp_id = T.it_id)
 													
 													LEFT JOIN product_ipinfo PI ON (PI.it_id = T.it_id)
+													
+													LEFT JOIN (	SELECT	it_id,
+																							SUM(it_qty) AS od_qty
+																			FROM		clay_order
+																			WHERE		stats <= '60'
+																			GROUP BY it_id
+													) OD_QTY ON (OD_QTY.it_id = T.it_id)
 													
 													/*
 													#단일공구에 대한  발주서카운팅 <= 입고 카운팅
