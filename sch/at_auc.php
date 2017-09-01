@@ -273,7 +273,7 @@ $sql = " SELECT		T.gp_id,
 																	AND			GP.ca_id LIKE 'CT%'
 																	AND			GP.ac_code LIKE 'AC%'
 																	AND			GP.ac_enddate < NOW()
-																	AND			IFNULL(GP.jaego,0) + IFNULL(RIV.RIV_QTY,0) - IFNULL(CO.ORDER_QTY,0) >= 0	
+																	AND			IFNULL(GP.jaego,0) + IFNULL(RIV.RIV_QTY,0) - IFNULL(CO.ORDER_QTY,0) >= 2	
 																	ORDER BY RAND()
 																	LIMIT 20
 											) GP
