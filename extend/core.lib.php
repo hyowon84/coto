@@ -1287,4 +1287,37 @@ function transaction_start() {
 }
 
 
+
+function getWeek($t) {
+	//Date Format: YYYY-MM-DD 
+	$s = explode("-",$t);
+	$k = date("D", mktime(0, 0, 0, $s[1], 1, $s[0])); //해당월 1일은 무슨 요일인가 
+	switch($k) {
+		//PHP 5.1.0 이하 
+		case "Sun" : $f = 0; break;
+		case "Mon" : $f = 1; break;
+		case "Tue" : $f = 2; break;
+		case "Wed" : $f = 3; break;
+		case "Thu" : $f = 4; break;
+		case "Fri" : $f = 5; break;
+		case "Sat" : $f = 6; break;
+	}
+	$d = date("D", mktime(0, 0, 0, $s[1], $s[2], $s[0])); //요일(영문:Mon) 
+	switch($d) {
+		case "Sun" : $m = "일"; break;
+		case "Mon" : $m = "월"; break;
+		case "Tue" : $m = "화"; break;
+		case "Wed" : $m = "수"; break;
+		case "Thu" : $m = "목"; break;
+		case "Fri" : $m = "금"; break;
+		case "Sat" : $m = "토"; break;
+	}
+	$r = array();
+	$r[] = $s[0]; //년 
+	$r[] = ceil($s[1]); //월 
+	$r[] = ceil((ceil($s[2])+$f)/7); //몇째주   오늘 n일 + 1일의 요일
+	$r[] = $m;
+	return $r;
+}
+
 ?>
