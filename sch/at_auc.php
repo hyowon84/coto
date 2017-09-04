@@ -275,7 +275,7 @@ $sql = " SELECT		T.gp_id,
 																	AND			GP.ac_enddate < NOW()
 																	AND			IFNULL(GP.jaego,0) + IFNULL(RIV.RIV_QTY,0) - IFNULL(CO.ORDER_QTY,0) >= 2	
 																	ORDER BY RAND()
-																	LIMIT 20
+																	LIMIT 30
 											) GP
 											
 											LEFT JOIN	g5_shop_group_purchase_option PO ON (PO.gp_id = GP.gp_id AND po_num = 0)
@@ -302,7 +302,7 @@ while($arr = mysql_fetch_array($result)) {
 	process($arr);
 
 	$i++;
-	if($h == 17) {
+	if($h == 15) {
 		$i = 0;
 		$dd--;
 	}
