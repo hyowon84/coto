@@ -146,14 +146,14 @@ function getThumb($param,$width = null,$height = null){
 	if($width) {
 		$param['width'] = $width;
 	} else {		
-		$param['width'] = ($접속기기 != '데스크탑') ? 120 : 250;
+		$param['width'] = ($접속기기 != '데스크탑') ? 180 : 250;
 	}
 	
 	if($height) {
 		$param['height'] = $height;
 	}
 	else {
-		$param['height'] = ($접속기기 != '데스크탑') ? 80 : 230;
+		$param['height'] = ($접속기기 != '데스크탑') ? 140 : 230;
 	}
 	
 	$param['mode'] = 'ratio';
