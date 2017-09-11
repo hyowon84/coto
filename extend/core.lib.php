@@ -728,7 +728,9 @@ function makeHtmlGpPrdList() {
 			$it[card_price] = ceil($it[cash_price] * 1.03 / 100) * 100;
 			$jaego = ($it[real_jaego] > 0) ? $it[real_jaego] : 0;
 			$카드가 = ($it[gp_card] == '사용안함') ? "카드가 : ".number_format($it[card_price])."원<br>" : "";
-
+			$dollar = $it[cash_price] / $it[USD];
+			$달러가 = "$".number_format($dollar,2,'.','');
+			
 			$imgthumb = getThumb($it);
 			$it[gp_img] = $imgthumb[src];
 			
@@ -753,6 +755,7 @@ function makeHtmlGpPrdList() {
 						<div class='prdlist_bottom'>
 							$카드가
 							구매가 : ".number_format($it[cash_price])."원<br>
+							달러가 : $달러가<br>
 							$재고
 						</div>
 					</div>
@@ -870,6 +873,9 @@ function makeHtmlCatePrdList() {
 			$jaego = ($it[real_jaego] > 0) ? $it[real_jaego] : 0;
 			$카드가 = ($it[gp_card] == '사용안함') ? "카드가 : ".number_format($it[card_price])."원<br>" : "";
 
+			$dollar = $it[cash_price] / $it[USD];
+			$달러가 = "$".number_format($dollar,2,'.','');
+			
 			$imgthumb = getThumb($it);
 			$it[gp_img] = $imgthumb[src];
 			
@@ -893,6 +899,7 @@ function makeHtmlCatePrdList() {
 							<div class='prdlist_bottom'>
 								$카드가
 								구매가 : " . number_format($it[cash_price]) . "원<br>
+								달러가 : $달러가<br>
 								$재고
 							</div>
 						</div>

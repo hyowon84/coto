@@ -105,6 +105,8 @@ for ($i=1; $row=sql_fetch_array($result); $i++) {
 
 	if ($this->view_it_price) {
 		$구매가 = display_price($po_cash_price, $row['it_tel_inq'])."\n";
+		$dollar = $po_cash_price / $row[USD];
+		$달러가 = "$".number_format($dollar,2,'.','');
 	}
 
 	if ($this->view_it_price) {
@@ -121,7 +123,8 @@ for ($i=1; $row=sql_fetch_array($result); $i++) {
 					<div style='float:left;width:440px; height:80px;'>
 						<div class='sct_cost'>
 							<div class='sct_cost_title'>구매가</div>
-							<div style='width:225px;font-weight:bold;'>$구매가</div>
+							<div style='width:225px;font-weight:bold;'>$구매가 ($달러가)</div>
+							
 						</div>
 						
 						$카드가
