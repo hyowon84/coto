@@ -1244,6 +1244,7 @@ var grid_todoClearance = Ext.create('Ext.grid.Panel',{
 		{ text : '송금코드',						dataIndex : 'wr_id',						width:130,			hidden:true	},
 		{ text : '%',									dataIndex : 'complete_per',			width:60	},
 		{ text : '발주코드',						dataIndex : 'iv_id',						width:120	},
+		{ text : '딜러',								dataIndex : 'iv_dealer',				width:80	},
 		{ text : '인보이스번호',				dataIndex : 'iv_order_no',			width:120	},
 		{ text : '발주서 별칭',				dataIndex : 'iv_name',					width:150	},
 		{
@@ -1262,7 +1263,6 @@ var grid_todoClearance = Ext.create('Ext.grid.Panel',{
 		{ text : 'TAX',								dataIndex : 'iv_tax',						width:100,			style:'text-align:center',		align:'right',		renderer: Ext.util.Format.numberRenderer('0,000.00'), 	summaryType : 'sum',		summaryRenderer : rendererSummaryFormat },
 		{ text : 'SHIP.FEE',					dataIndex : 'iv_shippingfee',		width:120,			style:'text-align:center',		align:'right',		renderer: Ext.util.Format.numberRenderer('0,000.00'), 	summaryType : 'sum',		summaryRenderer : rendererSummaryFormat },
 		{ text : '환율(송금)',					dataIndex : 'wr_exch_rate',			width:100,			style:'text-align:center',		align:'right',		editor: { allowBlank : false }	},
-		{ text : '딜러',								dataIndex : 'iv_dealer',				width:80	},
 		{ text : '인보이스날짜',				dataIndex : 'iv_date',					sortable: true,	summaryType: 'max',		renderer: Ext.util.Format.dateRenderer('Y-m-d'),	summaryRenderer: Ext.util.Format.dateRenderer('Y-m-d'),		field: { xtype: 'datefield' }	},
 		{ text : '담당자',							dataIndex : 'admin_name',				width:120	},
 		{ text : '발주서메모',					dataIndex : 'iv_memo',					width:170,		editor: { allowBlank : false }	},
