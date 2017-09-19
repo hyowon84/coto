@@ -89,7 +89,7 @@ function process($data) {
 	$주문금액 = number_format($주문금액);
 
 	
-	$mh_send_message = "[{$data[ac_code]}] 경매낙찰! {$주문금액}원, 신한은행 110408552944 코인즈투데이";
+	$mh_send_message = "[{$data[ac_code]}] 경매낙찰! {$주문금액}원(배송비포함), 신한은행 110408552944 코인즈투데이";
 	$result = $SMS->Add($mh_hp, $mh_reply, '', '', $mh_send_message, '', 1);
 	
 	$result = $SMS->Send();

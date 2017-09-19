@@ -2,6 +2,14 @@
 include_once('./_common.php');
 
 
+$sql = "SELECT	GI.gpcode,
+								GI.links
+				FROM		gp_info GI
+				WHERE		GI.end_date <= NOW()
+				AND			GI.stats IN ('00')
+				AND			GI.gpcode NOT IN ('QUICK','BULLION','AUCTION')
+";
+
 function process($data) {
 	global $config;
 
@@ -16,14 +24,13 @@ function process($data) {
 		return $data[ac_code]." 패스<br>";
 	}
 
-	$상품명 = str_replace("'","\'",$data[it_name]);
-	
+
 	/* 낙찰정보 주문하기 */
 	$ins_sql = "	INSERT	INTO 	clay_order		SET
 																gpcode = 'AUCTION',
 																od_id = '$data[ac_code]',
 																it_id = '$data[it_id]',
-																it_name = '$상품명',
+																it_name = '$data[it_name]',
 																it_qty	=	'1',
 																it_org_price = '$data[bid_last_price]',
 																stats = '00',
@@ -148,7 +155,6 @@ $ac_sql = "	SELECT	AC.*,
 						AND			OD.CNT IS NULL
 						AND			BID.MAX_BID_LAST_PRICE > 0
 						AND			AC.bid_stats <= '05'
-						ORDER BY AC.bid_price DESC, AC.bid_last_price DESC
 ";
 $result = sql_query($ac_sql);
 
