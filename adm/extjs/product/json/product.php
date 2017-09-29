@@ -49,6 +49,19 @@ if($mode == 'gplist') {
 													) AS ITEM_CNT
 									FROM		DUAL
 									UNION ALL
+									SELECT	'JAEGO' AS gpcode,
+													'코투 재고칸' AS gpcode_name,
+													'00' AS stats,
+													'상시진행' AS stats_name,
+													'2016-01-01' AS start_date,
+													'2999-12-31' AS end_date,
+													'2999-12-31 00:00:00' AS reg_date,
+													(	SELECT	COUNT(*)
+														FROM		g5_shop_group_purchase GP
+														WHERE		GP.location != ''
+													) AS ITEM_CNT
+									FROM		DUAL
+									UNION ALL
 									SELECT	GI.gpcode,
 													GI.gpcode_name,
 													GI.stats,
@@ -129,6 +142,51 @@ else if($mode == 'itemlist') {
 		";
 //		echo $SELECT_SQL;
 	}
+	else if($gpcode == 'JAEGO') {
+			/* 카테고리 CT */
+			$SELECT_SQL = "	SELECT	
+														T.gp_id,
+														T.ca_id,
+														T.location,
+														T.gp_img,
+														T.gp_name,
+														T.gp_update_time,
+														T.gp_price_type,
+														T.gp_metal_type,
+														T.gp_metal_don,
+														T.gp_spotprice_type,
+														T.gp_spotprice,
+														T.gp_order,
+														T.gp_use,
+														
+														T.gp_price,
+														T.gp_usdprice,
+														T.gp_realprice,
+														T.gp_price_org,
+														T.gp_buy_max_qty,
+														T.only_member,
+														
+														/*최초재고값 + 발주수량 - 실주문량*/
+														T.real_jaego,												/*실재고*/
+														T.jaego,														/*재고보정값*/
+														T.jaego_memo,												/*재고메모*/
+														IFNULL(T.CO_SUM,0) AS CO_SUM,				/*누적주문량*/
+														T.IV_SUM,														/*누적발주량*/
+														
+														T.ac_yn,								/*경매진행여부*/
+														T.ac_code,							/*경매진행코드*/
+														T.ac_qty,								/*경매진행수량*/
+														T.ac_enddate,						/*경매종료일자*/
+														T.ac_startprice,				/*경매 시작가*/
+														T.ac_buyprice,						/*경매 즉시구매가*/
+														T.ebay_id
+										FROM		$sql_admin_product
+										WHERE		1=1
+										AND			T.location != ''
+										$AND_SQL
+		";
+//		echo $SELECT_SQL;
+		}
 	/* 경매상품은 */
 	else if($gpcode == 'AUCTION') {
 		
@@ -256,6 +314,8 @@ $main_sql = "	$SELECT_SQL
 							LIMIT $start, $limit
 ";
 $result = sql_query($main_sql);
+//echo $main_sql;
+
 
 while($row = mysql_fetch_assoc($result)) {
 	foreach($row as $key => $val) {
