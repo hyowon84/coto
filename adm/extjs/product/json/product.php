@@ -112,6 +112,7 @@ else if($mode == 'itemlist') {
 														/*최초재고값 + 발주수량 - 실주문량*/
 														T.real_jaego,												/*실재고*/
 														T.jaego,														/*재고보정값*/
+														T.jaego_memo,												/*재고메모*/
 														IFNULL(T.CO_SUM,0) AS CO_SUM,				/*누적주문량*/
 														T.IV_SUM,														/*누적발주량*/
 														
@@ -209,6 +210,7 @@ else if($mode == 'itemlist') {
 														/*최초재고값 + 발주수량 - 실주문량*/
 														T.real_jaego,												/*실재고*/
 														T.jaego,														/*재고보정값*/
+														T.jaego_memo,												/*재고메모*/
 														IFNULL(T.ORDER_QTY,0) AS CO_SUM,		/*누적주문량*/
 														IFNULL(T.RIV_QTY,0) AS IV_SUM,			/*누적발주량*/
 														T.jaego,

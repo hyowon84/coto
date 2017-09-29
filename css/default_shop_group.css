@@ -1521,7 +1521,7 @@ a.btn_admin:focus, a.btn_admin:hover {text-decoration:none}
 .price_en {font-size:14px;color:#545454;position:absolute;left:220px;width:190px}
 .price_en ul li {list-style:none;float:left;margin-bottom:15px}
 
-.price_en2 {font-size:14px;color:#545454;position:relative;width:190px;margin:0px 0 0 0;}
+.price_en2 {font-size:14px;color:#545454;position:relative;margin:0px 0 0 0;}
 .price_en2 ul {padding:0;margin:0}
 .price_en2 ul li {list-style:none;float:left;margin-bottom:15px;padding:0}
 

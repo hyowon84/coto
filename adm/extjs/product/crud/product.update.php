@@ -18,6 +18,7 @@ function process($data) {
 	$ca_id = $data[ca_id];
 	$gp_id = $data[gp_id];
 	$jaego = $data[jaego];
+	$jaego_memo = $data[jaego_memo];
 	$location = $data[location];
 	$gp_name = $data[gp_name];
 	$gp_card = $data[gp_card];
@@ -71,6 +72,7 @@ function process($data) {
 														gp_usdprice = '$gp_usdprice',
 														gp_price_org = '$gp_price_org',
 														jaego = '$jaego',
+														jaego_memo = '$jaego_memo',
 														only_member = '$only_member',
 														gp_buy_max_qty = '$gp_buy_max_qty',
 														gp_price_type = '$gp_price_type',

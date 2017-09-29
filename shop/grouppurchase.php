@@ -68,7 +68,8 @@ $sql = " SELECT		T.gp_id,
 									CA.ca_include_head,
 									CA.ca_include_tail,
 									CA.ca_cert_use,
-									CA.ca_adult_use
+									CA.ca_adult_use,
+									T.USD
 					FROM		$sql_product
 									LEFT JOIN g5_shop_category CA ON (CA.ca_id = T.ca_id)
 					WHERE		1=1

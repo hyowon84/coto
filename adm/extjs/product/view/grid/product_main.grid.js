@@ -75,15 +75,35 @@ var grid_gplist = Ext.create('Ext.grid.Panel',{
 			}
 		},
 		{
-			text	: '상품수정모드',
+			text	: '상품관리모드',
 			iconCls	: 'icon-eye',
 			handler : function() {
 				//grid_orderlist;
 				for(var i=0; i < grid_itemlist.columns.length; i++) {
-					if(grid_itemlist.columns[i].groupIndex == 1) {
+					
+					if(grid_itemlist.columns[i].viewSet1 == 'Y') {
 						grid_itemlist.columns[i].show();
 					}
-					if(grid_itemlist.columns[i].groupIndex == 2) {
+					else {
+						grid_itemlist.columns[i].hide();
+					}
+					
+				}
+
+
+			}
+		},
+		{
+			text	: '재고관리모드',
+			iconCls	: 'icon-eye',
+			handler : function() {
+				//grid_orderlist;
+				for(var i=0; i < grid_itemlist.columns.length; i++) {
+
+					if(grid_itemlist.columns[i].viewSet2 == 'Y') {
+						grid_itemlist.columns[i].show();
+					}
+					else {
 						grid_itemlist.columns[i].hide();
 					}
 				}
@@ -96,11 +116,12 @@ var grid_gplist = Ext.create('Ext.grid.Panel',{
 			iconCls	: 'icon-eye',
 			handler : function() {
 				for(var i=0; i < grid_itemlist.columns.length; i++) {
-					if(grid_itemlist.columns[i].groupIndex == 1) {
-						grid_itemlist.columns[i].hide();
-					}
-					if(grid_itemlist.columns[i].groupIndex == 2) {
+
+					if(grid_itemlist.columns[i].viewSet3 == 'Y') {
 						grid_itemlist.columns[i].show();
+					}
+					else {
+						grid_itemlist.columns[i].hide();
 					}
 				}
 			}
@@ -167,7 +188,7 @@ var grid_itemlist = Ext.create('Ext.grid.Panel',{
 	},
 	columns : [
 		{
-			groupIndex:'1',
+			viewSet1:'Y',
 			xtype: 'gridcolumn',
 			dataIndex: 'gp_use',
 			text: '노출',
@@ -178,16 +199,17 @@ var grid_itemlist = Ext.create('Ext.grid.Panel',{
 			editor: Ext.create('Ext.combobox.item.yesno'),
 			renderer: rendererCombo
 		},
-		{ groupIndex:'1',		header: '회원전용',			dataIndex: 'only_member',			width: 80,		align:'center',		style:'text-align:center',		xtype: 'checkcolumn',		headerCheckbox: true,		stopSelection: false	},
-		{ groupIndex:'1',		text: '최대구매수량',		dataIndex : 'gp_buy_max_qty',	width: 100,		editor:{allowBlank:true}	},
-		{ groupIndex:'',		text: 'img',						dataIndex : 'gp_img',					width: 60,		renderer: function(value){	return '<img src="' + value + '" width=40 height=40 />';}			},
-		{ groupIndex:'',		text: '상품코드',				dataIndex : 'gp_id',					width: 160		},
-		{ groupIndex:'',		text: 'EBAY_IT_ID',			dataIndex : 'ebay_id',				width: 140,		editor:{allowBlank:true},		style:'text-align:center',	align:'center',		hidden:true	},
-		{ groupIndex:'1',		text: '카테고리',				dataIndex : 'ca_id',					width: 100,		editor:{allowBlank:true}	},
-		{ groupIndex:'1',		text: '재고위치',				dataIndex : 'location',				width: 100,		editor:{allowBlank:true}	},		
-		{ groupIndex:'',		text: '품목명',					dataIndex : 'gp_name',				width: 350,		editor:{allowBlank:false}	},
+		{ viewSet1:'Y',		header: '회원전용',			dataIndex: 'only_member',			width: 80,		align:'center',		style:'text-align:center',		xtype: 'checkcolumn',		headerCheckbox: true,		stopSelection: false	},
+		{ viewSet1:'Y',		text: '최대구매수량',		dataIndex : 'gp_buy_max_qty',	width: 100,		editor:{allowBlank:true}	},
+		{ viewSet1:'Y', viewSet2:'Y', viewSet3:'Y',		text: 'img',						dataIndex : 'gp_img',					width: 60,		renderer: function(value){	return '<img src="' + value + '" width=40 height=40 />';}			},
+		{ viewSet1:'Y', viewSet2:'Y', viewSet3:'Y',		text: '상품코드',				dataIndex : 'gp_id',					width: 160		},
+		{ viewSet1:'Y', viewSet3:'Y',		text: 'EBAY_IT_ID',			dataIndex : 'ebay_id',				width: 140,		editor:{allowBlank:true},		style:'text-align:center',	align:'center',		hidden:true	},
+		{ viewSet1:'Y',	viewSet2:'Y',	text: '카테고리',				dataIndex : 'ca_id',					width: 100,		editor:{allowBlank:true}	},
+		{ viewSet1:'Y',	viewSet2:'Y',	text: '재고위치',				dataIndex : 'location',				width: 100,		editor:{allowBlank:true}	},
+		{ viewSet1:'Y',	viewSet2:'Y',	text: '재고메모',				dataIndex : 'jaego_memo',				width: 100,		editor:{allowBlank:true}	},
+		{ viewSet1:'Y', viewSet2:'Y', viewSet3:'Y',		text: '품목명',					dataIndex : 'gp_name',				width: 350,		editor:{allowBlank:false}	},
 		{
-			groupIndex:'1',
+			viewSet1:'Y',
 			xtype: 'gridcolumn',
 			dataIndex: 'gp_card',
 			text: '카드가노출',
@@ -195,11 +217,11 @@ var grid_itemlist = Ext.create('Ext.grid.Panel',{
 			width: 90,
 			align:'center',
 			allowBlank: true,
-			editor: Ext.create('Ext.combobox.item.yesno'),
+			editor: Ext.create('Ext.combobox.item.yn'),
 			renderer: rendererCombo
 		},
 		{
-			groupIndex:'1',
+			viewSet1:'Y',
 			xtype: 'gridcolumn',
 			dataIndex: 'gp_price_type',
 			text: '가격유형',
@@ -209,12 +231,12 @@ var grid_itemlist = Ext.create('Ext.grid.Panel',{
 			editor: Ext.create('Ext.combobox.item.pricetype'),
 			renderer: rendererCombo
 		},
-		{ groupIndex:'1',		text: '판매가(￦)',				dataIndex : 'gp_price',				width: 140,		editor:{allowBlank:true},		style:'text-align:center',	align:'right',	renderer: Ext.util.Format.numberRenderer('0,000')	},
-		{ groupIndex:'1',		text: '달러가($)',				dataIndex : 'gp_usdprice',		width: 140,		editor:{allowBlank:true},		style:'text-align:center',	align:'right',	renderer: Ext.util.Format.numberRenderer('0,000.00')	},
-		{ groupIndex:'1',		text: '스팟시세가(￦)',		dataIndex : 'gp_realprice',		width: 140,		style:'text-align:center',		align:'right',					renderer: Ext.util.Format.numberRenderer('0,000')	},
-		{ groupIndex:'1',		text: '매입가($)',				dataIndex : 'gp_price_org',		width: 140,		editor:{allowBlank:true},		style:'text-align:center',	align:'right',	renderer: Ext.util.Format.numberRenderer('0,000.00')	},
+		{ viewSet1:'Y',		text: '판매가(￦)',				dataIndex : 'gp_price',				width: 140,		editor:{allowBlank:true},		style:'text-align:center',	align:'right',	renderer: Ext.util.Format.numberRenderer('0,000')	},
+		{ viewSet1:'Y',		text: '달러가($)',				dataIndex : 'gp_usdprice',		width: 140,		editor:{allowBlank:true},		style:'text-align:center',	align:'right',	renderer: Ext.util.Format.numberRenderer('0,000.00')	},
+		{ viewSet1:'Y',		text: '스팟시세가(￦)',		dataIndex : 'gp_realprice',		width: 140,		style:'text-align:center',		align:'right',					renderer: Ext.util.Format.numberRenderer('0,000')	},
+		{ viewSet1:'Y',		text: '매입가($)',				dataIndex : 'gp_price_org',		width: 140,		editor:{allowBlank:true},		style:'text-align:center',	align:'right',	renderer: Ext.util.Format.numberRenderer('0,000.00')	},
 		{
-			groupIndex:'1',
+			viewSet1:'Y',
 			xtype: 'gridcolumn',
 			dataIndex: 'gp_metal_type',
 			text: '유형',
@@ -224,9 +246,9 @@ var grid_itemlist = Ext.create('Ext.grid.Panel',{
 			editor: Ext.create('Ext.combobox.item.metaltype'),
 			renderer: rendererCombo
 		},
-		{ groupIndex:'1',		text: 'Oz',							dataIndex : 'gp_metal_don',		width: 60,		style :'text-align:center',	align:'right',	renderer: Ext.util.Format.numberRenderer('0,000.00'),	editor:{allowBlank:false}	},
+		{ viewSet1:'Y',		text: 'Oz',							dataIndex : 'gp_metal_don',		width: 60,		style :'text-align:center',	align:'right',	renderer: Ext.util.Format.numberRenderer('0,000.00'),	editor:{allowBlank:false}	},
 		{
-			groupIndex:'1',
+			viewSet1:'Y',
 			xtype: 'gridcolumn',
 			dataIndex: 'gp_spotprice_type',
 			text: '스팟유형',
@@ -247,18 +269,18 @@ var grid_itemlist = Ext.create('Ext.grid.Panel',{
 				return (value) ? value : '' ;
 			}
 		},
-		{ groupIndex:'1',		text: '+스팟시세',					dataIndex : 'gp_spotprice',		width: 120,			style :'text-align:center',	align:'right',	renderer: Ext.util.Format.numberRenderer('0,000.00'),	editor:{allowBlank:false}	},
-		{ groupIndex:'1',		text: 'b.실재고(c-d+e)',		dataIndex : 'real_jaego',			width: 130,			style :'text-align:center',	align:'right',	renderer: Ext.util.Format.numberRenderer('0,000')		},		
-		{ groupIndex:'1',		text: 'c.최초재고값',			dataIndex : 'jaego',					width: 120,			style :'text-align:center',	align:'right',	renderer: Ext.util.Format.numberRenderer('0,000'),	editor:{allowBlank:false}	},
-		{ groupIndex:'1',		text: 'd.누적주문',				dataIndex : 'CO_SUM',					width: 120,			style :'text-align:center',	align:'right',	renderer: Ext.util.Format.numberRenderer('0,000')		},
-		{ groupIndex:'1',		text: 'e.누적발주',				dataIndex : 'IV_SUM',					width: 90,			style :'text-align:center',	align:'right',	renderer: Ext.util.Format.numberRenderer('0,000')		},
-		{ groupIndex:'1',		text: '가격옵션수',				dataIndex : 'OPT_CNT',				style :'text-align:center',				align:'right',			renderer: Ext.util.Format.numberRenderer('0,000') },
-		{ groupIndex:'1',		text: '정렬순서',					dataIndex : 'gp_order',				width: 80,			editor:{allowBlank:true},		style:'text-align:center',	align:'right'	},
-		{ groupIndex:'1',		text: '등록일',	 					dataIndex : 'gp_update_time',	width: 160,			sortable: true,		renderer: Ext.util.Format.dateRenderer('Y-m-d H:i:s')	},
+		{ viewSet1:'Y',		text: '+스팟시세',					dataIndex : 'gp_spotprice',		width: 120,			style :'text-align:center',	align:'right',	renderer: Ext.util.Format.numberRenderer('0,000.00'),	editor:{allowBlank:false}	},
+		{ viewSet1:'Y',	viewSet2:'Y',	text: 'b.실재고(c-d+e)',		dataIndex : 'real_jaego',			width: 130,			style :'text-align:center',	align:'right',	renderer: Ext.util.Format.numberRenderer('0,000')		},		
+		{ viewSet1:'Y',	viewSet2:'Y',	text: 'c.최초재고값',			dataIndex : 'jaego',					width: 120,			style :'text-align:center',	align:'right',	renderer: Ext.util.Format.numberRenderer('0,000'),	editor:{allowBlank:false}	},
+		{ viewSet1:'Y',	viewSet2:'Y',	text: 'd.누적주문',				dataIndex : 'CO_SUM',					width: 120,			style :'text-align:center',	align:'right',	renderer: Ext.util.Format.numberRenderer('0,000')		},
+		{ viewSet1:'Y',	viewSet2:'Y',	text: 'e.누적발주',				dataIndex : 'IV_SUM',					width: 90,			style :'text-align:center',	align:'right',	renderer: Ext.util.Format.numberRenderer('0,000')		},
+		{ viewSet1:'Y',		text: '가격옵션수',				dataIndex : 'OPT_CNT',				style :'text-align:center',				align:'right',			renderer: Ext.util.Format.numberRenderer('0,000') },
+		{ viewSet1:'Y',		text: '정렬순서',					dataIndex : 'gp_order',				width: 80,			editor:{allowBlank:true},		style:'text-align:center',	align:'right'	},
+		{ viewSet1:'Y',		text: '등록일',	 					dataIndex : 'gp_update_time',	width: 160,			sortable: true,		renderer: Ext.util.Format.dateRenderer('Y-m-d H:i:s')	},
 
 		{
 			xtype: 'gridcolumn',
-			groupIndex:'2',
+			viewSet3:'Y',
 			dataIndex: 'ac_yn',
 			text: '경매',
 			style:'text-align:left',
@@ -268,11 +290,11 @@ var grid_itemlist = Ext.create('Ext.grid.Panel',{
 			editor: Ext.create('Ext.combobox.item.yn'),
 			renderer: rendererCombo
 		},
-		{ groupIndex:'2',		text: '경매진행코드',			dataIndex : 'ac_code',				width: 140,			style:'text-align:center',	align:'center'	},
-		{ groupIndex:'2',		text: '경매마감일',	 			dataIndex : 'ac_enddate',			width: 160,			sortable: true,							field: { xtype: 'datefield',	format:'Y-m-d H:i:s' }},
-		{ groupIndex:'2',		text: '경매수량',					dataIndex : 'ac_qty',					width: 120,			editor:{allowBlank:true},		style:'text-align:center',	align:'right',	renderer: Ext.util.Format.numberRenderer('0,000')	},
-		{ groupIndex:'2',		text: '경매시작가',				dataIndex : 'ac_startprice',	width: 140,			editor:{allowBlank:true},		style:'text-align:center',	align:'right',	renderer: Ext.util.Format.numberRenderer('0,000')	},
-		{ groupIndex:'',		text: ' ',	 							dataIndex : ' ',							width: 60,			sortable: false	}
+		{ viewSet3:'Y',		text: '경매진행코드',			dataIndex : 'ac_code',				width: 140,			style:'text-align:center',	align:'center'	},
+		{ viewSet3:'Y',		text: '경매마감일',	 			dataIndex : 'ac_enddate',			width: 160,			sortable: true,							field: { xtype: 'datefield',	format:'Y-m-d H:i:s' }},
+		{ viewSet3:'Y',		text: '경매수량',					dataIndex : 'ac_qty',					width: 120,			editor:{allowBlank:true},		style:'text-align:center',	align:'right',	renderer: Ext.util.Format.numberRenderer('0,000')	},
+		{ viewSet3:'Y',		text: '경매시작가',				dataIndex : 'ac_startprice',	width: 140,			editor:{allowBlank:true},		style:'text-align:center',	align:'right',	renderer: Ext.util.Format.numberRenderer('0,000')	},
+		{ viewSet1:'Y', viewSet2:'Y', viewSet3:'Y',		text: ' ',	 							dataIndex : ' ',							width: 60,			sortable: false	}
 	],
 	tbar : [
 				{	xtype: 'label',	text: '검색어 : ',		autoWidth:true,	style : 'font-weight:bold;'},
@@ -462,7 +484,7 @@ var grid_aucPrdList = Ext.create('Ext.grid.Panel',{
 	columns : [
 		{
 			xtype: 'gridcolumn',
-			groupIndex:'2',
+			viewSet3:'Y',
 			dataIndex: 'ac_yn',
 			text: '경매',
 			style:'text-align:left',
@@ -472,15 +494,15 @@ var grid_aucPrdList = Ext.create('Ext.grid.Panel',{
 			editor: Ext.create('Ext.combobox.item.yn'),
 			renderer: rendererCombo
 		},
-		{ groupIndex:'2',		text: '경매진행코드',	dataIndex : 'ac_code',						width: 125,		style:'text-align:center',	align:'center'	},
-		{ groupIndex:'2',		text: '경매마감일',	 	dataIndex : 'ac_enddate',					width: 160,		sortable: true,							renderer: Ext.util.Format.dateRenderer('Y-m-d H:i:s'),		field: { xtype: 'datefield',	format:'Y-m-d H:i:s' }},
-		{ groupIndex:'2',		text: '현재입찰가',		dataIndex : 'MAX_BID_LAST_PRICE',	width: 130,		style:'text-align:center',	align:'right',	renderer: Ext.util.Format.numberRenderer('0,000')	},
-		{ groupIndex:'2',		text: '최고입찰가',		dataIndex : 'MAX_BID_PRICE',			width: 130,		style:'text-align:center',	align:'right',	renderer: Ext.util.Format.numberRenderer('0,000')	},
-		{ groupIndex:'2',		text: '경매시작가',		dataIndex : 'ac_startprice'	,			width: 130,		editor:{allowBlank:true},		style:'text-align:center',	align:'right',	renderer: Ext.util.Format.numberRenderer('0,000')	},
-		{ groupIndex:'2',		text: '경매수량',			dataIndex : 'ac_qty',							width: 90,		style:'text-align:center',	align:'right',	renderer: Ext.util.Format.numberRenderer('0,000')	},
-		{ groupIndex:'1',		text: 'img',					dataIndex : 'gp_img',							width: 60,		renderer: function(value){	return '<img src="' + value + '" width=40 height=40 />';}			},
-		{ groupIndex:'1',		text: '상품코드',			dataIndex : 'gp_id',							width: 160		},
-		{ groupIndex:'1',		text: '품목명',				dataIndex : 'gp_name',						width: 350,		editor:{allowBlank:false}	},
+		{ viewSet3:'Y',		text: '경매진행코드',	dataIndex : 'ac_code',						width: 125,		style:'text-align:center',	align:'center'	},
+		{ viewSet3:'Y',		text: '경매마감일',	 	dataIndex : 'ac_enddate',					width: 160,		sortable: true,							renderer: Ext.util.Format.dateRenderer('Y-m-d H:i:s'),		field: { xtype: 'datefield',	format:'Y-m-d H:i:s' }},
+		{ viewSet3:'Y',		text: '현재입찰가',		dataIndex : 'MAX_BID_LAST_PRICE',	width: 130,		style:'text-align:center',	align:'right',	renderer: Ext.util.Format.numberRenderer('0,000')	},
+		{ viewSet3:'Y',		text: '최고입찰가',		dataIndex : 'MAX_BID_PRICE',			width: 130,		style:'text-align:center',	align:'right',	renderer: Ext.util.Format.numberRenderer('0,000')	},
+		{ viewSet3:'Y',		text: '경매시작가',		dataIndex : 'ac_startprice'	,			width: 130,		editor:{allowBlank:true},		style:'text-align:center',	align:'right',	renderer: Ext.util.Format.numberRenderer('0,000')	},
+		{ viewSet3:'Y',		text: '경매수량',			dataIndex : 'ac_qty',							width: 90,		style:'text-align:center',	align:'right',	renderer: Ext.util.Format.numberRenderer('0,000')	},
+		{ viewSet1:'Y',		text: 'img',					dataIndex : 'gp_img',							width: 60,		renderer: function(value){	return '<img src="' + value + '" width=40 height=40 />';}			},
+		{ viewSet1:'Y',		text: '상품코드',			dataIndex : 'gp_id',							width: 160		},
+		{ viewSet1:'Y',		text: '품목명',				dataIndex : 'gp_name',						width: 350,		editor:{allowBlank:false}	},
 		{ 									text: ' ',	 					dataIndex : ' ',									width: 60,		sortable: false	}
 	],
 	tbar : [

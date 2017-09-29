@@ -27,6 +27,7 @@ $it[it_price] = ceil($it[po_cash_price] / 100) * 100;
 $it[it_card_price] = ceil($it[po_cash_price] * 1.03 / 100) * 100;
 
 $구매가 = $it[it_price];
+$달러가 = $it[it_price]/$it[USD];
 $카드가 = $it[it_card_price];
 ?>
 
@@ -92,8 +93,8 @@ $(document).ready(function(){
 							<?
 							if($it[gp_card] == '사용안함') {
 							?>
-								<li style="width:200px;">카드가</li>
-								<li style="width:219px;text-align:right">
+								<li style="width:50px;">카드가</li>
+								<li style="width:168px;text-align:right">
 									<span id="it_view_card_price"><?= display_price($카드가); ?></span>
 									<input type="hidden" id="it_card_price" name="it_card_price"
 												 value="<?= ceil($it[it_card_price] / 100) * 100; ?>">
@@ -101,10 +102,14 @@ $(document).ready(function(){
 							<?
 							}
 							?>
-							<li style="width:200px;">구매가</li>
-							<li style="width:219px;text-align:right">
+							<li style="width:50px;">구매가</li>
+							<li style="width:168px;text-align:right">
 								 <span id="it_view_price"><?=display_price($구매가); ?></span>
 								  <input type="hidden" id="it_price" name="it_price" value="<?=ceil($it[it_price] / 100) * 100; ?>">
+							</li>
+							<li style="width:50px;">달러가</li>
+							<li style="width:168px;text-align:right">
+								<span id="it_view_price">$<?=number_format($달러가,2,'.',''); ?></span>
 							</li>
 						</ul>
 					</div>
