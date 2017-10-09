@@ -23,7 +23,7 @@ if (strlen($gpcode_list) > 1) {
 	$ob = $sqli->query($find_sql);
 
 	while($row = $ob->fetch_array()) {
-		if($row[hphone]) $연락처.= str_replace("-","",$row[hphone]).";";
+		if($row[hphone] && strlen($row[hphone]) > 5) $연락처.= str_replace("-","",$row[hphone]).";";
 	}
 
 	db_log($find_sql."\r\n$연락처\r\n$sms_text",'ICODE_SMS',"공구 단체SMS/LMS");
