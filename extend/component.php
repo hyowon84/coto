@@ -4,7 +4,7 @@
 *
 * 접속, 발송, URL발송, 결과등의 실질적으로 쓰이는 모든 부분이 포함되어 있다.
 */
-class SMS {
+class SMSN {
     var $icode_key;
     var $socket_host;
     var $socket_port;

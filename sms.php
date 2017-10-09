@@ -30,7 +30,7 @@ $icode_key	= "a274fd7208b128a35590ac33ce8f625b";
  *  발신번호등록은 아이코드 사이트 로그인 후 상단 발신번호 등록를 참고 하시기 바랍니다.
  */
 
-$SMS = new SMS;		/* SMS 모듈 클래스 생성 */
+$SMS = new SMSN;		/* SMS 모듈 클래스 생성 */
 $SMS->SMS_con($socket_host,$socket_port,$icode_key);		/* 아이코드 서버 접속 */
 
 /**
