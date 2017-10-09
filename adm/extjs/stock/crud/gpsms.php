@@ -13,7 +13,8 @@ if (strlen($gpcode_list) > 1) {
 	$gpcode = str_replace("\'","'",$_POST[gpcode_list]);
 	$sms_text = $_POST[sms_text];
 	
-	$find_sql = "	SELECT	CL.hphone
+	$find_sql = "	SELECT	DISTINCT
+												CL.hphone
 								FROM		clay_order CL
 								WHERE		CL.gpcode IN ($gpcode)
 								AND			CL.hphone != ''
