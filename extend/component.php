@@ -30,9 +30,17 @@ class SMSN {
         $strData = preg_replace("/\r/","\n",$strData);
 
         // 문자 타입별 Port 설정.
-        $sendType = strlen($strData)>90 ? 1 : 0; // 0: SMS / 1: LMS
-        if($sendType==0) $strSubject = "";
 
+
+				if(strlen($strData)>90) {	// 0: SMS / 1: LMS
+					$sendType = 1;
+					$strSubject = "코인즈투데이 안내문자입니다";
+				}
+				else {
+					$sendType = 0;
+					$strSubject = "";
+				}
+			
         $strCallBack = CutChar($strCallBack, 12);       // 회신번호
         
         /** LMS 제목 **/
@@ -42,10 +50,10 @@ class SMSN {
         2.설정에서 제목필드보기 설정 Enable  -> 제목을 넣지 않을 경우 제목없음으로 자동표시
             
         제목의 첫글자에 "<",">", 개행문자가 있을경우 단말기종류 및 통신사에 따라 메세지 전송실패 -> 글자를 체크하거나 취환처리요망
-        $strSubject = str_replace("\r\n", " ", $strSubject); 
-        $strSubject = str_replace("<", "[", $strSubject); 
-        $strSubject = str_replace(">", "]", $strSubject); 
         */
+				$strSubject = str_replace("\r\n", " ", $strSubject);
+				$strSubject = str_replace("<", "[", $strSubject);
+				$strSubject = str_replace(">", "]", $strSubject);
 
         $strSubject = CutChar($strSubject,30);
         $strData    = CutChar($strData,2000);

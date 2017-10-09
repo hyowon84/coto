@@ -338,6 +338,54 @@ var grid_gpinfo = Ext.create('Ext.grid.Panel',{
 				store_orderitems.getProxy().extraParams = null;
 				store_orderitems.load();
 			}
+		},
+		{
+			text	: '단체SMS/LMS',
+			id		: 'sendSMS',
+			iconCls	: 'icon-sms',
+			handler: function() {
+				var sm = grid_gpinfo.getSelectionModel().getSelection()[0];
+				
+				if(sm) {
+					if( sm == '' ) {
+						Ext.Msg.alert('알림','공구를 선택해주세요');
+						return false;
+					}
+
+					if (winGpSms.isVisible()) {
+						winGpSms.hide(this, function() {
+							Ext.getCmp('winGpSmsForm').reset();
+						});
+					} else {
+						winGpSms.show(this, function() {
+							var sm = grid_gpinfo.getSelection();
+							Ext.getCmp('winGpSmsForm').reset();
+							
+
+							var v_gpcode = '';
+							var v_title = '';
+
+							for(var i = 0; i < sm.length; i++) {	//sm[i].data
+								v_gpcode += "'"+sm[i].data.gpcode + "',";
+								v_title += sm[i].data.gpcode_name + ', ';
+							}
+
+							v_gpcode = v_gpcode.substr(0,v_gpcode.length-1);
+							v_title = v_title.substr(0,v_title.length-2);
+							
+							var v = sm[0];
+							v.data.gpcode_list = v_gpcode;
+							v.data.gpcodename_list = v_title;
+							v.data.sms_text = v_title;
+							
+							Ext.getCmp('winGpSmsForm').loadRecord(v);
+						});
+					}
+					
+				}
+				
+				
+			}
 		}
 	],
 	bbar : {

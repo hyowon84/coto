@@ -171,7 +171,7 @@ if( !(strlen($_SESSION[ss_id]) > 3) ) {
 	$_SESSION[ss_id] = $랜덤세션;
 }
 
-//$sqli = new mysqli(G5_MYSQL_HOST, G5_MYSQL_USER, G5_MYSQL_PASSWORD, G5_MYSQL_DB);
+$sqli = new mysqli(G5_MYSQL_HOST, G5_MYSQL_USER, G5_MYSQL_PASSWORD, G5_MYSQL_DB);
 
 
 //==============================================================================

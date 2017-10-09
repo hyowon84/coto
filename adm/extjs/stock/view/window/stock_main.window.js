@@ -1,4 +1,105 @@
 
+/*공구참고사항 메모수정 팝업창*/
+var winGpSms = Ext.create('widget.window', {
+	id : 'winGpSms',
+	title: '공구 단체문자',
+	reference: 'popupWindow',
+	header: {
+		titlePosition: 2,
+		titleAlign: 'center'
+	},
+	closable: true,
+	closeAction: 'hide',
+	maximizable: false,
+	resizable : false,
+	animateTarget: 'winGpSms',		/*발주*/
+	width: 500,
+	minWidth: 350,
+	height: 300,
+	layout: {
+		type: 'border',
+		padding: 5
+	},
+	items: [
+		{
+			xtype : 'form',
+			id : 'winGpSmsForm',
+			url : '/adm/extjs/stock/crud/gpsms.php',
+			width: '100%',
+			height : 250,
+			autoHeight : true,
+			split: false,
+			collapsible: false,
+			floatable: true,
+			border: 0,
+			style: 'margin-top:10px;',
+			items:[
+				{
+					xtype: 'container',
+					flex: 1,
+					width: '100%',
+					style : 'float:left;',
+					items: [
+						{
+							xtype: 'textfield',
+							fieldLabel: '공구코드',
+							name : 'gpcode_list',
+							width : '98%',
+							readOnly : true,
+							hidden : false
+						},
+						{
+							xtype: 'textfield',
+							fieldLabel: '공구명',
+							name : 'gpcodename_list',
+							width : '98%',
+							margin: '0 0 10 6',
+							readOnly : true
+						},
+						{
+							xtype: 'textarea',
+							fieldLabel: '문자내용',
+							labelAlign : 'top',
+							width: '98%',
+							height : 180,
+							margin: '0 0 10 6',
+							style:'float:left;',
+							name: 'sms_text'
+						}
+					]
+				}
+			],	//items item end
+			buttons: [{
+				text: '취소',
+				handler: function() {
+					Ext.getCmp('winGpSmsForm').getForm().reset();
+					winGpSms.hide();
+				}
+			}, {
+				text: '전송',
+				handler: function() {
+					var form = Ext.getCmp('winGpSmsForm');
+
+					form.submit({
+						params : {	mode : 'memo'	},
+						success : function(form,action) {
+							Ext.Msg.alert('수정완료', action.result.message);
+							form.reset();
+							winGpSms.hide();
+						},
+						failure : function (form, action) {
+							Ext.Msg.alert('수정실패', action.result ? action.result.message : '실패하였습니다');
+						}
+					});
+
+				}
+			}]
+		}
+	]
+});
+
+
+
 
 /*공구참고사항 메모수정 팝업창*/
 var winMemoGpinfo = Ext.create('widget.window', {
