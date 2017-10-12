@@ -340,6 +340,51 @@ var grid_gpinfo = Ext.create('Ext.grid.Panel',{
 			}
 		},
 		{
+			id: 'refresh_gp',
+			text: '공구상품목록재설정',
+			iconCls: '',
+			handler: function () {
+				var sm = grid_gpinfo.getSelectionModel().getSelection()[0];
+
+				if(sm) {
+					if( sm == '' ) {
+						Ext.Msg.alert('알림','공구를 선택해주세요');
+						return false;
+					}
+
+					if (winGpRefr.isVisible()) {
+						winGpRefr.hide(this, function() {
+							Ext.getCmp('winGpRefrForm').reset();
+						});
+					} else {
+						winGpRefr.show(this, function() {
+							var sm = grid_gpinfo.getSelection();
+							Ext.getCmp('winGpRefrForm').reset();
+
+
+							var v_gpcode = '';
+							var v_title = '';
+
+							for(var i = 0; i < sm.length; i++) {	//sm[i].data
+								v_gpcode += "'"+sm[i].data.gpcode + "',";
+								v_title += sm[i].data.gpcode_name + ', ';
+							}
+
+							v_gpcode = v_gpcode.substr(0,v_gpcode.length-1);
+							v_title = v_title.substr(0,v_title.length-2);
+
+							var v = sm[0];
+							v.data.gpcode_list = v_gpcode;
+							v.data.gpcodename_list = v_title;
+
+							Ext.getCmp('winGpRefrForm').loadRecord(v);
+						});
+					}
+
+				}
+			}
+		},
+		{
 			text	: '단체SMS/LMS',
 			id		: 'sendSMS',
 			iconCls	: 'icon-sms',

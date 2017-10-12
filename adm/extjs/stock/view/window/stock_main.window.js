@@ -1,5 +1,95 @@
+/*공구 상품정보 갱신창*/
+var winGpRefr = Ext.create('widget.window', {
+	id : 'winGpRefr',
+	title: '공구할 상품목록 갱신',
+	reference: 'popupWindow',
+	header: {
+		titlePosition: 2,
+		titleAlign: 'center'
+	},
+	closable: true,
+	closeAction: 'hide',
+	maximizable: false,
+	resizable : false,
+	animateTarget: 'winGpRefr',		/*발주*/
+	width: 500,
+	minWidth: 350,
+	height: 300,
+	layout: {
+		type: 'border',
+		padding: 5
+	},
+	items: [
+		{
+			xtype : 'form',
+			id : 'winGpRefrForm',
+			url : '/adm/extjs/stock/crud/gprefresh.php',
+			width: '100%',
+			height : 250,
+			autoHeight : true,
+			split: false,
+			collapsible: false,
+			floatable: true,
+			border: 0,
+			style: 'margin-top:10px;',
+			items:[
+				{
+					xtype: 'container',
+					flex: 1,
+					width: '100%',
+					style : 'float:left;',
+					items: [
+						{
+							xtype: 'textfield',
+							fieldLabel: '공구코드',
+							name : 'gpcode_list',
+							width : '98%',
+							readOnly : true,
+							hidden : false
+						},
+						{
+							xtype: 'textfield',
+							fieldLabel: '공구명',
+							name: 'gpcodename_list',
+							width: '98%',
+							margin: '0 0 10 6',
+							readOnly: true
+						}
+					]
+				}
+			],	//items item end
+			buttons: [{
+				text: '취소',
+				handler: function() {
+					Ext.getCmp('winGpRefrForm').getForm().reset();
+					winGpRefr.hide();
+				}
+			}, {
+				text: '상품목록 재설정',
+				handler: function() {
+					var form = Ext.getCmp('winGpRefrForm');
 
-/*공구참고사항 메모수정 팝업창*/
+					form.submit({
+						params : {	mode : 'memo'	},
+						success : function(form,action) {
+							Ext.Msg.alert('수정완료', action.result.message);
+							form.reset();
+							winGpRefr.hide();
+						},
+						failure : function (form, action) {
+							Ext.Msg.alert('수정실패', action.result ? action.result.message : '실패하였습니다');
+						}
+					});
+
+				}
+			}]
+		}
+	]
+});
+
+
+
+/*공구SMS 팝업창*/
 var winGpSms = Ext.create('widget.window', {
 	id : 'winGpSms',
 	title: '공구 단체문자',

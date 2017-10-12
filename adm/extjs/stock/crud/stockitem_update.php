@@ -93,9 +93,9 @@ if(count($it_id) > 0) {
 	sql_query(" DELETE FROM  product_ipinfo WHERE	it_id IN ($gpid_list) ");
 	$ip_sql = "	INSERT	INTO	product_ipinfo
 											(	it_id,
-												ip_qty,
-												jaego,
-												od_qty,
+												ip_qty,		/*입고값*/
+												jaego,		/*재고값*/
+												od_qty,		/*주문수량값*/
 												ip_yn
 											)
 											SELECT	GP.gp_id AS it_id,
