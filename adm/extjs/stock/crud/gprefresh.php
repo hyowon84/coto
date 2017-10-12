@@ -55,13 +55,12 @@ if (strlen($gpcode_list) > 1) {
 														links = \"$신규코드_list\"
 									WHERE		gpcode = '$gpcode'
 		";
+		$sqli->query($upd_sql);
 		$log_upd_sql.= "$upd_sql \r\n\r\n";
 		$log_msg .= "$arr[gpcode_name] 공동구매 상품목록은 $신규코드_list 으로 목록설정완료<br><br> ";
 	}
 
-//	echo $log_upd_sql;
-	
-//	db_log($log_upd_sql,'gp_info',"공동구매 상품목록 새로설정");
+	db_log($log_upd_sql,'gp_info',"공동구매 상품목록 새로설정");
 
 }
 
