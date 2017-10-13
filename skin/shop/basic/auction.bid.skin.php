@@ -107,6 +107,14 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
 				</td>
 			</tr>
 		</table>
+
+		<h3>*경매관련안내</h3>
+		<table width="500">
+			<tr>
+				<td width="150" style="font-size:1em; color:red; font-weight:bold;">코인즈투데이 쇼핑몰에서 진행하는 경매상품의 경우 시중 판매가보다 저렴하게 낙찰할수 있는 기회를 드리고 있다보니 교환, 환불이 불가능하오니 이점 참고하셔서 신중한 입찰 부탁드립니다 감사합니다</td>
+			</tr>
+		</table>
+		
 		<?
 		if($경매진행여부 == 'Y') {
 			?>

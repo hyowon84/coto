@@ -87,6 +87,12 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
 			<dt>최대구매가능수량</dt>
 			<dd>1개</dd>
 		</dl-->
+
+		<h3>*경매관련안내</h3>
+		<dl>
+			<dd style="width:100%; font-size:1em; color:red; font-weight:bold;">코인즈투데이 쇼핑몰에서 진행하는 경매상품의 경우 시중 판매가보다 저렴하게 낙찰할수 있는 기회를 드리고 있다보니 교환, 환불이 불가능하오니 이점 참고하셔서 신중한 입찰 부탁드립니다 감사합니다</dd>
+		</dl>
+		
 		<p>
 		<h3>*입찰정보</h3>		
 		<dl>
@@ -111,8 +117,8 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
 				현재 <?=number_format($최소입찰금액)?>원부터<br>입찰 가능합니다<br>
 			</dd>
 		</dl>
-		</p>
 		
+		</p>
 		<?
 		if($경매진행여부 == 'Y') {
 			?>
@@ -122,6 +128,7 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
 			<?
 		}
 		?>
+
 	</div>
 
 	</body>
