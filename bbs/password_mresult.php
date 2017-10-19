@@ -2,7 +2,12 @@
 define('_INDEX_', true);
 include_once('./_common.php');
 
-include_once('./_head.sub.php');
+if (G5_IS_MOBILE) {
+	include_once(G5_MSHOP_PATH.'/head.php');
+} else {
+	include_once('./_head.sub.php');
+}
+
 
 if(!$_POST[return_id]){
 	$chk = sql_fetch("select count(*) as cnt from {$g5['g5_idpw_auth_table']} where code='".$_POST[hs_cert_svc_tx_seqno]."' and mb_id='".$_POST[name]."' and mb_hp='".$_POST[tel_no]."' and mb_birth='".$_POST[birthday]."' ");
