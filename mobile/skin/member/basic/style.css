@@ -3,6 +3,40 @@
 
 /* ### 기본 스타일 커스터마이징 시작 ### */
 
+
+
+/* 아이디,비번 찾기 */
+#idpw_chk {margin:0 auto;padding:50px 0;vertical-align:middle;}
+#idpw_chk h1{text-align:center;}
+#idpw_chk .box{clear:both;margin:40px 0 0 0;background:#fff;height:440px;}
+#idpw_chk .box .title{ padding:0px;}
+#idpw_chk .box .title li{float:left;margin:0px; width:44%;text-align:center;color:#fff;background:#cfcfcf;font-size:1em; padding:10px;cursor:pointer;}
+#idpw_chk .box .title .on{color:#fff;background:#223753;}
+
+
+#idpw_chk .box .input_box{margin:20px 0 0 0;text-align:center;}
+#idpw_chk .box .input_box .input{width:200px;height:70px;background:#f1f1f1;border:1px #dfdede solid;}
+#idpw_chk .box .sub_box{clear:both;}
+#idpw_chk .box .id_find{display:block;}
+#idpw_chk .box .pw_find{display:none;}
+#idpw_chk .box .sub_box li{float:left;padding:10px;}
+#idpw_chk .box .sub_box .title{padding:0 0 0 20px;color:#3db2ff;font-size:15px;font-weight:bold;}
+#idpw_chk .box .sub_box .des{clear:both;margin:10px 0 0 0;padding:0px;height:20px;color:#8d8d8d;}
+#idpw_chk .box .sub_box .des1{clear:both;margin:20px 0 0 0;padding:0px;height:35px;color:#56ccc8;}
+#idpw_chk .box .sub_box .des1 span{float:left;}
+#idpw_chk .box .sub_box .submit{clear:both;text-align:center;margin:20px 0 0 0;}
+#idpw_chk .box .sub_box .submit .submit_btn{cursor:pointer;}
+#idpw_chk .box .sub_box .line{clear:both;margin:10px 0 0 0;padding:0 20px 0 20px;height:1px;border-top:1px #dfdede solid;}
+#idpw_chk input#name{background:transparent url('/img/idpw_ico1.gif') 15px 45% no-repeat;background-color:#f1f1f1;}
+#idpw_chk input#tel_no{background:transparent url('/img/idpw_ico3.gif') 15px 45% no-repeat;background-color:#f1f1f1;}
+#idpw_chk .box .sub_box .choice{clear:both;margin:20px 0 0 0;padding:0 20px 0 20px;text-align:center;}
+#idpw_chk .box .sub_box .input{clear:both;margin:20px 0 0 0;padding:0 20px 0 20px;}
+#idpw_chk .frm_input {display:block;margin:0 0 5px 0px;background-color:#f1f1f1;width:140px;height:32px;color:#c6c6c6;padding:0 0 0 40px;}
+
+
+
+
+
 /* 버튼 --------------------------------------------------------*/
 .mbskin a.btn01 {
     float: right;

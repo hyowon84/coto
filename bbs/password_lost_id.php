@@ -49,10 +49,10 @@ if (G5_IS_MOBILE) {
 			<input type="hidden" name="gender" value="">		<!-- 성별 : 남(1), 여(0) -->
 
 			<div class="box">
-				<div class="title" style="width:230px; margin:0px auto;">
+				<div class="title">
 					<ul>
-						<li onclick="goto_url('./password_lost_id.php');" style="float:left; width:auto;">아이디 찾기</li>
-						<li class="on" onclick="goto_url('./password_lost.php');" style="float:left; width:auto; margin-left:50px;">비밀번호 찾기</li>
+						<li class="on" onclick="goto_url('./password_lost_id.php');">아이디 찾기</li>
+						<li onclick="goto_url('./password_lost.php');">비밀번호 찾기</li>
 					</ul>
 				</div>
 				<div class="cl" style="height:1px;border-top:2px #223753 solid;"></div>
@@ -95,7 +95,7 @@ if (G5_IS_MOBILE) {
 							<div class="input">
 								<div style="margin:10px 0 0 0;">
 
-									<div style="color:##8d8d8d; width:200px; margin:0px auto;">
+									<div style="color:##8d8d8d;">
 										내외국인구분&nbsp;&nbsp;&nbsp;
 										<input type="radio" name="nation" value="1" checked>내국인
 										<input type="radio" name="nation" value="2">외국인</br></br>
@@ -106,7 +106,7 @@ if (G5_IS_MOBILE) {
 										<input type="radio" name="tel_com_cd" value="04">알뜰폰SKT
 									</div>
 
-									<div style="width:150px; margin:0px auto; margin-top:10px; margin-bottom:10px;">
+									<div style="margin-top:10px; margin-bottom:10px;">
 										<div style="width:auto;"><input type="text" name="name" id="name" required class="frm_input" value="이름"></div>
 										<div style="width:auto;"><input type="text" name="tel_no" id="tel_no" required class="frm_input" value="휴대폰번호"></div>
 									</div>
