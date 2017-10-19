@@ -19,7 +19,7 @@ if (strlen($gpcode_list) > 1) {
 								FROM		clay_order CL
 								WHERE		CL.gpcode IN ($gpcode)
 								AND			CL.hphone != ''
-								AND			CL.stats <= 30
+								AND			CL.stats < 20
 								GROUP BY CL.hphone
 	";
 	$ob = $sqli->query($find_sql);
