@@ -28,10 +28,8 @@ if (strlen($gpcode_list) > 1) {
 	
 	if($stats > 0) {
 		
-		$msg = "스타트";
-		$연락처 = str_replace("-","",$ob[hphone]).";";
-		
 		while($row = $ob->fetch_array()) {
+			
 			if($row[hphone] && strlen($row[hphone]) > 5) {
 				$연락처 = str_replace("-","",$row[hphone]).";";
 				$calc_sql = "	SELECT	T.od_id,
@@ -65,12 +63,13 @@ if (strlen($gpcode_list) > 1) {
 				$msg .= sendSms($연락처,$내용모음);
 				db_log($find_sql."\r\n$연락처\r\n$sms_text",'ICODE_SMS',"공구 단체SMS/LMS");
 				
-			} else {
-				$msg = "에러";
 			}
-
-			
+			else {
+				$msg .= "에러";
+			}
 		}
+
+		$msg .= "종료";
 	}
 	else {
 		while ($row = $ob->fetch_array()) {
