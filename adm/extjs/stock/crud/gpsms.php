@@ -12,6 +12,7 @@ if (strlen($gpcode_list) > 1) {
 
 	$gpcode = str_replace("\'","'",$_POST[gpcode_list]);
 	$sms_text = $_POST[sms_text];
+	$stats = $_POST[stats];
 	
 	$find_sql = "	SELECT	DISTINCT
 												CL.hphone
