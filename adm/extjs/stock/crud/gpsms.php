@@ -27,6 +27,10 @@ if (strlen($gpcode_list) > 1) {
 	
 	
 	if($stats > 0) {
+		
+		$msg = "스타트";
+		$연락처 = str_replace("-","",$ob[hphone]).";";
+		
 		while($row = $ob->fetch_array()) {
 			if($row[hphone] && strlen($row[hphone]) > 5) {
 				$연락처 = str_replace("-","",$row[hphone]).";";
@@ -48,18 +52,21 @@ if (strlen($gpcode_list) > 1) {
 															
 				";
 				$re = $sqli->query($calc_sql);
+				
 				while ($od = $re->fetch_array()) {
 					$mh_send_message = $sms_text;
 					$mh_send_message = preg_replace("/{주문ID}/", $od['od_id'], $mh_send_message);
 					$mh_send_message = preg_replace("/{주문금액}/", $od['TOTAL_PRICE'], $mh_send_message);
 					$mh_send_message = preg_replace("/{회사명}/", '코인스투데이', $mh_send_message);
 					$mh_send_message = preg_replace("/{운송장번호}/", $od['delivery_invoice'], $mh_send_message);
-					$내용모음.=$mh_send_message."<br>1행\r\n2행";
+					$내용모음.=$mh_send_message."<br>";
 				}
 
 				$msg .= sendSms($연락처,$내용모음);
 				db_log($find_sql."\r\n$연락처\r\n$sms_text",'ICODE_SMS',"공구 단체SMS/LMS");
 				
+			} else {
+				$msg = "에러";
 			}
 
 			
@@ -73,12 +80,7 @@ if (strlen($gpcode_list) > 1) {
 		db_log($find_sql . "\r\n$연락처\r\n$sms_text", 'ICODE_SMS', "공구 단체SMS/LMS");
 		$msg = sendSms($연락처, $sms_text);
 	}
-
 	
-
-
-
-
 
 }
 
