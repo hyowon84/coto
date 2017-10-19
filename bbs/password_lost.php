@@ -127,7 +127,7 @@ if (G5_IS_MOBILE) {
 								본인확인 용도 외에 사용되거나 저장되지 않습니다.</i>
 						</span>
 							</div>
-							<div class="submit" style="width:190px; margin:0px auto;">
+							<div class="submit" style="margin:0px auto;">
 								<img src="<?=G5_URL?>/img/idpw_find_bn.gif" class="submit_btn" onClick="jsSubmit();">
 							</div>
 						</li>

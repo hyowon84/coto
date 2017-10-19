@@ -19,7 +19,7 @@
 #idpw_chk .box .sub_box{clear:both;}
 #idpw_chk .box .id_find{display:block;}
 #idpw_chk .box .pw_find{display:none;}
-#idpw_chk .box .sub_box li{float:left;padding:10px;}
+#idpw_chk .box .sub_box li{float:left;padding:10px; width:100%;}
 #idpw_chk .box .sub_box .title{padding:0 0 0 20px;color:#3db2ff;font-size:15px;font-weight:bold;}
 #idpw_chk .box .sub_box .des{clear:both;margin:10px 0 0 0;padding:0px;height:20px;color:#8d8d8d;}
 #idpw_chk .box .sub_box .des1{clear:both;margin:20px 0 0 0;padding:0px;height:35px;color:#56ccc8;}
@@ -30,7 +30,7 @@
 #idpw_chk input#name{background:transparent url('/img/idpw_ico1.gif') 15px 45% no-repeat;background-color:#f1f1f1;}
 #idpw_chk input#tel_no{background:transparent url('/img/idpw_ico3.gif') 15px 45% no-repeat;background-color:#f1f1f1;}
 #idpw_chk .box .sub_box .choice{clear:both;margin:20px 0 0 0;padding:0 20px 0 20px;text-align:center;}
-#idpw_chk .box .sub_box .input{clear:both;margin:20px 0 0 0;padding:0 20px 0 20px;}
+#idpw_chk .box .sub_box .input{clear:both; width:200px; margin:0px auto;}
 #idpw_chk .frm_input {display:block;margin:0 0 5px 0px;background-color:#f1f1f1;width:140px;height:32px;color:#c6c6c6;padding:0 0 0 40px;}
 
 
