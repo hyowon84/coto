@@ -1752,6 +1752,7 @@ div.table.cell.unitname {
 .seclock_inp { font-size:2.250em; height:30px; background-color:#e0e3e7; border:0px; border-bottom:1px solid #c4c4c4; }
 .seclock_ta { width:98%;height:75px; background-color:white; border:1px solid #6b798c; }
 
+.submit_bn img { width:44%;}
 .submit_bn.cancel { float:left; width:48%; height:25px; color:#6b798c; background-color:white; border:1px solid #4b535e; text-align:center; padding-top:7px; font-size:1.083em;font-weight: bold; }
 .submit_bn.submit { float:right; width:48%; height:25px; color:#fff; background-color:#4b535e; border:1px solid #4b535e; text-align:center; padding-top:7px; font-size:1.083em;font-weight: bold; }
 

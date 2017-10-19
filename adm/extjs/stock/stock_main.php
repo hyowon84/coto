@@ -38,6 +38,13 @@ Ext.define('globalData', {
 	sigleton: true,
 	temp:	null
 });
+var v_SmsMsg = new Array();
+
+<?
+	foreach($v_sms as $stats => $msg) {
+		echo "v_SmsMsg[".$stats."] = '".$msg."';\r\n";
+	}
+?>
 </script>
 
 

@@ -88,6 +88,17 @@ var winGpRefr = Ext.create('widget.window', {
 });
 
 
+var combo_smsStats = Ext.create('Ext.combobox.order.stats', {
+	extend: 'Ext.form.ComboBox',
+	xtype: 'combobox',
+	fieldLabel : '문자예제',
+	id : 'combo_smsStats',
+	name: 'stats',
+	width : 190,
+	margin: '0 0 10 6',
+	style : 'float:left;'
+});
+
 
 /*공구SMS 팝업창*/
 var winGpSms = Ext.create('widget.window', {
@@ -101,11 +112,11 @@ var winGpSms = Ext.create('widget.window', {
 	closable: true,
 	closeAction: 'hide',
 	maximizable: false,
-	resizable : false,
+	resizable : true,
 	animateTarget: 'winGpSms',		/*발주*/
 	width: 500,
-	minWidth: 350,
-	height: 300,
+	minWidth: 450,
+	height: 450,
 	layout: {
 		type: 'border',
 		padding: 5
@@ -116,7 +127,7 @@ var winGpSms = Ext.create('widget.window', {
 			id : 'winGpSmsForm',
 			url : '/adm/extjs/stock/crud/gpsms.php',
 			width: '100%',
-			height : 250,
+			height : 350,
 			autoHeight : true,
 			split: false,
 			collapsible: false,
@@ -136,6 +147,7 @@ var winGpSms = Ext.create('widget.window', {
 							name : 'gpcode_list',
 							width : '98%',
 							readOnly : true,
+							margin: '0 0 10 6',
 							hidden : false
 						},
 						{
@@ -146,6 +158,20 @@ var winGpSms = Ext.create('widget.window', {
 							margin: '0 0 10 6',
 							readOnly : true
 						},
+						combo_smsStats,
+						{
+							xtype : 'button',
+							id		: 'smsStatsUpdBtn',
+							text	: '변경',
+							iconCls	: 'icon-table_edit',
+							width : 60,
+							style : 'margin-left:10px; float:left;',
+							handler : function() {
+								var smsStats = combo_smsStats.getValue();
+								Ext.getCmp('sms_text').setValue(v_SmsMsg[smsStats]);
+							}
+						},
+						
 						{
 							xtype: 'textarea',
 							fieldLabel: '문자내용',
@@ -154,7 +180,28 @@ var winGpSms = Ext.create('widget.window', {
 							height : 180,
 							margin: '0 0 10 6',
 							style:'float:left;',
-							name: 'sms_text'
+							id : 'sms_text',
+							name: 'sms_text',
+							enableKeyEvents: true,
+							listeners : {
+								keyup: function(f,e){
+									Ext.getCmp('sizecnt').setValue(this.getValue().length);
+								}
+							}
+						},
+
+						{
+							xtype: 'textfield',
+							readOnly: true,
+							id : 'sizecnt',
+							border: 0,
+							style : 'margin-left:10px; float:left; font-weight:bold;',
+							width : 40
+						},
+						{	xtype: 'label',
+							fieldLabel: 'alert',
+							style : 'float:left; font-weight:bold; font:1.0em color:red;',
+							text: 'byte(max : 80byte )'
 						}
 					]
 				}
