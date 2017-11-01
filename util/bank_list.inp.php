@@ -51,7 +51,7 @@ if($_FILES['excelfile4']['tmp_name']) {
 	$fail_count = 0;
 	$succ_count = 0;
 
-	for ($i = 8; $i <= $data->sheets[0]['numRows']; $i++) {
+	for ($i = 5; $i <= $data->sheets[0]['numRows']; $i++) {
 		$total_count++;
 
 //	$번호					= addslashes($data->sheets[0]['cells'][$i][1]);	//1번은 번호, 사용안함
