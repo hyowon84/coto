@@ -45,11 +45,15 @@ global $is_admin;
 
 <table id='bank_excel_tb' border='0'>
 	<tr>
-		<th>(신)공구통장</th>
+		<th>우리은행 공구/지출 통합통장</th>
+		<td><input type='file' name='excelfile4' /></td>
+	</tr>
+	<tr>
+		<th>신한은행 공구통장</th>
 		<td><input type='file' name='excelfile3' /></td>
 	</tr>
 	<tr>
-		<th>지출통장</th>
+		<th>신한은행 지출통장</th>
 		<td><input type='file' name='excelfile2' /></td>
 	</tr>
 
@@ -62,15 +66,35 @@ global $is_admin;
 		<th>(구)공구통장</th>
 		<td><input type='file' name='excelfile1' /></td>
 	</tr>
-		
 	<tr>
 		<td colspan='2' height='40' align='center'>
 			<input type="submit" value="입력" />
 		</td>
 	</tr>
+	
 </table>
 
 </form>
+
+
+<!-- AJAX DB업데이트 -->
+<!--form name='bank_form2' method="post" action="bank_list.update.php" enctype="MULTIPART/FORM-DATA" autocomplete="off">
+
+	<table  border='0'>
+		<tr>
+			<th>입출금내역 현금영수증처리번호 업데이트</th>
+			<td><input type='file' name='excelfile' /></td>
+		</tr>
+
+		<tr>
+			<td colspan='2' height='40' align='center'>
+				<input type="submit" value="입력" />
+			</td>
+		</tr>
+	</table>
+
+</form-->
+
 
 
 <div>
