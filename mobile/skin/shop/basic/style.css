@@ -427,7 +427,7 @@
 .sit_ov_input {margin:0 1px 0 0;padding:2px 2px 3px;border:0px solid #b8c9c2;background:transparent;vertical-align:middle}
 #sit_ov_tbl button {margin:0 1px 0 0}
 
-#it_view_card_price , #it_view_price { float:right;font-size:1.083em;color:#5d5d5d }
+#it_view_card_price , #it_view_price, .it_view_price { float:right;font-size:1.083em;color:#5d5d5d }
 .sit_qty_minus  {float:right;width:20px;height:20px;margin-right: 4px; }
 .sit_qty_plus   {float:right;width:20px;height:20px;}
 .sit_frm_input  {float:right;width:22%;height:20px;margin-right: 4px;background:#fff;color:#8a8a8a;border:2px #cecece solid;font-size: 1em}

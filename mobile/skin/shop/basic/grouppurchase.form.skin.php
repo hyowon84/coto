@@ -77,6 +77,12 @@ $카드가 = $it[it_card_price];
 				<span id="it_view_price">구매가 <?=display_price($구매가)?></span>
 				<input type="hidden" id="it_price" name="it_price" value="<?=$구매가?>">
 			</div>
+
+			<div style="padding:10px 0">
+				<span class="it_view_price">달러가 $<?=number_format($달러가,2,'.',''); ?></span>
+				<input type="hidden" id="it_card_price" name="it_card_price" value="<?= $달러가 ?>">
+			</div>
+			
 			<?
 			if($it[gp_card] == '사용안함') {
 			?>
