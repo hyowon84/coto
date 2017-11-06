@@ -24,6 +24,9 @@ for ($i=1; $row=sql_fetch_array($result); $i++) {
 	//재고가 있는경우에만 장바구니 및 주문이 가능
 	$po_cash_price = $row[po_cash_price];
 	$po_card_price = ceil($po_cash_price * 1.03 / 100) * 100;
+	$dollar = $po_cash_price / ($row[USD] * 1.14);
+	$달러가 = "$".number_format($dollar,2,'.','');
+	
 	
 	if($is_admin == 'super') $재고 = ($row[real_jaego] > 0) ? "남은수량 ".$row[real_jaego]."개<br>" : "남은수량 0개<br>";
 	
@@ -71,10 +74,11 @@ for ($i=1; $row=sql_fetch_array($result); $i++) {
 							</div>
 						</div>
 						<div class=\"sct_cost1\" >
-							<div class=\"sct_cost_title\">카드가
+							<div class=\"sct_cost_title\">달러가
 								<span>";
 									if ($this->view_it_price) {
-										echo display_price($po_card_price)."\n";
+//										echo display_price($po_card_price)."\n";
+										echo $달러가;
 									}
 					echo "</span>
 							</div>
