@@ -100,22 +100,22 @@ function imageview(id, w, h)
 </style>
 
 <style>
-<?
-$sql = "SELECT	*
-				FROM		comcode CC
-				WHERE		1=1
-				AND			CC.ctype	IN ('clayorder','gpinfo','invoice','bankdb')
-				AND			CC.col		IN ('stats','bank_type')
-				ORDER BY CC.ctype ASC, CC.col ASC, CC.order ASC
-";
-$result = sql_query($sql);
-
-while( $code = mysql_fetch_array($result)) {
-	echo ".".$code[ctype]."_".$code[col]."_".$code[code]." {	background-color:$code[bgcolor]; } \r\n";
-	echo ".".$code[ctype]."_".$code[col]."_".$code[code].":hover {	background-color:white; } \r\n";
-	echo ".x-grid-item-selected .".$code[ctype]."_".$code[col]."_".$code[code]." { background-color:white; !important } \r\n";
-}
-?>
+	<?
+	$sql = "SELECT	*
+					FROM		comcode CC
+					WHERE		1=1
+					AND			CC.ctype	IN ('clayorder','gpinfo','invoice','bankdb')
+					AND			CC.col		IN ('stats','bank_type')
+					ORDER BY CC.ctype ASC, CC.col ASC, CC.order ASC
+	";
+	$result = sql_query($sql);
+	
+	while( $code = mysql_fetch_array($result)) {
+		echo ".".$code[ctype]."_".$code[col]."_".$code[code]." {	background-color:$code[bgcolor]; } \r\n";
+		echo ".".$code[ctype]."_".$code[col]."_".$code[code].":hover {	background-color:white; } \r\n";
+		echo ".x-grid-item-selected .".$code[ctype]."_".$code[col]."_".$code[code]." { background-color:white; !important } \r\n";
+	}
+	?>
 </style>
 
 <div id="hd" class='noprint'>

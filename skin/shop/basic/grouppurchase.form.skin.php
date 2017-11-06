@@ -27,7 +27,7 @@ $it[it_price] = ceil($it[po_cash_price] / 100) * 100;
 $it[it_card_price] = ceil($it[po_cash_price] * 1.03 / 100) * 100;
 
 $구매가 = $it[it_price];
-$달러가 = $it[it_price]/$it[USD];
+$달러가 = $it[it_price] / ($it[USD] * 1.14);
 $카드가 = $it[it_card_price];
 ?>
 

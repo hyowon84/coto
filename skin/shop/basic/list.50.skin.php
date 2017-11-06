@@ -105,7 +105,7 @@ for ($i=1; $row=sql_fetch_array($result); $i++) {
 
 	if ($this->view_it_price) {
 		$구매가 = display_price($po_cash_price, $row['it_tel_inq'])."\n";
-		$dollar = $po_cash_price / $row[USD];
+		$dollar = $po_cash_price / ($row[USD] * 1.14);
 		$달러가 = "$".number_format($dollar,2,'.','');
 	}
 

@@ -728,7 +728,7 @@ function makeHtmlGpPrdList() {
 			$it[card_price] = ceil($it[cash_price] * 1.03 / 100) * 100;
 			$jaego = ($it[real_jaego] > 0) ? $it[real_jaego] : 0;
 			$카드가 = ($it[gp_card] == '사용안함') ? "카드가 : ".number_format($it[card_price])."원<br>" : "";
-			$dollar = $it[cash_price] / $it[USD];
+			$dollar = $it[cash_price] / ($it[USD] * 1.14);
 			$달러가 = "$".number_format($dollar,2,'.','');
 			
 			$imgthumb = getThumb($it);
@@ -873,7 +873,7 @@ function makeHtmlCatePrdList() {
 			$jaego = ($it[real_jaego] > 0) ? $it[real_jaego] : 0;
 			$카드가 = ($it[gp_card] == '사용안함') ? "카드가 : ".number_format($it[card_price])."원<br>" : "";
 
-			$dollar = $it[cash_price] / $it[USD];
+			$dollar = $it[cash_price] / ($it[USD] * 1.14);
 			$달러가 = "$".number_format($dollar,2,'.','');
 			
 			$imgthumb = getThumb($it);
