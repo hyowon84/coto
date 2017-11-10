@@ -191,18 +191,23 @@ if(!$cart_cnt) {
 
 else if($cart_cnt > 0) {
 	/* 옵션 고유ID 생성 SQL    by. JHW */
-	$seq_sql = "	SELECT	CONCAT(	'PB',
-																		DATE_FORMAT(now(),'%Y%m%d'),
-																		LPAD(COALESCE(	(	SELECT	MAX(SUBSTR(od_id,11,4))
-																											FROM		clay_order_info
-																											WHERE		od_id LIKE CONCAT('%',DATE_FORMAT(now(),'%Y%m%d'),'%')
-																											ORDER BY od_id DESC
-																										)
-																		,'0000') +1,4,'0')
-														)	AS oid
-										FROM		DUAL
-	";
-	list($od_id) = mysql_fetch_array(sql_query($seq_sql));
+//	$seq_sql = "	SELECT	CONCAT(	'PB',
+//																		DATE_FORMAT(now(),'%Y%m%d'),
+//																		LPAD(COALESCE(	(	SELECT	MAX(SUBSTR(od_id,11,4))
+//																											FROM		clay_order_info
+//																											WHERE		od_id LIKE CONCAT('%',DATE_FORMAT(now(),'%Y%m%d'),'%')
+//																											ORDER BY od_id DESC
+//																										)
+//																		,'0000') +1,4,'0')
+//														)	AS oid
+//										FROM		DUAL
+//	";
+//	list($od_id) = mysql_fetch_array(sql_query($seq_sql));
+	
+	//주문ID 생성, 마이크로타임까지 계산
+	include "/inc/makeOrderId.php";
+	
+	
 	$succ_cnt = $fail_cnt = 0;
 
 	/* 전체신청상품 주문서 작성 */
@@ -403,7 +408,7 @@ if($볼륨가적용 == 'Y') {
 }
 else	/* 볼륨가미적용 */
 {
-	$mh_send_message = "[{$od_id}] 금액:{$주문금액}원, 신한은행 110408552944 코인즈투데이";
+	$mh_send_message = "[{$od_id}] 금액:{$주문금액}원, 우리은행 1005503165645 투데이(주)";
 
 	$comment = "{$성공메시지}{$경고메시지}주문번호는 {$od_id}입니다.\\n상담시 필요하니 기록해두시기 바랍니다";
 }
