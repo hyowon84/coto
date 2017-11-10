@@ -43,6 +43,7 @@ if($it_id) {
 							AND			(CL.mb_id = '$mb_id' OR CL.mb_id = '$ss_id')
 							AND			CL.stats >= '00'
 							AND			CL.stats <= '60'
+							AND			CL.od_date >= DATE_FORMAT(DATE_ADD(NOW(),INTERVAL -1 DAY ),'%Y-%m-%d')
 							GROUP BY CL.mb_id, CL.it_id
 	";
 	$sumdata = mysql_fetch_array(sql_query($od_sql));
