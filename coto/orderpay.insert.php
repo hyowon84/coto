@@ -191,21 +191,21 @@ if(!$cart_cnt) {
 
 else if($cart_cnt > 0) {
 	/* 옵션 고유ID 생성 SQL    by. JHW */
-//	$seq_sql = "	SELECT	CONCAT(	'PB',
-//																		DATE_FORMAT(now(),'%Y%m%d'),
-//																		LPAD(COALESCE(	(	SELECT	MAX(SUBSTR(od_id,11,4))
-//																											FROM		clay_order_info
-//																											WHERE		od_id LIKE CONCAT('%',DATE_FORMAT(now(),'%Y%m%d'),'%')
-//																											ORDER BY od_id DESC
-//																										)
-//																		,'0000') +1,4,'0')
-//														)	AS oid
-//										FROM		DUAL
-//	";
-//	list($od_id) = mysql_fetch_array(sql_query($seq_sql));
+	$seq_sql = "	SELECT	CONCAT(	'PB',
+																		DATE_FORMAT(now(),'%Y%m%d'),
+																		LPAD(COALESCE(	(	SELECT	MAX(SUBSTR(od_id,11,4))
+																											FROM		clay_order_info
+																											WHERE		od_id LIKE CONCAT('%',DATE_FORMAT(now(),'%Y%m%d'),'%')
+																											ORDER BY od_id DESC
+																										)
+																		,'0000') +1,4,'0')
+														)	AS oid
+										FROM		DUAL
+	";
+	list($od_id) = mysql_fetch_array(sql_query($seq_sql));
 	
 	//주문ID 생성, 마이크로타임까지 계산
-	include "/inc/makeOrderId.php";
+//	include "/inc/makeOrderId.php";
 	
 	
 	$succ_cnt = $fail_cnt = 0;
