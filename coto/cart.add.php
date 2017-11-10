@@ -32,8 +32,7 @@ if($it_id) {
 	$담을수량 = ($it_qty + $chk[CT_SUM]);	//장바구니 총 담는수량
 
 
-
-
+	
 	$od_sql = "	SELECT	CL.mb_id,
 											CL.it_id,
 											SUM(it_qty) AS SUM_QTY

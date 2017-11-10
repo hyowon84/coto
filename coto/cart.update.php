@@ -45,16 +45,50 @@ if($mode == 'CHK_UPDATE') {
 			$chk = mysql_fetch_array(sql_query($chk_sql));
 			
 			
+			
+			
 			//현재재고(상품재고-총주문신청수량)보다 내가담을수량(카트수량 + 내가담을수량)이 현재재고보다 오버되면 못담게 수정
 			//현재재고 = DB의 jaego    APMEX는 정보갱신시 차감, COTO는 누적주문수량을 빼줘야함.
 			$현재재고 = $chk[real_jaego];
 			$담을수량 = ($it_qty);
 
-			if( $현재재고 < $담을수량 ) {
+
+			$od_sql = "	SELECT	CL.mb_id,
+													CL.it_id,
+													SUM(it_qty) AS SUM_QTY
+									FROM		clay_order CL
+									WHERE		1=1
+									AND			CL.it_id = '$it_id'
+									AND			(CL.mb_id = '$mb_id' OR CL.mb_id = '$ss_id')
+									AND			CL.stats >= '00'
+									AND			CL.stats <= '60'
+									AND			CL.od_date >= DATE_FORMAT(DATE_ADD(NOW(),INTERVAL -1 DAY ),'%Y-%m-%d')
+									GROUP BY CL.mb_id, CL.it_id
+			";
+			$sumdata = mysql_fetch_array(sql_query($od_sql));
+
+			$최소구매수량 = $chk[gp_buy_min_qty];
+			$최대구매수량 = $chk[gp_buy_max_qty];
+			$주문내역수량 = ($sumdata[SUM_QTY]) ? $sumdata[SUM_QTY] : 0;
+			$회원전용여부 = ($chk[only_member] && !$mb_id);
+			$누적담을수량 = ($담을수량 + $주문내역수량);
+
+
+			if($회원전용여부) {
+				$error++;
+				$msg .= strip_tags($chk[it_name]." 해당상품은 회원만 구매가 가능합니다.\\r\\n");
+			}
+			else if( $현재재고 < $담을수량 ) {
 				$error++;
 				$msg .= strip_tags($chk[it_name]." 해당상품의 장바구니에 담을수량(총 {$담을수량}ea)이 현재 재고수량({$현재재고}ea)을 초과하였습니다.\\r\\n");
 			}
-			else {
+			//최대구매수량초과
+			else if($최대구매수량 < $누적담을수량) {
+				$error++;
+				$msg .= strip_tags($chk[it_name]." 해당상품의 구매가능수량(총 {$최대구매수량}ea)을 초과(현재 주문수량{$누적담을수량}ea)하였습니다.\\r\\n");
+			}
+			else
+			{
 				$upd_sql = "UPDATE	coto_cart		SET
 													it_qty = '$it_qty'
 										$WHERE_CART
