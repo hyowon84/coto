@@ -8,7 +8,7 @@ include_once('./_common.php');
 
 $ss_id = $_SESSION[ss_id];
 $mb_id = $member[mb_id];
-
+$fail = "1";
 
 // 브라우저에서 쿠키를 허용하지 않은 경우라고 볼 수 있음.
 if (!$ss_id && !$mb_id)
@@ -60,27 +60,26 @@ if($it_id) {
 	
 	if($회원전용여부) {
 		$msg = "본 상품은 코인즈투데이 회원만 주문이 가능한 상품입니다. 회원가입후 다시 시도해주세요";
-		$fail = true;
+		$fail = 'true';
 	}
 	//최대구매수량초과
 	else if($최대구매수량 < ($담을수량 + $주문내역수량) ) {
 		//이미 담은 수량이 있는 상태에서 더 담기시 "장바구니에 담을수 있는 수량 초과" 경고
 		if($담을수량 > 0) {
 			$msg = "장바구니에 담을수량이 최대구매수량({$최대구매수량}ea)을 초과하였습니다";
-			$fail = true;
+			$fail = 'true';
 		}
-			
 		else {
 			//하루내에 주문내역수량 + 주문하려는 수량의 합이 최대구매수량을 초과시 경고 
 			$msg = "최대구매수량({$최대구매수량}ea)을 초과하였습니다";
-			$fail = true;
+			$fail = 'true';
 		}
 	}
 
 	/*초과해서 장바구니 담는경우 에러 리턴*/
 	else if( $현재재고 < $담을수량 ) {
 		$msg = "남은수량을 초과하였습니다\r\n대량구매는 유선상으로 문의주세요";
-		$fail = true;
+		$fail = 'true';
 	}
 	
 
@@ -97,9 +96,16 @@ if($it_id) {
 		$WHERE_CART = '';
 	}
 
-	
-	
-	if(!$fail) {
+	//실패케이스
+	if($fail == 'true') {
+		$json['success'] = "true";
+		$json['msg'] = $msg;
+
+		$json_data = json_encode_unicode($json);
+		echo $json_data;
+		exit;
+	}
+	else {
 		$cart_sql = "$SQLTYPE	 coto_cart	 SET
 															ss_id = '$ss_id'
 															,mb_id = '$mb_id'			/*계정 또는 세션아이디*/
