@@ -58,27 +58,31 @@ if($it_id) {
 //	echo $od_sql;
 	
 	
-	
-	
 	if($회원전용여부) {
-		echo "80";
-		exit;
+		$msg = "본 상품은 코인즈투데이 회원만 주문이 가능한 상품입니다. 회원가입후 다시 시도해주세요";
+		$fail = true;
 	}
 	//최대구매수량초과
 	else if($최대구매수량 < ($담을수량 + $주문내역수량) ) {
-		echo "95";
-		exit;
+		//이미 담은 수량이 있는 상태에서 더 담기시 "장바구니에 담을수 있는 수량 초과" 경고
+		if($담을수량 > 0) {
+			$msg = "장바구니에 담을수량이 최대구매수량({$최대구매수량}ea)을 초과하였습니다";
+			$fail = true;
+		}
+			
+		else {
+			//하루내에 주문내역수량 + 주문하려는 수량의 합이 최대구매수량을 초과시 경고 
+			$msg = "최대구매수량({$최대구매수량}ea)을 초과하였습니다";
+			$fail = true;
+		}
 	}
 
 	/*초과해서 장바구니 담는경우 에러 리턴*/
 	else if( $현재재고 < $담을수량 ) {
-		echo "90";
-		exit;
+		$msg = "남은수량을 초과하였습니다\r\n대량구매는 유선상으로 문의주세요";
+		$fail = true;
 	}
 	
-	
-	
-
 
 	/* 장바구니에 등록된게 있으면 더하기 */
 	if( $chk[CT_SUM] > 0 && $chk[CT_ID] ) {
@@ -93,22 +97,26 @@ if($it_id) {
 		$WHERE_CART = '';
 	}
 
-	$cart_sql = "$SQLTYPE	 coto_cart	 SET
-														ss_id = '$ss_id'
-														,mb_id = '$mb_id'			/*계정 또는 세션아이디*/
-														,gpcode = '$gpcode'		/*연결된 공구코드*/
-														,it_id = '$it_id'			/*상품코드*/
-														,it_name = '$it_name'	/*상품명*/
-														$수량설정
-														$초기값
-							$WHERE_CART
-	";
-	$result = sql_query($cart_sql);
+	
+	
+	if(!$fail) {
+		$cart_sql = "$SQLTYPE	 coto_cart	 SET
+															ss_id = '$ss_id'
+															,mb_id = '$mb_id'			/*계정 또는 세션아이디*/
+															,gpcode = '$gpcode'		/*연결된 공구코드*/
+															,it_id = '$it_id'			/*상품코드*/
+															,it_name = '$it_name'	/*상품명*/
+															$수량설정
+															$초기값
+								$WHERE_CART
+		";
+		$result = sql_query($cart_sql);
+	}
 
 	if($result) {
-		echo "100";	//성공
+		$msg = "장바구니에 담았습니다";	//성공
 	} else {
-		echo "99"; //실패
+		$msg = "장바구니 담기 실패"; //실패
 	}
 
 
@@ -137,7 +145,17 @@ if($it_id) {
 
 }
 else {
-	echo "999";	//에러, 아이템존재하지 않음
+	$msg = "상품ID가 존재하지 않습니다";	//에러, 아이템존재하지 않음
 }
 
+
+
+$json['success'] = "true";
+$json['msg'] = $msg;
+
+$json_data = json_encode_unicode($json);
+echo $json_data;
+
+echo json_encode_unicode($json);
+exit;
 ?>
