@@ -32,14 +32,14 @@ if($it_id) {
 	$담을수량 = ($it_qty + $chk[CT_SUM]);	//장바구니 총 담는수량
 
 
-	
+	$회원계정조건 = (strlen($mb_id) > 4) ? "	OR	CL.mb_id = '$mb_id'	" : '';
 	$od_sql = "	SELECT	CL.mb_id,
 											CL.it_id,
 											SUM(it_qty) AS SUM_QTY
 							FROM		clay_order CL
 							WHERE		1=1
 							AND			CL.it_id = '$it_id'
-							AND			(CL.mb_id = '$mb_id' OR CL.mb_id = '$ss_id')
+							AND			( CL.mb_id = '$ss_id' $회원계정조건)
 							AND			CL.stats >= '00'
 							AND			CL.stats <= '60'
 							AND			CL.od_date >= DATE_FORMAT(DATE_ADD(NOW(),INTERVAL -1 DAY ),'%Y-%m-%d')
@@ -52,6 +52,12 @@ if($it_id) {
 	$주문내역수량 = ($sumdata[SUM_QTY]) ? $sumdata[SUM_QTY] : 0;
 	$회원전용여부 = ($chk[only_member] && !$mb_id);
 
+	
+//	echo "$최대구매수량 / $주문내역수량 / $it_qty + $chk[CT_SUM] ";
+//	echo $chk_sql;
+//	echo $od_sql;
+	
+	
 	
 	
 	if($회원전용여부) {

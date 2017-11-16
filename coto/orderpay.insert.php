@@ -205,23 +205,24 @@ else if($cart_cnt > 0) {
 	list($od_id) = mysql_fetch_array(sql_query($seq_sql));
 	
 	//주문ID 생성, 마이크로타임까지 계산
-//	include "/inc/makeOrderId.php";
+//	include "../inc/makeOrderId.php";
 	
 	
 	$succ_cnt = $fail_cnt = 0;
 
 	/* 전체신청상품 주문서 작성 */
 	//for ($i=0; $row = mysql_fetch_array($result); $i++) {
+	$회원계정조건 = (strlen($mb_id) > 4) ? "	OR	CL.mb_id = '$mb_id'	" : '';
+	
 	while($row = mysql_fetch_array($cart_result)) {
-
-
+	
 		$od_sql = "	SELECT	CL.mb_id,
 												CL.it_id,
 												SUM(it_qty) AS SUM_QTY
 								FROM		clay_order CL
 								WHERE		1=1
 								AND			CL.it_id = '$row[it_id]'
-								AND			(CL.mb_id = '$mb_id' OR CL.mb_id = '$ss_id')
+								AND			( CL.mb_id = '$ss_id' $회원계정조건)								
 								GROUP BY CL.mb_id, CL.it_id
 		";
 		$sumdata = mysql_fetch_array(sql_query($od_sql));

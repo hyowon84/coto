@@ -262,13 +262,14 @@ $(document).ready(function() {
 			{
 				$it_id = ($it_id) ? $it_id : $row[it_id];
 				/*다이렉트 주문일경우 최대구매수량을 초과시 */
+				$회원계정조건 = (strlen($mb_id) > 4) ? "	OR	CL.mb_id = '$mb_id'	" : '';
 				$od_sql = "	SELECT	CL.mb_id,
 														CL.it_id,
 														SUM(it_qty) AS SUM_QTY
 										FROM		clay_order CL
 										WHERE		1=1
 										AND			CL.it_id = '$it_id'
-										AND			(CL.mb_id = '$mb_id' OR CL.mb_id = '$ss_id')
+										AND			( CL.mb_id = '$ss_id' $회원계정조건)
 										GROUP BY CL.mb_id, CL.it_id
 				";
 				$sumdata = mysql_fetch_array(sql_query($od_sql));

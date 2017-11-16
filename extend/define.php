@@ -750,7 +750,8 @@ $sql_cartproduct = "	(	SELECT	CT.number,
 
 
 /* 장바구니 담기, 수정시에 사용하는 쿼리 */
-$WHERE_CART = "WHERE		(ss_id = '$_SESSION[ss_id]'	OR	mb_id = '$member[mb_id]')
+$회원계정조건 = (strlen($member[mb_id]) > 4) ? " 	OR	mb_id = '$member[mb_id]' " : '';
+$WHERE_CART = "WHERE		( ss_id = '$_SESSION[ss_id]'	$회원계정조건 )
 								AND			it_id = '$it_id'
 								AND			stats IN ('00')
 ";
