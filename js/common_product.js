@@ -16,33 +16,10 @@ function cart_add(mode,it_id,gpcode) {
        	},
         cache: false,
         success: function(data) {
-			var msg;
-			switch(data) {
-				case 999:
-					msg = '상품ID가 없음';
-					break;
-				case 100:
-					msg = '장바구니에 담았습니다';
-					break;
-				case 99:
-					msg = '장바구니 담기에 실패';
-					break;
-				case 95:
-					msg = '최대구매수량을 초과하였습니다';
-					break;
-				case 90:
-					msg = '남은수량을 초과하였습니다\r\n대량구매는 유선상으로 문의주세요';
-					break;
-				case 80:
-					msg = '본 상품은 코인즈투데이 회원만 주문이 가능한 상품입니다. 회원가입후 다시 시도해주세요';
-					break;
-				default:
-					msg = '잘못된실행';
-					break;
-			}
-			alert(msg);
-        }
-    });
+					alert(data.msg);
+				}
+	});
+
 }
 
 
