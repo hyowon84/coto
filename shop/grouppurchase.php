@@ -83,6 +83,15 @@ if($mode == 'jhw') {
 }
 
 
+//조회카운팅
+$upd_sql = "UPDATE	g5_shop_group_purchase GP SET
+											GP.gp_hit = GP.gp_hit + 1
+						WHERE		GP.gp_id = '$gp_id'
+";
+sql_query($upd_sql);
+
+
+
 if (G5_IS_MOBILE) {
     include_once(G5_MSHOP_PATH.'/grouppurchase.php');
     return;
