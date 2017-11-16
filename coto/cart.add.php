@@ -156,6 +156,4 @@ $json['msg'] = $msg;
 $json_data = json_encode_unicode($json);
 echo $json_data;
 
-echo json_encode_unicode($json);
-exit;
 ?>
