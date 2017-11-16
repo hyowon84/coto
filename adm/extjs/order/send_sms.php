@@ -63,7 +63,7 @@ for($i = 0; $i < count($grid); $i++) {
 	";
 	sql_query($ins_sql);
 
-	if($od[od_id] && stripos($mh_send_message,'110408552944') > 0) {
+	if($od[od_id] && stripos($mh_send_message,'은행') > 0) {
 
 		$upd_sql = "UPDATE	clay_order	SET
 													stats = '10'
