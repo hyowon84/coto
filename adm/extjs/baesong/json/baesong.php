@@ -152,7 +152,7 @@ else if($mode == 'orderlist') {
 													(IFNULL(PI.ip_qty,0) + IFNULL(PI.jaego,0) - IFNULL(OD_QTY.od_qty,0)) AS cal_qty,
 													CONCAT('[', T.gpcode_name, '] ', T.od_id, ' - 배송비(', IFNULL(T.DN_VALUE,'미설정'), ') ', IFNULL(T.delivery_price,'') , '원') AS project,
 													IF(LENGTH(GP.gp_img) > 8,GP.gp_img,'/shop/img/no_image.gif') AS gp_img,
-													
+													GP.location,
 													
 													CASE
 														WHEN	T.gpcode = 'QUICK'
