@@ -326,7 +326,7 @@ var grid_orderlist = Ext.create('Ext.grid.Panel',{
 		{ text : '주문일시',			dataIndex : 'od_date',				groupIndex : '2' },
 		{ text : '공구코드',			dataIndex : 'gpcode',					hidden:true	},
 		{ text : '공구명',				dataIndex : 'gpcode_name',		style:'text-align:center',	width:140	},
-		{ text : '상태코드',			dataIndex : 'IV_STATS',				width:70,	hidden:true	},
+		{ text : '상태코드',			dataIndex : 'IV_STATS',				width:70,		hidden:true	},
 		{ text : '+입고',				dataIndex : 'ip_qty',					width:70,		style:'text-align:center',	align:'right',	renderer: Ext.util.Format.numberRenderer('0,000'),		groupIndex : '1',		hidden:true	},
 		{ text : '+재고',				dataIndex : 'jaego',					width:70,		style:'text-align:center',	align:'right',	renderer: Ext.util.Format.numberRenderer('0,000'),		groupIndex : '1',		hidden:true	},
 		{ text : '-집계',				dataIndex : 'od_qty',					width:70,		style:'text-align:center',	align:'right',	renderer: Ext.util.Format.numberRenderer('0,000'),		groupIndex : '1',		hidden:true	},
@@ -463,6 +463,7 @@ var grid_orderlist = Ext.create('Ext.grid.Panel',{
 					var rec = Ext.create('Task', {
 									'taskId'				:	sm[i].data.taskId,
 									'projectId'			:	sm[i].data.projectId,
+									'location'			:	sm[i].data.location,
 									'project'				:	sm[i].data.project,
 									'buyer'					: sm[i].data.buyer,
 									'number'				:	sm[i].data.number,
@@ -773,6 +774,7 @@ var grid_window_baesong = Ext.create('Ext.grid.Panel',{
 		{ text : '주문자',			dataIndex : 'buyer',			width:120	},
 		{	header : 'IMG',				dataIndex : 'gp_img',			width:60,			renderer: function(value){	return '<img src="' + value + '" width=40 height=40 />';}			},
 		{ text : '상품코드',		dataIndex : 'it_id',			width:120,		hidden:true	},
+		{ text : '재고위치',		dataIndex : 'location',		width:120	},
 		{
 			text: '품목',
 			flex: 1,
