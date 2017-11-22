@@ -90,7 +90,7 @@ else if($mode == 'itemlist') {
 
 		$arrkey = explode(' ',$keyword);
 		for($i = 0; $i < count($arrkey); $i++) {
-			$복수키워드 .= " ( T.gp_id LIKE '%$arrkey[$i]%' OR T.gp_name LIKE '%$arrkey[$i]%' OR T.location LIKE '%$arrkey[$i]%' ) AND ";
+			$복수키워드 .= " ( T.gp_id LIKE '%$arrkey[$i]%' OR T.gp_name LIKE '%$arrkey[$i]%' OR T.jaego_memo LIKE '%$arrkey[$i]%' OR T.location LIKE '%$arrkey[$i]%' ) AND ";
 		}
 		$복수키워드 = "AND (".substr($복수키워드, 0, strlen($복수키워드)-4).")";
 	}
@@ -238,7 +238,6 @@ else if($mode == 'itemlist') {
 										AND			ac_yn = 'Y'
 										$AND_SQL
 		";
-//		echo $SELECT_SQL;
 	}
 	else if($gpcode) {
 
@@ -298,9 +297,9 @@ else if($mode == 'itemlist') {
 										WHERE		1=1
 										$AND_SQL
 		";
-//		echo $SELECT_SQL;
 	}
 
+//	echo $SELECT_SQL;
 }
 else if($mode == '') {
 	$SELECT_SQL = "";
