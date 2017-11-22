@@ -8,6 +8,7 @@ $mb_id = $member[mb_id];
 
 
 //개별공동구매가 진행중인것만 주문
+$od_date = date('Y-m-d H:i:s');
 
 if(!$개인구매코드) alert("개별구매 주문접수 기간이 아닙니다. 관리자에게 문의해주세요.","/coto/orderpay.php");
 
@@ -312,7 +313,7 @@ else if($cart_cnt > 0) {
 																mb_id	= '$mb_id',
 																name = '$name',
 																hphone = '$hphone',
-																od_date = now()
+																od_date = '$od_date'
 			";
 			$result = sql_query($ins_sql);
 
@@ -403,7 +404,7 @@ else if($cart_cnt > 0) {
 														delivery_invoice = '$invoice',
 														od_ip = '$방문자IP',
 														od_browser = '$접속기기',
-														od_date = now()
+														od_date = '$od_date'
 	";
 	$result = sql_query($ins_sql);
 	
