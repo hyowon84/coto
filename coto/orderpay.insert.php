@@ -192,18 +192,20 @@ if(!$cart_cnt) {
 else if($cart_cnt > 0) {
 	/* 옵션 고유ID 생성 SQL    by. JHW */
 	$seq_sql = "	SELECT	CONCAT(	'PB',
-																		DATE_FORMAT(now(),'%Y%m%d'),
-																		LPAD(COALESCE(	(	SELECT	MAX(SUBSTR(od_id,11,4))
-																											FROM		clay_order_info
-																											WHERE		od_id LIKE CONCAT('%',DATE_FORMAT(now(),'%Y%m%d'),'%')
-																											ORDER BY od_id DESC
-																										)
-																		,'0000') +1,4,'0')
-														)	AS oid
-										FROM		DUAL
+																DATE_FORMAT(now(),'%Y%m%d'),
+																LPAD(COALESCE(	(	SELECT	MAX(SUBSTR(od_id,11,4))
+																									FROM		clay_order_info
+																									WHERE		od_id LIKE CONCAT('%',DATE_FORMAT(now(),'%Y%m%d'),'%')
+																									ORDER BY od_id DESC
+																								)
+																,'0000') +1,4,'0')
+												)	AS oid
+								FROM		DUAL
 	";
 	list($od_id) = mysql_fetch_array(sql_query($seq_sql));
-	
+	$t = explode('.',_microtime());
+	$od_id = $od_id."-".$t[1];
+
 	//주문ID 생성, 마이크로타임까지 계산
 //	include "../inc/makeOrderId.php";
 	
@@ -314,6 +316,22 @@ else if($cart_cnt > 0) {
 																od_date = now()
 			";
 			$result = sql_query($ins_sql);
+
+
+			//구매한 아이템 제외하고 하나씩 아래로 밀기
+			$upd_sql = "UPDATE	g5_shop_group_purchase GP SET
+											GP.gp_buy_seq = GP.gp_buy_seq + 1
+									WHERE		GP.gp_id != '$it_id'
+			";
+			sql_query($upd_sql);
+			
+			//구매한 아이템은 최상단으로 정렬
+			$upd_sql = "UPDATE	g5_shop_group_purchase GP SET
+											GP.gp_buy_seq = 0
+									WHERE		GP.gp_id = '$it_id'
+			";
+			sql_query($upd_sql);
+			
 		}
 
 		$row[gp_name] = 개행문자삭제($row[gp_name]);
