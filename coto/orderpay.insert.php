@@ -236,9 +236,8 @@ else if($cart_cnt > 0) {
 							alert(\"신청수량[$_POST[it_qty]]이 재고[$row[real_jaego]]를 초과했습니다. 다시 신청해주세요\");
 							history.back();
 						</script>";
-			
 //			echo $cart_sql;
-//			exit;
+			exit;
 		}
 		
 		$gpcode = ($row[gpcode]) ? $row[gpcode] : $_POST[gpcode];
@@ -438,19 +437,21 @@ $SMS->Init(); // 보관하고 있던 결과값을 지웁니다.
 
 /* 로그기록 */
 $ins_sql = "INSERT	INTO 	sms5_write		SET
-													wr_renum = '$wr_renum',
 													od_id			=	'$od_id',							/* 관련 주문번호 */
 													wr_reply = '$mh_reply',						/*보내는사람번호*/
 													wr_target = '$hphone',						/*받는사람번호*/
 													wr_message = '$mh_send_message',	/*메시지내용*/
 													wr_datetime = now(),							/*보낸날짜*/
-													wr_booking = '$wr_booking',				/* 예약전송날짜*/
 													wr_total = '1',
-													wr_re_total = '$wr_re_total',
 													wr_success = '1',
-													wr_failure = '$wr_failure',
 													wr_memo = '$wr_memo'
 ";
+/*
+wr_renum = '$wr_renum',
+wr_booking = '$wr_booking',
+wr_re_total = '$wr_re_total',
+wr_failure = '$wr_failure',
+ * */
 sql_query($ins_sql);
 
 /*다이렉트주문이 아닐경우*/
