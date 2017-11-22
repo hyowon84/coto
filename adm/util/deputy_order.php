@@ -10,6 +10,8 @@ $g5['title'] = '대리주문 대량등록';
 include_once (G5_ADMIN_PATH.'/admin.head.php');
 include_once(G5_PLUGIN_PATH.'/jquery-ui/datepicker.php');
 
+$od_date = date('Y-m-d H:i:s');
+
 
 //엑셀입력
 if($mode == 'input')
@@ -146,28 +148,33 @@ if($mode == 'input')
 									ORDER BY CI.od_date DESC
 									LIMIT 1
 			";
-			$member = mysql_fetch_array(sql_query($mem_sql));
+			$mb = mysql_fetch_array(sql_query($mem_sql));
 
-			if($member[MB_CNT] > 1) {
-				$check .= $member[mb_nick]."(".$member[MB_CNT]."), ";
+			if($mb[MB_CNT] > 1) {
+				$check .= $mb[mb_nick]."(".$mb[MB_CNT]."), ";
 			}
 
 			/* 기준데이터는 이전 주문정보, 이전주문정보가 없을경우 회원정보 */
-			$mb_id = $member[mb_id];
-			$name = ($member[name]) ? $member[name] : $member[mb_name];
-			$receipt_name = ($member[receipt_name]) ? $member[receipt_name] : $name;
-			$hphone = (strlen($member[hphone]) > 3) ? $member[hphone] : $member[mb_hp];
-			$zip = (strlen($member[zip]) > 3) ? $member[zip] : ($member[mb_zip1].$member[mb_zip2]);
-			$addr1 = (strlen($member[addr1]) > 3) ? $member[addr1] : $member[mb_addr_jibeon];	//지번
-			$addr1_2 = (strlen($member[addr1_2]) > 3) ? $member[addr1_2] : $member[mb_addr1];	//도로명
-			$addr2 = (strlen($member[addr2]) > 3) ? $member[addr2] : $member[mb_addr2];	//상세주소
+			$mb_id = $mb[mb_id];
+			$name = ($mb[name]) ? $mb[name] : $mb[mb_name];
+			$receipt_name = ($mb[receipt_name]) ? $mb[receipt_name] : $name;
+			$hphone = (strlen($mb[hphone]) > 3) ? $mb[hphone] : $mb[mb_hp];
+//		$zip = (strlen($mb[zip]) > 3) ? $mb[zip] : ($mb[mb_zip1].$mb[mb_zip2]);
+//		$addr1 = (strlen($mb[addr1]) > 3) ? $mb[addr1] : $mb[mb_addr_jibeon];	//지번
+//		$addr1_2 = (strlen($mb[addr1_2]) > 3) ? $mb[addr1_2] : $mb[mb_addr1];	//도로명
+//		$addr2 = (strlen($mb[addr2]) > 3) ? $mb[addr2] : $mb[mb_addr2];	//상세주소
+			$zip = (strlen($mb[mb_zip1]) > 1) ? ($mb[mb_zip1].$mb[mb_zip2]) : $mb[zip];
+			$addr1 = (strlen($mb[mb_addr_jibeon]) > 3) ? $mb[mb_addr_jibeon] : $mb[addr1];	//지번
+			$addr1_2 = (strlen($mb[mb_addr1]) > 3) ? $mb[mb_addr1] : $mb[addr1_2];	//도로명
+			$addr2 = (strlen($mb[mb_addr2]) > 3) ? $mb[mb_addr2] : $mb[addr2];	//상세주소
+
 
 			$memo = $구매자메모;
 			$admin_memo = '대리주문 : '.$관리자메모;
 
-			$cash_receipt_yn = $member[cash_receipt_yn];
-			$cash_receipt_type = $member[cash_receipt_type];
-			$cash_receipt_info = $member[cash_receipt_info];
+			$cash_receipt_yn = $mb[cash_receipt_yn];
+			$cash_receipt_type = $mb[cash_receipt_type];
+			$cash_receipt_info = $mb[cash_receipt_info];
 
 
 			$delivery_direct= 'N';
@@ -178,7 +185,7 @@ if($mode == 'input')
 			
 			for($i = 0; $i < count($주문정보); $i++) {
 
-				$it_id = $주문정보[$i][it_id];
+				$it_id = trim($주문정보[$i][it_id]);
 				$신청수량 = $주문정보[$i][it_qty];
 				$배송방법 = $주문정보[$i][delivery_type];
 				$구매자메모 = $주문정보[$i][buyer_memo];
@@ -196,8 +203,7 @@ if($mode == 'input')
 										WHERE		gp_id = '$it_id'
 				";
 				$상품정보 = mysql_fetch_array(sql_query($it_sql));
-				$it_name = $상품정보[gp_name];
-
+				$it_name = str_replace("'","\'",$상품정보[gp_name]);
 
 				/* 신청수량 */
 				$clay_sql = "	SELECT	IFNULL(SUM(it_qty),0) AS total_qty
@@ -268,7 +274,7 @@ if($mode == 'input')
 																		it_qty	=	'$신청수량',
 																		it_org_price = '$신청당시상품가격',
 																		stats = '$기본주문상태',
-																		od_date = now()
+																		od_date = '$od_date'
 					";
 					$result = sql_query($ins_sql);
 					$sql_txt .= $ins_sql."\r\n";
@@ -345,7 +351,7 @@ if($mode == 'input')
 																delivery_type = '$delivery_type',
 																delivery_price= '$delivery_price',
 																delivery_direct= 'N',
-																od_date = now()
+																od_date = '$od_date'
 			";
 			$result = sql_query($ins_sql);
 
