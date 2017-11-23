@@ -3,28 +3,6 @@ var errmsg = "";
 var errfld = null;
 
 
-//장바구니담기 함수
-function cart_add(mode,it_id,gpcode) {
-	var it_qty = $('#'+it_id+'_qty').val();
-
-	$.ajax({
-		dataType:"json",
-		type: "POST",
-		url: "/coto/cart.add.php",
-		data: {
-			'mode'	: mode,
-			'gpcode' : gpcode,
-			'it_id' : it_id,
-			'it_qty' : it_qty
-		},
-		cache: false,
-		success: function(data) {
-			alert(data.msg);
-		}
-	});
-}
-
-
 //링크
 function goto_url(url){
 	location.href = url;

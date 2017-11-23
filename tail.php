@@ -8,7 +8,36 @@ if ($config['cf_include_tail']) {
     }
     return; // 이 코드의 아래는 실행을 하지 않습니다.
 }
+?>
 
+<script>
+
+//장바구니담기 함수
+function cart_add(mode,it_id,gpcode) {
+	var it_qty = $('#'+it_id+'_qty').val();
+
+	$.ajax({
+		dataType:"json",
+		type: "POST",
+		url: "/coto/cart.add.php",
+		data: {
+			'mode'	: mode,
+			'gpcode' : gpcode,
+			'it_id' : it_id,
+			'it_qty' : it_qty
+		},
+		cache: false,
+		success: function(data) {
+			alert(data.msg);
+		}
+	});
+
+}
+
+</script>
+
+
+<?
 if (G5_IS_MOBILE) {
     include_once(G5_MOBILE_PATH.'/shop/tail.php');
     return;

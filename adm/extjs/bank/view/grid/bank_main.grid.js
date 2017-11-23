@@ -297,34 +297,34 @@ var grid_banklinklist = Ext.create('Ext.grid.Panel',{
 	},
 	store : store_banklinklist,
 	columns	: [
-		{ text: '공구코드',			dataIndex: 'gpcode',						width: 100,		hidden:true	},
-		{ text: 'number',				dataIndex: 'number',						width: 100,		hidden:true	},
-		{ text: '공구명', 				dataIndex: 'gpcode_name',				width: 120,		style:'text-align:center'	},
-		{ text: '주문번호', 			dataIndex: 'od_id',							width: 130,		style:'text-align:center',		align:'center'	},
-		{ text: '주문일시',			dataIndex: 'od_date',						width: 150,		renderer: Ext.util.Format.dateRenderer('Y-m-d H:i:s'),	hidden:true	},
-		{ text: '주문상태', 			dataIndex: 'stats',							width: 120,		editor: Ext.create('Ext.combobox.order.stats'),		renderer: rendererCombo	},
-		{ text: '총 합계금액',		dataIndex: 'TOTAL_PRICE',				width: 120,		style:'text-align:center',		align:'right',			renderer: Ext.util.Format.numberRenderer('0,000')	},
-		{ text: '품목판매금액',	dataIndex: 'SELL_PRICE',				width: 120,		style:'text-align:center',		align:'right',			renderer: Ext.util.Format.numberRenderer('0,000'), 	summaryType : 'sum',				summaryRenderer : rendererSummaryFormat	},
-		{ text: '판매단가',			dataIndex: 'it_org_price',			width: 120,		style:'text-align:center',		align:'right',			editor:{allowBlank:false},		renderer: Ext.util.Format.numberRenderer('0,000') },
-		{ text: '수량',					dataIndex: 'it_qty',						width: 70,		style:'text-align:center',		align:'right',			editor:{allowBlank:false},		renderer: Ext.util.Format.numberRenderer('0,000'),		summaryType : 'sum',		summaryRenderer : rendererSummaryFormat	},
-		{ text: '주문자',				dataIndex: 'name',							width: 70,		style:'text-align:center',		align:'center'	},
-		{ text: '닉네임',				dataIndex: 'clay_id',	 					width: 120,		style:'text-align:center',		align:'center'	},
-		{ text: 'IMG', 					dataIndex: 'gp_img',						width: 50,		renderer:rendererImage 		},
-		{ text: '상품코드', 			dataIndex: 'it_id',							width: 120,		hidden:true	},
-		{ text: '품목명', 				dataIndex: 'it_name',						width: 260		},
-		{ text: '배송유형',			dataIndex: 'delivery_type_nm',	width: 120,		style:'text-align:center',		align:'center'	},
-		{ text: '배송비',				dataIndex: 'delivery_price',		width: 70,		style:'text-align:center',		align:'center',	renderer: Ext.util.Format.numberRenderer('0,000') },
-		{ text: 'H.P',					dataIndex: 'hphone',	 					width: 120,		style:'text-align:center',		align:'center'	},
-		{ text: '결제방법', 			dataIndex: 'paytype_nm',				width: 120,		style:'text-align:center',		align:'center'	},
-		{ text: '입금자명',			dataIndex: 'receipt_name',			width: 80,		style:'text-align:left',		align:'left'	},
-		{ text: '송장번호',			dataIndex: 'delivery_invoice',	width: 130,		style:'text-align:center',		align:'center'	},
-		{ text: '기본주소',			dataIndex: 'addr1',	 						width: 200,		style:'text-align:center'	},
-		{ text: '기본주소(신)',	dataIndex: 'addr1_2',						width: 200,		style:'text-align:center'	},
-		{ text: '상세주소',			dataIndex: 'addr2',	 						width: 200,		style:'text-align:center'	},
-		{ text: 'ZIP',					dataIndex: 'zip',								width: 100,		style:'text-align:center',		align:'center'	},
-		{ text: '현.영', 				dataIndex: 'cash_receipt_yn',				width: 80,		style:'text-align:left',		align:'left'	},
-		{ text: '현.영 유형',		dataIndex: 'cash_receipt_type_nm',	width: 120,		style:'text-align:center',		align:'left'	},
-		{ text: '현.영 정보',		dataIndex: 'cash_receipt_info',			width: 170,		style:'text-align:center',		align:'left'	}
+		{ text: '공구코드',				dataIndex: 'gpcode',						width: 100,		hidden:true	},
+		{ text: 'number',					dataIndex: 'number',						width: 100,		hidden:true	},
+		{ text: '공구명', 					dataIndex: 'gpcode_name',				width: 120,		style:'text-align:center'	},
+		{ text: '주문번호', 				dataIndex: 'od_id',							width: 130,		style:'text-align:center',		align:'center'	},
+		{ text: '주문일시',				dataIndex: 'od_date',						width: 150,		renderer: Ext.util.Format.dateRenderer('Y-m-d H:i:s'),	hidden:true	},
+		{ text: '주문상태', 				dataIndex: 'stats',							width: 120,		editor: Ext.create('Ext.combobox.order.stats'),		renderer: rendererCombo	},
+		{ text: '주문총액(환불X)',	dataIndex: 'TOTAL_PRICE',				width: 120,		style:'text-align:center',		align:'right',			renderer: Ext.util.Format.numberRenderer('0,000')	},
+		{ text: '품목판매금액',		dataIndex: 'SELL_PRICE',				width: 120,		style:'text-align:center',		align:'right',			renderer: Ext.util.Format.numberRenderer('0,000'), 	summaryType : 'sum',				summaryRenderer : rendererSummaryFormat	},
+		{ text: '판매단가',				dataIndex: 'it_org_price',			width: 120,		style:'text-align:center',		align:'right',			editor:{allowBlank:false},		renderer: Ext.util.Format.numberRenderer('0,000') },
+		{ text: '수량',						dataIndex: 'it_qty',						width: 70,		style:'text-align:center',		align:'right',			editor:{allowBlank:false},		renderer: Ext.util.Format.numberRenderer('0,000'),		summaryType : 'sum',		summaryRenderer : rendererSummaryFormat	},
+		{ text: '주문자',					dataIndex: 'name',							width: 70,		style:'text-align:center',		align:'center'	},
+		{ text: '닉네임',					dataIndex: 'clay_id',	 					width: 120,		style:'text-align:center',		align:'center'	},
+		{ text: 'IMG', 						dataIndex: 'gp_img',						width: 50,		renderer:rendererImage 		},
+		{ text: '상품코드', 				dataIndex: 'it_id',							width: 120,		hidden:true	},
+		{ text: '품목명', 					dataIndex: 'it_name',						width: 260		},
+		{ text: '배송유형',				dataIndex: 'delivery_type_nm',	width: 120,		style:'text-align:center',		align:'center'	},
+		{ text: '배송비',					dataIndex: 'delivery_price',		width: 70,		style:'text-align:center',		align:'center',	renderer: Ext.util.Format.numberRenderer('0,000') },
+		{ text: 'H.P',						dataIndex: 'hphone',	 					width: 120,		style:'text-align:center',		align:'center'	},
+		{ text: '결제방법', 				dataIndex: 'paytype_nm',				width: 120,		style:'text-align:center',		align:'center'	},
+		{ text: '입금자명',				dataIndex: 'receipt_name',			width: 80,		style:'text-align:left',		align:'left'	},
+		{ text: '송장번호',				dataIndex: 'delivery_invoice',	width: 130,		style:'text-align:center',		align:'center'	},
+		{ text: '기본주소',				dataIndex: 'addr1',	 						width: 200,		style:'text-align:center'	},
+		{ text: '기본주소(신)',		dataIndex: 'addr1_2',						width: 200,		style:'text-align:center'	},
+		{ text: '상세주소',				dataIndex: 'addr2',	 						width: 200,		style:'text-align:center'	},
+		{ text: 'ZIP',						dataIndex: 'zip',								width: 100,		style:'text-align:center',		align:'center'	},
+		{ text: '현.영', 					dataIndex: 'cash_receipt_yn',				width: 80,		style:'text-align:left',		align:'left'	},
+		{ text: '현.영 유형',			dataIndex: 'cash_receipt_type_nm',	width: 120,		style:'text-align:center',		align:'left'	},
+		{ text: '현.영 정보',			dataIndex: 'cash_receipt_info',			width: 170,		style:'text-align:center',		align:'left'	}
 	],
 	dockedItems: [
 		{
@@ -428,7 +428,33 @@ var grid_banklinklist = Ext.create('Ext.grid.Panel',{
 						//grid_winSms.reconfigure(store_winSms);
 
 					}
-				} //SMS버튼 END
+				}, //SMS버튼 END
+				{
+					text: '환불제외로딩',
+					iconCls: 'icon-refresh',
+					handler: function () {
+						var grid = grid_banklinklist;
+
+						var v_param = {
+							except_refund : '1'
+						}
+						Ext.apply(grid.getStore().getProxy().extraParams, v_param);
+						grid.getStore().load();
+					}
+				},
+				{
+					text: '환불포함로딩',
+					iconCls: 'icon-refresh',
+					handler: function () {
+						var grid = grid_banklinklist;
+
+						var v_param = {
+							except_refund : '0'
+						}
+						Ext.apply(grid.getStore().getProxy().extraParams, v_param);
+						grid.getStore().load();
+					}
+				}
 			]
 		}
 	],

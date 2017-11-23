@@ -774,7 +774,7 @@ var grid_window_baesong = Ext.create('Ext.grid.Panel',{
 		{ text : '주문자',			dataIndex : 'buyer',			width:120	},
 		{	header : 'IMG',				dataIndex : 'gp_img',			width:60,			renderer: function(value){	return '<img src="' + value + '" width=40 height=40 />';}			},
 		{ text : '상품코드',		dataIndex : 'it_id',			width:120,		hidden:true	},
-		{ text : '재고위치',		dataIndex : 'location',		width:120	},
+		{ text : '재고위치',		dataIndex : 'location',		width:120,		hidden:true	},
 		{
 			text: '품목',
 			flex: 1,
