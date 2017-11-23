@@ -87,7 +87,7 @@ for ($i=1; $row=sql_fetch_array($result); $i++) {
 						<div class=\"sct_cost2\">
 							<div class=\"sct_cost2_txt\">
 								<img class='minus_qty' name='minus_".$row['gp_id']."' src='".G5_URL."/img/m/groupMinusQty.png'/>
-								<input type='text' id='".$row['gp_id']."_qty' name='ct_qty".$row['gp_id']."' class='qty_input' size='5' value='1' readonly/>
+								<input type='text' id='".$row['gp_id']."_qty' name='ct_qty".$row['gp_id']."' class='qty_input' size='5' value='1' />
 								<img class='plus_qty' name='plus_".$row['gp_id']."'' src='".G5_URL."/img/m/groupPlusQty.png'/>								
 							</div>
 							<div style='text-align:center; margin-top:2px;'>$마지막업데이트일 $재고</div>

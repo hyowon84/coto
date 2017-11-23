@@ -112,7 +112,7 @@ $카드가 = $it[it_card_price];
 				<span style="color:#515151;font-weight:bold;font-size:1.250em">수량</span>
 				<div style="display:inline;">
 					<img type="button" class="plus_qty" name="plus_<?=$gp_id?>" src='<?=G5_URL?>/img/m/groupPlusQty.png'  />
-					<input type="text" id="<?=$gp_id?>_qty" name="ct_qty<?=$gp_id?>" value="<?=$it['it_buy_min_qty']?>" class="sit_frm_input" size="5" style="text-align:center;" readonly>
+					<input type="text" id="<?=$gp_id?>_qty" name="ct_qty<?=$gp_id?>" value="<?=$it['it_buy_min_qty']?>" class="sit_frm_input" size="5" style="text-align:center;" />
 					<img type="button" class="minus_qty" name="minus_<?=$gp_id?>" src='<?=G5_URL?>/img/m/groupMinusQty.png'/>
 				</div>
 			</div>
