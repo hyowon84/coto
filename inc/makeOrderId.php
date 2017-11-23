@@ -22,6 +22,6 @@ $seq_sql = "	SELECT	CONCAT(	'$시퀀스명',
 	";
 list($od_id) = mysql_fetch_array(sql_query($seq_sql));
 
-//$t = explode('.',_microtime());
-//$od_id = $od_id.$t[1];
+$t = explode('.',_microtime());
+$od_id = $od_id."-".$t[1];
 ?>

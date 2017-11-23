@@ -41,7 +41,7 @@ function updateOrderStats($vo) {
 			case 'B07':	//환불
 				$조회유형 = "환불이 처리되었습니다";
 				$stats = 90;
-				$AND_SQL = "	AND			number IN ()	";
+				$AND_SQL = "	AND			number IN ()	";	//입출금내역 우측 주문관리에서 수동으로 선택 환불처리 UI가 있음 여기서 구현안함
 				break;
 			default:
 				break;
@@ -174,6 +174,14 @@ if( !strlen($arr[number]) && count($arr) > 1) {
 	";
 	sql_query($common_sql);
 
+	//세금후처리번호 업데이트시 기존 주문번호들에 세금처리번호 갱신
+	if(strlen($vo[tax_refno]) > 3 && strlen($vo[admin_link]) > 3) {
+
+		$odid = explode(',',$vo[admin_link]);
+		$odid
+		
+	}
+	
 	db_log($common_sql,'bank_db','입출금내역수정');
 }
 

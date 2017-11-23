@@ -107,6 +107,12 @@ else if($mode == 'banklinklist') {
 	}
 	if($number || $keyword) {
 		$조건문SQL = " AND ( ".implode('OR', $조건문)." ) ";
+
+		//환불제외 로딩, 전체로딩
+		if($except_refund) {
+			$조건문SQL .= " AND CL.stats <= 60 ";
+		}
+
 	}
 	
 }
@@ -120,7 +126,7 @@ else if($mode == 'banklinklist') {
 $SELECT_SQL = "	SELECT	CL.*,
 												CONCAT(CL.od_id,' ',CL.clay_id, ', 총  ' ,IFNULL(CLS.CNT_ORDER,0),'건(취소제외)') AS 'Group',
 												GP.gp_img,
-												CLC.CNT_TOTAL_ORDER,						/* 주문번호와 연결되있는 개별레코드전체 갯수 */
+												CLC.CNT_TOTAL_ORDER,																	/* 주문번호와 연결되있는 개별레코드전체 갯수 */
 												IFNULL(CLS.CNT_ORDER,0) AS CNT_ORDER,									/* 취소제외, 총 주문금액에 해당하는 개별레코드 갯수 */
 												CLS.TOTAL_PRICE,
 												DSN.value AS delivery_type_nm,
@@ -197,9 +203,12 @@ $SELECT_SQL = "	SELECT	CL.*,
 																						LEFT JOIN clay_order_info CI ON (CI.od_id = CL.od_id)
 																			WHERE	1=1
 																			AND		CL.stats NOT IN (99)
+																			AND		CL.stats <= 60
 																			GROUP BY CL.od_id
 												) AS CLS ON (CLS.od_id = CL.od_id)
 ";
+//echo $SELECT_SQL;
+
 
 $TOTAL_SQL = "SELECT	CL.*
 							FROM		clay_order CL
