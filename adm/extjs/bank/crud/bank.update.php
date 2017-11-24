@@ -175,12 +175,11 @@ if( !strlen($arr[number]) && count($arr) > 1) {
 	sql_query($common_sql);
 
 	//세금후처리번호 업데이트시 기존 주문번호들에 세금처리번호 갱신
-	if(strlen($vo[tax_refno]) > 3 && strlen($vo[admin_link]) > 3) {
-
-		$odid = explode(',',$vo[admin_link]);
-		$odid
-		
-	}
+//	if(strlen($vo[tax_refno]) > 3 && strlen($vo[admin_link]) > 3) {
+//
+//		$odid = explode(',',$vo[admin_link]);
+//
+//	}
 	
 	db_log($common_sql,'bank_db','입출금내역수정');
 }
