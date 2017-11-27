@@ -64,7 +64,7 @@ Ext.define('Ext.store.item.spottype',{
 	data:[
 			{	name:'-스팟옵션-',	value:''	},
 			{	name:'1oz이상($)',	value:'U$'},
-			{	name:'1oz이하($)',	value:'D$'},
+			{	name:'1oz미만($)',	value:'D$'},
 			{	name:'%',					value:'%'	},
 			{	name:'￦',					value:'￦'	}
 	]
