@@ -162,8 +162,8 @@ include_once('./admin.head.php');
 	<tr>
 		<th scope="row"><label for="mb_id">아이디<?=$sound_only?></label></th>
 		<td>
-			<input type="text" name="mb_id1" value="<?=$mb['mb_id'][0]?>" id="reg_mb_id" class="frm_input required nospace"> @
-			<input type="text" name="mb_id2" value="<?=$mb['mb_id'][1]?>" id="reg_mb_id" class="frm_input nospace">
+			<input type="text" name="mb_id1" value="<?=$mb['mb_id'][0]?>" id="reg_mb_id1" class="frm_input required nospace"> @
+			<input type="text" name="mb_id2" value="<?=$mb['mb_id'][1]?>" id="reg_mb_id2" class="frm_input nospace">
 			<select name="mb_id_sel" class="frm_input nospace">
 				<option value="">직접입력</option>
 				<option value="naver.com">naver.com</option>
@@ -294,7 +294,13 @@ include_once('./admin.head.php');
 			<input type="text" name="mb_zip1" value="<?=$mb['mb_zip1']?>" id="mb_zip1" class="frm_input readonly" size="3" maxlength="3"> -
 			<label for="mb_zip2" class="sound_only">우편번호 뒷자리</label>
 			<input type="text" name="mb_zip2" value="<?=$mb['mb_zip2']?>" id="mb_zip2" class="frm_input readonly" size="3" maxlength="3">
-			<a href="<?=G5_BBS_URL?>/zip.php?frm_name=fmember&amp;frm_zip1=mb_zip1&amp;frm_zip2=mb_zip2&amp;frm_addr1=mb_addr1&amp;frm_addr2=mb_addr2&amp;frm_addr3=mb_addr3&amp;frm_jibeon=mb_addr_jibeon" id="win_zip" class="win_zip_find btn_frmline" target="_blank">주소 검색</a><br>
+
+			<?
+			/* <a href="<?=G5_BBS_URL?>/zip.php?frm_name=fmember&amp;frm_zip1=mb_zip1&amp;frm_zip2=mb_zip2&amp;frm_addr1=mb_addr1&amp;frm_addr2=mb_addr2&amp;frm_addr3=mb_addr3&amp;frm_jibeon=mb_addr_jibeon" id="win_zip" class="win_zip_find btn_frmline" target="_blank">주소 검색</a> */
+			?>
+
+			<input type="button" onclick="searchMbPostcode();" value="주소 검색" /><br>
+
 			<input type="text" name="mb_addr1" value="<?=$mb['mb_addr1']?>" id="mb_addr1" class="frm_input readonly" size="60">
 			<label for="mb_addr1">기본주소</label><br>
 			<input type="text" name="mb_addr2" value="<?=$mb['mb_addr2']?>" id="mb_addr2" class="frm_input" size="60">
