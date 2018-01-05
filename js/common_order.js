@@ -78,7 +78,7 @@ function searchMbPostcode() {
 				// 우편번호와 주소 정보를 해당 필드에 넣는다.
 				//document.getElementById("zip").value = data.postcode1+data.postcode2;
 				document.getElementsByName("mb_zip1")[0].value = data.zonecode.substring(0,3);
-				document.getElementsByName("mb_zip2")[0].value = data.zonecode.substring(0,3);
+				document.getElementsByName("mb_zip2")[0].value = data.zonecode.substring(3,6);
 
 
 				document.getElementsByName("mb_addr1")[0].value = fullRoadAddr;
