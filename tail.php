@@ -100,10 +100,10 @@ document.KB_AUTHMARK_FORM.submit();
 
 	 <div id="ft_catch">
 				<li style="padding-top:5px;padding-left:20px;color:#505050">
-					회사명: 코인즈투데이 | 대표: 박민우 | 서울시 강남구 밤고개로14길 13-34(자곡동 274) 2층</br>
-					통신판매업신고: 제2014-경기양주- 0130호 | 사업자등록번호:127-46-73320 </br>
-					Tel: 070-4323-6999,6998 | Fax: 070-8230-0777 | 이메일: minwoo@coinstoday.co.kr | 개인정보관리책임자: 박민우<br>
-					전자상거래 소비자보호 법률에 따른 구매 안전 서비스 안내 : 본 판매자는 KB국민은행과 계약을 통해 구매 안전 서비스를 자동으로 제공중입니다. <a href="#" onclick="javascript:onPopKBAuthMark();return false;" style="color:#fff;background:#707070;border-radius:5px;padding:2px 5px 2px 5px;">서비스 가입사실 확인</a></br>
+					회사명: 투데이 주식회사 | 대표: 전민재 | 서울시 강남구 밤고개로14길 13-34(자곡동 274)</br>
+					통신판매업신고: 제2017-서울강남-01915호 | 사업자등록번호: 756-81-00534 </br>
+					Tel: 02-2088-6637(6657) | Fax: 02-2088-6658 | 이메일: minjae@coinstoday.co.kr | 개인정보관리책임자: 전민재<br>
+					전자상거래 소비자보호 법률에 따른 구매 안전 서비스 안내 : 본 판매자는 KB국민은행과 계약을 통해 구매 안전 서비스를 자동으로 제공중입니다. <!--a href="#" onclick="javascript:onPopKBAuthMark();return false;" style="color:#fff;background:#707070;border-radius:5px;padding:2px 5px 2px 5px;">서비스 가입사실 확인</a--></br>
 					Copyright &copy; <b>coinstoday.co.kr</b> All rights reserved.
 				</li>
 				<li style="float:right;margin:0 110px 0 0;"><img src="<?=G5_IMG_URL?>/logo_bottom.png" /></li>
