@@ -877,11 +877,11 @@ var winClearanceConfirm = Ext.create('widget.window', {
 									readOnly: true
 								},
 								{
-									fieldLabel: '통관번호',
+									fieldLabel: '수입신고번호',
 									name: 'cr_refno'
 								},
 								{
-									fieldLabel: '통관내역별칭',
+									fieldLabel: 'B/L 번호',
 									name: 'cr_name'
 								},
 								{

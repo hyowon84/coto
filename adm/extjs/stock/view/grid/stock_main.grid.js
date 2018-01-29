@@ -975,7 +975,7 @@ var grid_invoiceTodoWire = Ext.create('Ext.grid.Panel',{
 			handler: function() {
 				delSelectedGrid1Row(grid_invoiceTodoWire);
 			}
-		},
+		}
 	],
 	bbar : {
 		plugins: new Ext.ux.SlidingPager(),
