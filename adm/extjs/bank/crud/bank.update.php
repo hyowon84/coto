@@ -94,8 +94,8 @@ function updateOrderStats($vo) {
 		
 		if( ($이전OD_ID != $주문번호) && $vo[bank_type] == 'B01' ) {
 			$receive_number = get_hp($co['hphone'], 0);
-			$send_number = preg_replace('/-/','',$member['mb_hp']);	//발신자번호
-
+//			$send_number = preg_replace('/-/','',$member['mb_hp']);	//발신자번호
+			$send_number = '0220886657';
 
 			
 			$mh_send_message = preg_replace("/{주문ID}/", $co['od_id'], $v_sms[$stats]);
@@ -153,7 +153,6 @@ if( !strlen($arr[number]) && count($arr) > 1) {
 										WHERE		number		= '$vo[number]'
 		";
 		sql_query($common_sql);
-		
 		db_log($common_sql,'bank_db','입출금내역수정');
 	}
 
@@ -174,13 +173,6 @@ if( !strlen($arr[number]) && count($arr) > 1) {
 	";
 	sql_query($common_sql);
 
-	//세금후처리번호 업데이트시 기존 주문번호들에 세금처리번호 갱신
-//	if(strlen($vo[tax_refno]) > 3 && strlen($vo[admin_link]) > 3) {
-//
-//		$odid = explode(',',$vo[admin_link]);
-//
-//	}
-	
 	db_log($common_sql,'bank_db','입출금내역수정');
 }
 

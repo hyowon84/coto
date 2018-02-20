@@ -9,7 +9,6 @@
  *			 })
  */
 
-
 function renderGpImg(value, p, record) {
 	return Ext.String.format(
 		"<img src='{3}' />{4}",
@@ -21,7 +20,6 @@ function renderGpImg(value, p, record) {
 
 Ext.onReady(function(){
 	/************* ----------------  패널 START -------------- ******************/
-
 
 	/* 화면 */
 	var main_panel = Ext.create('Ext.Panel', {

@@ -85,7 +85,7 @@ else if($mode == 'banklinklist') {
 									WHERE		BD.number IN ($number)
 		";
 		$bank_result = sql_query($BANK_SQL);
-		
+
 		$od_id = array();
 		while($bd = mysql_fetch_array($bank_result)) {
 			$alink = explode(",",$bd[admin_link]);
@@ -95,7 +95,7 @@ else if($mode == 'banklinklist') {
 		}
 		$odid_list = implode(",",$od_id);
 
-		$조건문[] = " CL.od_id IN ($odid_list) ";		
+		$조건문[] = " CL.od_id IN ($odid_list) ";
 	}
 
 	if ($keyword) {
@@ -105,6 +105,7 @@ else if($mode == 'banklinklist') {
 										OR GI.gpcode_name LIKE '%$keyword%' OR CI.memo LIKE '%$keyword%'
 										OR CI.receipt_name LIKE '%$keyword%' OR CI.admin_memo LIKE '%$keyword%'	";
 	}
+
 	if($number || $keyword) {
 		$조건문SQL = " AND ( ".implode('OR', $조건문)." ) ";
 
