@@ -31,7 +31,9 @@ for($i = 0; $i < count($grid); $i++) {
 	$받는사람 = get_hp($받는사람, 0);
 
 	$mh_hp[]['bk_hp'] = $받는사람;	//수신자번호
-	$mh_reply = preg_replace('/-/','',$member['mb_hp']);	//발신자번호
+//	$send_number = preg_replace('/-/','',$member['mb_hp']);	//발신자번호
+	$send_number = '0220886657';
+
 
 	//문자 셋팅
 	$mh_send_message = $메시지;
@@ -41,7 +43,7 @@ for($i = 0; $i < count($grid); $i++) {
 	$mh_send_message = preg_replace("/{운송장번호}/", $od['delivery_invoice'], $mh_send_message);
 
 
-	$result = $SMS->Add($mh_hp, $mh_reply, '', '', $mh_send_message, $booking, 1);
+	$result = $SMS->Add($mh_hp, $send_number, '', '', $mh_send_message, $booking, 1);
 	$result = $SMS->Send();
 	$SMS->Init(); // 보관하고 있던 결과값을 지웁니다.
 
@@ -50,7 +52,7 @@ for($i = 0; $i < count($grid); $i++) {
 	$ins_sql = "INSERT	INTO 	sms5_write		SET
 																wr_renum = '$wr_renum',
 																od_id			=	'$od[od_id]',					/* 관련 주문번호 */
-																wr_reply = '$mh_reply',						/*보내는사람번호*/
+																wr_reply = '$send_number',						/*보내는사람번호*/
 																wr_target = '$od[hphone]',				/*받는사람번호*/
 																wr_message = '$mh_send_message',	/*메시지내용*/
 																wr_memo = '$wr_memo',
