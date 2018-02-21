@@ -39,7 +39,7 @@ for($i = 0; $i < count($grid); $i++) {
 	$mh_send_message = $메시지;
 	$mh_send_message = preg_replace("/{주문ID}/", $od['od_id'], $mh_send_message);
 	$mh_send_message = preg_replace("/{주문금액}/", $주문금액, $mh_send_message);
-	$mh_send_message = preg_replace("/{회사명}/", '코인스투데이', $mh_send_message);
+	$mh_send_message = preg_replace("/{회사명}/", '투데이(주)', $mh_send_message);
 	$mh_send_message = preg_replace("/{운송장번호}/", $od['delivery_invoice'], $mh_send_message);
 
 
