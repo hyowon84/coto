@@ -278,12 +278,12 @@ if($mode == 'itemlist') {
 
 
 		if($공구정보[volprice_yn] == 'Y') {
-	?>
-		<tr <?=$bgcolor?>>
-			<td><?=number_format($vp[po_sqty])?> ~ <?=number_format($vp[po_eqty])?></td>
-			<td>$<?=number_format($vp[po_cash_price],2)?> (<?=number_format($vp[volprice])?>원)</td>
-		</tr>
-	<?
+			?>
+			<tr <?=$bgcolor?>>
+				<td><?=number_format($vp[po_sqty])?> ~ <?=number_format($vp[po_eqty])?></td>
+				<td>$<?=number_format($vp[po_cash_price],2)?> (<?=number_format($vp[volprice])?>원)</td>
+			</tr>
+			<?
 		}
 
 		if($공구정보[volprice_yn] == 'N') {
@@ -368,14 +368,14 @@ if($mode == 'itemlist') {
 			$bgcolor = "";
 			$style = "";
 		}
-	?>
+		?>
 		<tr class='hover_skyblue' <?=$bgcolor?> onclick="loadOrderDetail('orderlist_clayid','<?=$od[gpcode]?>','<?=$od[clay_id]?>','<?=$od[hphone]?>')">
 			<td style='text-align:left; padding-left:10px;'><?="$od[clay_id]($od[hphone])"?></td>
 			<td><?=number_format($od[SUM_QTY])?></td>
 			<td <?=$style?>><?=number_format($od[QTY_NOPAY])?></td>
 			<td style='text-align:right; padding-right:10px;'><?=number_format($od[SUM_PAY])?></td>
 		</tr>
-	<?
+		<?
 		if($od_cnt == ($od_maxcnt-1)) echo "</table></div>";
 		$od_cnt++;
 		$총합계금액 += ($od[SUM_PAY]);
@@ -460,14 +460,14 @@ if($mode == 'orderlist_clayid' || $mode == 'orderlist_itid') {
 	?>
 	<script>
 
-	/* 수동가격갱신 */
-	function updateProductPrice() {
-		var gpcode,gp_id,price;
-		gpcode = '<?=$gpcode?>';
-		it_id = '<?=$it_id?>';
-		price = $('#price').val();
+		/* 수동가격갱신 */
+		function updateProductPrice() {
+			var gpcode,gp_id,price;
+			gpcode = '<?=$gpcode?>';
+			it_id = '<?=$it_id?>';
+			price = $('#price').val();
 
-		$.post('gpinfo_list.inp.php',
+			$.post('gpinfo_list.inp.php',
 				{
 					'mode'		:	'updateProductPrice',
 					'gpcode'	: gpcode,
@@ -481,8 +481,8 @@ if($mode == 'orderlist_clayid' || $mode == 'orderlist_itid') {
 						alert('갱신 실패');
 					}
 				}
-		);
-	}
+			);
+		}
 	</script>
 
 	<input type='text' id='price' value='' />
@@ -525,17 +525,17 @@ if($mode == 'orderlist_clayid' || $mode == 'orderlist_itid') {
 
 			$총주문수량 += $신청수량;
 			$총주문금액 += ($상품단가 * $신청수량);
-		?>
-		<tr>
-			<td><?=$닉네임?></td>
-			<td><?=$이미지?></td>
-			<td style='text-align:left;'><?=$상품명?></td>
-			<td style='text-align:right;'><?=number_format($상품단가)?></td>
-			<td style='text-align:right;'>(<?=number_format($신청수량)?> 개)</td>
-			<td style='text-align:right;'><?=$주문금액?></td>
-			<td><?=$주문상태?></td>
-		</tr>
-		<?
+			?>
+			<tr>
+				<td><?=$닉네임?></td>
+				<td><?=$이미지?></td>
+				<td style='text-align:left;'><?=$상품명?></td>
+				<td style='text-align:right;'><?=number_format($상품단가)?></td>
+				<td style='text-align:right;'>(<?=number_format($신청수량)?> 개)</td>
+				<td style='text-align:right;'><?=$주문금액?></td>
+				<td><?=$주문상태?></td>
+			</tr>
+			<?
 		}
 		?>
 		<tr>
@@ -543,8 +543,8 @@ if($mode == 'orderlist_clayid' || $mode == 'orderlist_itid') {
 				총 주문수량(<?=number_format($총주문수량)?>) ,  총 주문금액(<?=number_format($총주문금액)?>)
 			</td>
 		</tr>
-		</table>
-<?
+	</table>
+	<?
 }
 
 
@@ -597,9 +597,9 @@ if($mode == 'allbuyerlist') {
 			<th width=''>닉네임</th>
 			<th width=''>상품명</th>
 			<th width=''>단가</th>
-			<th width=''>수량</th>
+			<th width='40'>수량</th>
 			<th width=''>주문금액</th>
-			<th width=''>주문상태</th>
+			<th width='70'>주문상태</th>
 		</tr>
 		<?
 		$cnt = 0;
@@ -611,20 +611,21 @@ if($mode == 'allbuyerlist') {
 
 				//배송비까지 합산
 				$구매자별총주문금액 += $이전배송비;
-			?>
-			<tr style='background:#EEEEEE;'>
-				<td style='text-align:right;' colspan=4>배송비(<?=$이전배송유형?>)</td>
-				<td style='text-align:right;'><?=number_format($이전배송비)?>원</td>
-				<td>&nbsp;</td>
-			</tr>
-			<tr style='background:#d2f5ff;'>
-				<td style='text-align:right;' colspan=3>TOTAL</td>
-				<td style='text-align:right;'><?=number_format($구매자별총주문수량)?>개</td>
-				<td style='text-align:right;'><?=number_format($구매자별총주문금액)?>원</td>
-				<td>&nbsp;</td>
-			</tr>
+				?>
+				<tr style='background:#f6f6f6; font-weight:bolder;'>
+					<td style='text-align:right;' colspan=4>배송비(<?=$이전배송유형?>)</td>
+					<td style='text-align:right;' colspan="2"><?=number_format($이전배송비)?>원</td>
+				</tr>
+				<tr style='background:#d2f5ff; font-weight:bolder; color:blue;'>
+					<td style='text-align:right;' colspan=3><?=$닉네임?>님의 입금할 총 금액(배송비 포함)</td>
+					<td style='text-align:right;'><?=number_format($구매자별총주문수량)?>개</td>
+					<td style='text-align:right;' colspan="2"><?=number_format($구매자별총주문금액)?>원</td>
+				</tr>
+				<tr style='background:white;'>
+					<td style='text-align:right; border-left:0px; border-right:0px;' colspan='6' height="20">&nbsp;</td>
+				</tr>
 
-			<?
+				<?
 				$구매자별총주문수량 = 0;
 				$구매자별총주문금액 = 0;
 			}
@@ -641,16 +642,16 @@ if($mode == 'allbuyerlist') {
 
 			$총주문수량 += $신청수량;
 			$총주문금액 += ($상품단가 * $신청수량);
-		?>
-		<tr>
-			<td><?=$닉네임?></td>
-			<td style='text-align:left; font-size:9px;'><?=$상품명?></td>
-			<td style='text-align:right;'><?=number_format($상품단가)?></td>
-			<td style='text-align:right;'><?=number_format($신청수량)?>개</td>
-			<td style='text-align:right;'><?=number_format($주문금액)?></td>
-			<td><?=$주문상태?></td>
-		</tr>
-		<?
+			?>
+			<tr>
+				<td><?=$닉네임?></td>
+				<td style='text-align:left; font-size:9px;'><?=$상품명?></td>
+				<td style='text-align:right;'><?=number_format($상품단가)?></td>
+				<td style='text-align:right;'><?=number_format($신청수량)?>개</td>
+				<td style='text-align:right;'><?=number_format($주문금액)?></td>
+				<td style='text-align:center; padding:0px;'><?=$주문상태?></td>
+			</tr>
+			<?
 			$cnt++;
 
 			//마지막줄
@@ -671,15 +672,15 @@ if($mode == 'allbuyerlist') {
 					<td style='text-align:right;'><?=number_format($구매자별총주문금액)?>원</td>
 					<td>&nbsp;</td>
 				</tr>
-		<?
+				<?
 			}
 			$이전닉넴 = $row[clay_id];
 			$이전배송유형 = $row[deliverytype_name];
 			$이전배송비 = $row[delivery_price];
 		}//while end
 		?>
-		</table>
-<?
+	</table>
+	<?
 }
 ?>
 </div>
